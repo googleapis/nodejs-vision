@@ -16,30 +16,30 @@
 
 'use strict';
 
-var assert = require('assert');
-var async = require('async');
-var fs = require('fs');
-var path = require('path');
-var Storage = require('@google-cloud/storage');
-var uuid = require('node-uuid');
+const assert = require('assert');
+const async = require('async');
+const fs = require('fs');
+const path = require('path');
+const Storage = require('@google-cloud/storage');
+const uuid = require('node-uuid');
 
-var Vision = require('../');
+const vision = require('../');
 
 describe('Vision', function() {
-  var IMAGES = {
+  const IMAGES = Object.freeze({
     document: path.join(__dirname, 'data/document.jpg'),
     logo: path.join(__dirname, 'data/logo.jpg'),
     rushmore: path.join(__dirname, 'data/rushmore.jpg'),
     text: path.join(__dirname, 'data/text.png'),
     malformed: __filename,
-  };
+  });
 
-  var TESTS_PREFIX = 'gcloud-vision-test';
+  const TESTS_PREFIX = 'gcloud-vision-test';
 
-  var storage = new Storage();
-  var vision = new Vision();
+  let storage = new Storage();
+  let client = new vision.v1.ImageAnnotatorClient();
 
-  var bucket = storage.bucket(generateName());
+  let bucket = storage.bucket(generateName());
 
   before(function(done) {
     bucket.create(function(err) {
@@ -81,7 +81,7 @@ describe('Vision', function() {
 
   it('should detect from a URL', () => {
     var url = 'https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png';
-    return vision
+    return client
       .logoDetection({
         image: {
           source: {imageUri: url},
@@ -94,7 +94,7 @@ describe('Vision', function() {
   });
 
   it('should detect from a filename', () => {
-    return vision
+    return client
       .logoDetection({
         image: {
           source: {filename: IMAGES.logo},
@@ -108,7 +108,7 @@ describe('Vision', function() {
 
   it('should detect from a Buffer', () => {
     var buffer = fs.readFileSync(IMAGES.logo);
-    return vision
+    return client
       .logoDetection({
         image: {
           content: buffer,
@@ -127,7 +127,7 @@ describe('Vision', function() {
       {type: 'SAFE_SEARCH_DETECTION'},
     ];
     it('should perform multiple detections', () => {
-      return vision
+      return client
         .annotateImage({
           features: TYPES,
           image: {source: {filename: IMAGES.rushmore}},
