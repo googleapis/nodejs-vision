@@ -36,7 +36,7 @@ const gapic = Object.freeze({
 
 // Augment the SpeechClient objects with the helpers.
 for (let gapicVersion of Object.keys(gapic)) {
-  let clientProto = gapic[gapicVersion].SpeechClient.prototype;
+  let clientProto = gapic[gapicVersion].ImageAnnotatorClient.prototype;
   Object.assign(clientProto, helpers(gapicVersion));
 }
 
