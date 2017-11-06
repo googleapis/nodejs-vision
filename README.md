@@ -1,11 +1,11 @@
 <img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
 
-# [Google Cloud Vision API: Node.js Client](https://github.com/GoogleCloudPlatform/google-cloud-node)
+# [Google Cloud Vision API: Node.js Client](https://github.com/googleapis/nodejs-vision)
 
 [![release level](https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat)](https://cloud.google.com/terms/launch-stages)
-[![CircleCI](https://img.shields.io/circleci/project/github/GoogleCloudPlatform/google-cloud-node.svg?style=flat)](https://circleci.com/gh/GoogleCloudPlatform/google-cloud-node)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/GoogleCloudPlatform/google-cloud-node?branch=master&svg=true)](https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-node)
-[![codecov](https://img.shields.io/codecov/c/github/GoogleCloudPlatform/google-cloud-node/master.svg?style=flat)](https://codecov.io/gh/GoogleCloudPlatform/google-cloud-node)
+[![CircleCI](https://img.shields.io/circleci/project/github/googleapis/nodejs-vision.svg?style=flat)](https://circleci.com/gh/googleapis/nodejs-vision)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/googleapis/nodejs-vision?branch=master&svg=true)](https://ci.appveyor.com/project/googleapis/nodejs-vision)
+[![codecov](https://img.shields.io/codecov/c/github/googleapis/nodejs-vision/master.svg?style=flat)](https://codecov.io/gh/googleapis/nodejs-vision)
 
 > Node.js idiomatic client for [Vision API][product-docs].
 
@@ -13,7 +13,7 @@ The [Cloud Vision API](https://cloud.google.com/vision/docs) allows developers t
 
 
 * [Vision API Node.js Client API Reference][client-docs]
-* [github.com/GoogleCloudPlatform/google-cloud-node](https://github.com/GoogleCloudPlatform/google-cloud-node)
+* [github.com/googleapis/nodejs-vision](https://github.com/googleapis/nodejs-vision)
 * [Vision API Documentation][product-docs]
 
 Read more about the client libraries for Cloud APIs, including the older
@@ -75,39 +75,40 @@ const fileName = './resources/wakeupcat.jpg';
 // Prepare the request object
 const request = {
   source: {
-    filename: fileName
-  }
+    filename: fileName,
+  },
 };
 
 // Performs label detection on the image file
-vision.labelDetection(request)
-  .then((results) => {
+vision
+  .labelDetection(request)
+  .then(results => {
     const labels = results[0].labelAnnotations;
 
     console.log('Labels:');
-    labels.forEach((label) => console.log(label.description));
+    labels.forEach(label => console.log(label.description));
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('ERROR:', err);
   });
 ```
 
 ## Samples
 
-Samples are in the [`samples/`](https://github.com/GoogleCloudPlatform/google-cloud-node/tree/master/samples) directory. The samples' `README.md`
+Samples are in the [`samples/`](https://github.com/googleapis/nodejs-vision/tree/master/samples) directory. The samples' `README.md`
 has instructions for running the samples.
 
 | Sample                      | Source Code                       | Try it |
 | --------------------------- | --------------------------------- | ------ |
-| Face Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Image Property Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Label Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Landmark Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Logo Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Safe Search Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Crop Hints Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Web Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Text Detection | [source code](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/google-cloud-node&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Face Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Image Property Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Label Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Landmark Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Logo Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Safe Search Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Crop Hints Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Web Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Text Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
 
 The [Vision API Node.js Client API Reference][client-docs] documentation
 also contains samples.
@@ -127,13 +128,13 @@ More Information: [Google Cloud Platform Launch Stages][launch_stages]
 
 ## Contributing
 
-Contributions welcome! See the [Contributing Guide](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/.github/CONTRIBUTING.md).
+Contributions welcome! See the [Contributing Guide](https://github.com/googleapis/nodejs-vision/blob/master/.github/CONTRIBUTING.md).
 
 ## License
 
 Apache Version 2.0
 
-See [LICENSE](https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/LICENSE)
+See [LICENSE](https://github.com/googleapis/nodejs-vision/blob/master/LICENSE)
 
 [client-docs]: https://cloud.google.com/nodejs/docs/reference/vision/latest/
 [product-docs]: https://cloud.google.com/vision/docs
