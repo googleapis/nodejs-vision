@@ -65,7 +65,7 @@ describe('Vision helper methods', () => {
         // Inspect the calls to batchAnnotateImages and ensure they matched
         // the expected signature.
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith({requests: [request]));
+        assert(batchAnnotate.calledWith({requests: [request]}));
       });
     });
 
