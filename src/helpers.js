@@ -20,11 +20,12 @@
 
 'use strict';
 
-var fs = require('fs');
-var is = require('is');
+const fs = require('fs');
+const is = require('is');
+const path = require('path');
+const promisify = require('@google-cloud/common').util.promisify;
 
-var promisify = require('@google-cloud/common').util.promisify;
-var gax = require('google-gax');
+const gax = require('google-gax');
 
 /*!
  * Find a given image and fire a callback with the appropriate image structure.
@@ -195,9 +196,9 @@ module.exports = apiVersion => {
   const features = gax
     .grpc()
     .loadProto(
-      path.join(__dirname, '..', '..', 'protos'),
-      'google/cloud/vision/v1/image_annotator.proto'
-    ).google.cloud.vision[apiVersion].Feature.Type;
+      path.join(__dirname, '..', 'protos'),
+      `google/cloud/vision/${apiVersion}/image_annotator.proto`
+    ).google.cloud.vision[apiVersion].Feature.Type.values;
 
   /**
    * Annotate a single image with face detection.
