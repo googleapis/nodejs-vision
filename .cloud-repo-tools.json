@@ -53,14 +53,14 @@
       "file": "detect.js",
       "docs_link": "https://cloud.google.com/vision/docs",
       "usage": "node detect.js --help"
-    }
+    },
     {
       "id": "web_detection",
       "name": "Web Detection",
       "file": "detect.js",
       "docs_link": "https://cloud.google.com/vision/docs",
       "usage": "node detect.js --help"
-    }
+    },
     {
       "id": "fulltext_detection",
       "name": "Text Detection",
