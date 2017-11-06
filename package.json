@@ -1,35 +1,13 @@
 {
-  "repository": "GoogleCloudPlatform/google-cloud-node",
   "name": "@google-cloud/vision",
-  "version": "0.12.0",
-  "author": "Google Inc",
   "description": "Google Cloud Vision API client for Node.js",
-  "contributors": [
-    {
-      "name": "Burcu Dogan",
-      "email": "jbd@google.com"
-    },
-    {
-      "name": "Johan Euphrosine",
-      "email": "proppy@google.com"
-    },
-    {
-      "name": "Patrick Costello",
-      "email": "pcostell@google.com"
-    },
-    {
-      "name": "Ryan Seys",
-      "email": "ryan@ryanseys.com"
-    },
-    {
-      "name": "Silvano Luciani",
-      "email": "silvano@google.com"
-    },
-    {
-      "name": "Stephen Sawchuk",
-      "email": "sawchuk@gmail.com"
-    }
-  ],
+  "version": "0.12.0",
+  "license": "Apache-2.0",
+  "author": "Google Inc",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": "GoogleCloudPlatform/google-cloud-node",
   "main": "src/index.js",
   "files": [
     "src",
@@ -49,6 +27,28 @@
     "vision",
     "Google Cloud Vision API"
   ],
+  "contributors": [
+    "Ace Nassri <anassri@google.com>",
+    "Ali Ijaz Sheikh <ofrobots@google.com>",
+    "Dave Gramlich <callmehiphop@gmail.com>",
+    "Ernest Landrito <landrito@google.com>",
+    "Gus Class <gguuss@gmail.com>",
+    "Jason Dobry <jason.dobry@gmail.com>",
+    "Jason Dobry <jmdobry@users.noreply.github.com>",
+    "Jun Mukai <jun.mukai@gmail.com>",
+    "Jun Mukai <mukai@google.com>",
+    "Luke Sneeringer <luke@sneeringer.com>",
+    "Song Wang <songwang@google.com>",
+    "Stephen Sawchuk <sawchuk@gmail.com>",
+    "Stephen Sawchuk <stephenplusplus@users.noreply.github.com>",
+    "Stephen Sawchuk <stephenplusplusplus@gmail.com>",
+    "Tim Swast <swast@google.com>",
+    "calibr <awcalibr@gmail.com>",
+    "rtw <rtw1981@gmail.com>"
+  ],
+  "scripts": {
+    "generate-scaffolding": "repo-tools generate all && repo-tools generate lib_samples_readme -l samples/ --config ../.cloud-repo-tools.json"
+  },
   "dependencies": {
     "@google-cloud/common": "^0.13.0",
     "async": "^2.0.1",
@@ -66,12 +66,5 @@
     "nyc": "^10.3.0",
     "power-assert": "^1.4.2",
     "sinon": "^2.2.0"
-  },
-  "scripts": {
-    "generate-scaffolding": "repo-tools generate all && repo-tools generate lib_samples_readme -l samples/ --config ../.cloud-repo-tools.json"
-  },
-  "license": "Apache-2.0",
-  "engines": {
-    "node": ">=4.0.0"
   }
 }
