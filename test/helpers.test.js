@@ -17,6 +17,7 @@
 'use strict';
 
 var assert = require('assert');
+var Buffer = require('safe-buffer').Buffer;
 var fs = require('fs');
 var is = require('is');
 var sinon = require('sinon');
@@ -45,7 +46,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
       var request = {
-        image: {content: new Buffer('bogus==')},
+        image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
       return vision.annotateImage(request).then(r => {
@@ -79,7 +80,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
       var request = {
-        image: new Buffer('fakeImage'),
+        image: Buffer.from('fakeImage'),
         features: {type: ['LOGO_DETECTION']},
       };
       return vision.annotateImage(request).then(r => {
@@ -109,7 +110,7 @@ describe('Vision helper methods', () => {
       var readFile = sandbox.stub(fs, 'readFile');
       readFile
         .withArgs('image.jpg')
-        .callsArgWith(2, null, new Buffer('fakeImage'));
+        .callsArgWith(2, null, Buffer.from('fakeImage'));
       readFile.callThrough();
 
       // Stub out the batch annotation method as before.
@@ -189,7 +190,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
       var request = {
-        image: {content: new Buffer('bogus==')},
+        image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
       return vision.annotateImage(request, {foo: 'bar'}).then(r => {
@@ -221,7 +222,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
       var request = {
-        image: {content: new Buffer('bogus==')},
+        image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
       vision.annotateImage(request, function(err, response) {
@@ -247,7 +248,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
       var request = {
-        image: {content: new Buffer('bogus==')},
+        image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
       return vision.annotateImage(request).catch(err => {
@@ -289,7 +290,7 @@ describe('Vision helper methods', () => {
 
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
-      var imageRequest = {image: {content: new Buffer('bogus==')}};
+      var imageRequest = {image: {content: Buffer.from('bogus==')}};
       return vision.logoDetection(Object.assign({}, imageRequest)).then(r => {
         var response = r[0];
 
@@ -319,7 +320,7 @@ describe('Vision helper methods', () => {
     it('throws an exception if conflicting features are given', () => {
       var vision = Vision.v1();
       var imageRequest = {
-        image: {content: new Buffer('bogus==')},
+        image: {content: Buffer.from('bogus==')},
         features: [{type: 0}],
       };
       vision

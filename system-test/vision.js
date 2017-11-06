@@ -23,7 +23,6 @@ var path = require('path');
 var Storage = require('@google-cloud/storage');
 var uuid = require('node-uuid');
 
-var env = require('../../../system-test/env.js');
 var Vision = require('../');
 
 describe('Vision', function() {
@@ -37,8 +36,8 @@ describe('Vision', function() {
 
   var TESTS_PREFIX = 'gcloud-vision-test';
 
-  var storage = new Storage(env);
-  var vision = new Vision(env);
+  var storage = new Storage();
+  var vision = new Vision();
 
   var bucket = storage.bucket(generateName());
 
