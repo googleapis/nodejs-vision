@@ -31,17 +31,18 @@ var fs = require('fs');
 /**
  * Uses the Vision API to detect faces in the given file.
  */
-function detectFaces (inputFile, callback) {
+function detectFaces(inputFile, callback) {
   // Make a call to the Vision API to detect the faces
-  const request = { source: { filename: inputFile } };
-  vision.faceDetection(request)
-    .then((results) => {
+  const request = {source: {filename: inputFile}};
+  vision
+    .faceDetection(request)
+    .then(results => {
       const faces = results[0].faceAnnotations;
       var numFaces = faces.length;
       console.log('Found ' + numFaces + (numFaces === 1 ? ' face' : ' faces'));
       callback(null, faces);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error('ERROR:', err);
       callback(err);
     });
@@ -50,7 +51,7 @@ function detectFaces (inputFile, callback) {
 /**
  * Draws a polygon around the faces, then saves to outputFile.
  */
-function highlightFaces (inputFile, faces, outputFile, Canvas, callback) {
+function highlightFaces(inputFile, faces, outputFile, Canvas, callback) {
   fs.readFile(inputFile, (err, image) => {
     if (err) {
       return callback(err);
@@ -68,7 +69,7 @@ function highlightFaces (inputFile, faces, outputFile, Canvas, callback) {
     context.strokeStyle = 'rgba(0,255,0,0.8)';
     context.lineWidth = '5';
 
-    faces.forEach((face) => {
+    faces.forEach(face => {
       context.beginPath();
       let origX = 0;
       let origY = 0;
@@ -88,7 +89,7 @@ function highlightFaces (inputFile, faces, outputFile, Canvas, callback) {
     var writeStream = fs.createWriteStream(outputFile);
     var pngStream = canvas.pngStream();
 
-    pngStream.on('data', (chunk) => {
+    pngStream.on('data', chunk => {
       writeStream.write(chunk);
     });
     pngStream.on('error', console.log);
@@ -97,7 +98,7 @@ function highlightFaces (inputFile, faces, outputFile, Canvas, callback) {
 }
 
 // Run the example
-function main (inputFile, outputFile, Canvas, callback) {
+function main(inputFile, outputFile, Canvas, callback) {
   outputFile = outputFile || 'out.png';
   detectFaces(inputFile, (err, faces) => {
     if (err) {
@@ -105,7 +106,7 @@ function main (inputFile, outputFile, Canvas, callback) {
     }
 
     console.log('Highlighting...');
-    highlightFaces(inputFile, faces, outputFile, Canvas, (err) => {
+    highlightFaces(inputFile, faces, outputFile, Canvas, err => {
       if (err) {
         return callback(err);
       }

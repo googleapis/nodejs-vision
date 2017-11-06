@@ -32,7 +32,7 @@ describe('Vision', function() {
     logo: path.join(__dirname, 'data/logo.jpg'),
     rushmore: path.join(__dirname, 'data/rushmore.jpg'),
     text: path.join(__dirname, 'data/text.png'),
-    malformed: __filename
+    malformed: __filename,
   };
 
   var TESTS_PREFIX = 'gcloud-vision-test';
@@ -54,62 +54,71 @@ describe('Vision', function() {
   });
 
   after(function(done) {
-    storage.getBuckets({
-      prefix: TESTS_PREFIX
-    }, function(err, buckets) {
-      if (err) {
-        done(err);
-        return;
+    storage.getBuckets(
+      {
+        prefix: TESTS_PREFIX,
+      },
+      function(err, buckets) {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        function deleteBucket(bucket, callback) {
+          bucket.deleteFiles(function(err) {
+            if (err) {
+              callback(err);
+              return;
+            }
+
+            bucket.delete(callback);
+          });
+        }
+
+        async.each(buckets, deleteBucket, done);
       }
-
-      function deleteBucket(bucket, callback) {
-        bucket.deleteFiles(function(err) {
-          if (err) {
-            callback(err);
-            return;
-          }
-
-          bucket.delete(callback);
-        });
-      }
-
-      async.each(buckets, deleteBucket, done);
-    });
+    );
   });
 
   it('should detect from a URL', () => {
     var url = 'https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png';
-    return vision.logoDetection({
-      image: {
-        source: {imageUri: url}
-      }
-    }).then(responses => {
-      var response = responses[0];
-      assert.deepEqual(response.logoAnnotations[0].description, 'Google');
-    });
+    return vision
+      .logoDetection({
+        image: {
+          source: {imageUri: url},
+        },
+      })
+      .then(responses => {
+        var response = responses[0];
+        assert.deepEqual(response.logoAnnotations[0].description, 'Google');
+      });
   });
 
   it('should detect from a filename', () => {
-    return vision.logoDetection({
-      image: {
-        source: {filename: IMAGES.logo}
-      },
-    }).then(responses => {
-      var response = responses[0];
-      assert.deepEqual(response.logoAnnotations[0].description, 'Google');
-    });
+    return vision
+      .logoDetection({
+        image: {
+          source: {filename: IMAGES.logo},
+        },
+      })
+      .then(responses => {
+        var response = responses[0];
+        assert.deepEqual(response.logoAnnotations[0].description, 'Google');
+      });
   });
 
   it('should detect from a Buffer', () => {
     var buffer = fs.readFileSync(IMAGES.logo);
-    return vision.logoDetection({
-      image: {
-        content: buffer
-      }
-    }).then(responses => {
-      var response = responses[0];
-      assert.deepEqual(response.logoAnnotations[0].description, 'Google');
-    });
+    return vision
+      .logoDetection({
+        image: {
+          content: buffer,
+        },
+      })
+      .then(responses => {
+        var response = responses[0];
+        assert.deepEqual(response.logoAnnotations[0].description, 'Google');
+      });
   });
 
   describe('single image', () => {
@@ -119,15 +128,17 @@ describe('Vision', function() {
       {type: 'SAFE_SEARCH_DETECTION'},
     ];
     it('should perform multiple detections', () => {
-      return vision.annotateImage({
-        features: TYPES,
-        image: {source: {filename: IMAGES.rushmore}},
-      }).then(responses => {
-        var response = responses[0];
-        assert(response.faceAnnotations.length >= 1);
-        assert(response.labelAnnotations.length >= 1);
-        assert(response.safeSearchAnnotation !== null);
-      });
+      return vision
+        .annotateImage({
+          features: TYPES,
+          image: {source: {filename: IMAGES.rushmore}},
+        })
+        .then(responses => {
+          var response = responses[0];
+          assert(response.faceAnnotations.length >= 1);
+          assert(response.labelAnnotations.length >= 1);
+          assert(response.safeSearchAnnotation !== null);
+        });
     });
   });
 

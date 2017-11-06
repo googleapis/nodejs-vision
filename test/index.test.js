@@ -20,7 +20,6 @@ var assert = require('assert');
 
 var Vision = require('../');
 
-
 describe('Vision', () => {
   describe('v1', () => {
     it('returns a v1 GAPIC augmented with helpers', () => {

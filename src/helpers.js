@@ -27,7 +27,6 @@ var promisify = require('@google-cloud/common').util.promisify;
 var gax = require('google-gax');
 var protoFiles = require('google-proto-files');
 
-
 /*!
  * Find a given image and fire a callback with the appropriate image structure.
  *
@@ -40,7 +39,7 @@ var coerceImage = (image, callback) => {
   // that the Vision API expects.
   if (Buffer.isBuffer(image)) {
     callback(null, {
-      content: image.toString('base64')
+      content: image.toString('base64'),
     });
     return;
   }
@@ -62,7 +61,6 @@ var coerceImage = (image, callback) => {
   return;
 };
 
-
 /*!
  *
  * Return a method that calls annotateImage asking for a single feature.
@@ -75,16 +73,18 @@ var coerceImage = (image, callback) => {
  */
 var _createSingleFeatureMethod = featureValue => {
   return function(annotateImageRequest, callOptions) {
-    annotateImageRequest.features = annotateImageRequest.features || [{
-      type: featureValue,
-    }];
+    annotateImageRequest.features = annotateImageRequest.features || [
+      {
+        type: featureValue,
+      },
+    ];
     // If the user submitted explicit features that do not line up with
     // the precise method called, throw an exception.
     for (let feature of annotateImageRequest.features) {
       if (feature.type !== featureValue) {
         throw new Error(
           'Setting explicit features is not supported on this method. ' +
-          'Use the #annotateImage method instead.'
+            'Use the #annotateImage method instead.'
         );
       }
     }
@@ -92,7 +92,6 @@ var _createSingleFeatureMethod = featureValue => {
     return this.annotateImage(annotateImageRequest, callOptions);
   };
 };
-
 
 /*!
  * Return a dictionary-like object with helpers to augment the Vision
@@ -194,10 +193,12 @@ module.exports = apiVersion => {
   // them and create single-feature methods for each dynamically, for
   // documentation purpose, we manually list all the single-feature methods
   // below.
-  const features = gax.grpc().load([{
-    root: protoFiles('..'),
-    file: `google/cloud/vision/${apiVersion}/image_annotator.proto`,
-  }]).google.cloud.vision[apiVersion].Feature.Type;
+  const features = gax.grpc().load([
+    {
+      root: protoFiles('..'),
+      file: `google/cloud/vision/${apiVersion}/image_annotator.proto`,
+    },
+  ]).google.cloud.vision[apiVersion].Feature.Type;
 
   /**
    * Annotate a single image with face detection.
@@ -239,8 +240,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.faceDetection =
-    promisify(_createSingleFeatureMethod(features.FACE_DETECTION));
+  methods.faceDetection = promisify(
+    _createSingleFeatureMethod(features.FACE_DETECTION)
+  );
 
   /**
    * Annotate a single image with landmark detection.
@@ -282,8 +284,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.landmarkDetection =
-    promisify(_createSingleFeatureMethod(features.LANDMARK_DETECTION));
+  methods.landmarkDetection = promisify(
+    _createSingleFeatureMethod(features.LANDMARK_DETECTION)
+  );
 
   /**
    * Annotate a single image with logo detection.
@@ -325,8 +328,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.logoDetection =
-    promisify(_createSingleFeatureMethod(features.LOGO_DETECTION));
+  methods.logoDetection = promisify(
+    _createSingleFeatureMethod(features.LOGO_DETECTION)
+  );
 
   /**
    * Annotate a single image with label detection.
@@ -368,8 +372,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.labelDetection =
-    promisify(_createSingleFeatureMethod(features.LABEL_DETECTION));
+  methods.labelDetection = promisify(
+    _createSingleFeatureMethod(features.LABEL_DETECTION)
+  );
 
   /**
    * Annotate a single image with text detection.
@@ -411,8 +416,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.textDetection =
-    promisify(_createSingleFeatureMethod(features.TEXT_DETECTION));
+  methods.textDetection = promisify(
+    _createSingleFeatureMethod(features.TEXT_DETECTION)
+  );
 
   /**
    * Annotate a single image with document text detection.
@@ -454,8 +460,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.documentTextDetection =
-    promisify(_createSingleFeatureMethod(features.DOCUMENT_TEXT_DETECTION));
+  methods.documentTextDetection = promisify(
+    _createSingleFeatureMethod(features.DOCUMENT_TEXT_DETECTION)
+  );
 
   /**
    * Annotate a single image with safe search detection.
@@ -497,8 +504,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.safeSearchDetection =
-    promisify(_createSingleFeatureMethod(features.SAFE_SEARCH_DETECTION));
+  methods.safeSearchDetection = promisify(
+    _createSingleFeatureMethod(features.SAFE_SEARCH_DETECTION)
+  );
 
   /**
    * Annotate a single image with image properties.
@@ -540,8 +548,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.imageProperties =
-    promisify(_createSingleFeatureMethod(features.IMAGE_PROPERTIES));
+  methods.imageProperties = promisify(
+    _createSingleFeatureMethod(features.IMAGE_PROPERTIES)
+  );
 
   /**
    * Annotate a single image with crop hints.
@@ -583,8 +592,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.cropHints =
-    promisify(_createSingleFeatureMethod(features.CROP_HINTS));
+  methods.cropHints = promisify(
+    _createSingleFeatureMethod(features.CROP_HINTS)
+  );
 
   /**
    * Annotate a single image with web detection.
@@ -626,8 +636,9 @@ module.exports = apiVersion => {
    *   console.error(err);
    * });
    */
-  methods.webDetection =
-    promisify(_createSingleFeatureMethod(features.WEB_DETECTION));
+  methods.webDetection = promisify(
+    _createSingleFeatureMethod(features.WEB_DETECTION)
+  );
 
   return methods;
 };

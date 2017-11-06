@@ -23,7 +23,6 @@ var sinon = require('sinon');
 
 var Vision = require('../');
 
-
 describe('Vision helper methods', () => {
   var sandbox = sinon.sandbox.create();
 
@@ -35,9 +34,13 @@ describe('Vision helper methods', () => {
     it('calls batchAnnotateImages correctly', () => {
       var vision = Vision.v1();
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
@@ -65,9 +68,13 @@ describe('Vision helper methods', () => {
 
       // Stub out the batch annotation method.
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
@@ -100,16 +107,20 @@ describe('Vision helper methods', () => {
       // Stub out `fs.readFile` and return a bogus image object.
       // This allows us to test filename detection.
       var readFile = sandbox.stub(fs, 'readFile');
-      readFile.withArgs('image.jpg').callsArgWith(2, null,
-        new Buffer('fakeImage')
-      );
+      readFile
+        .withArgs('image.jpg')
+        .callsArgWith(2, null, new Buffer('fakeImage'));
       readFile.callThrough();
 
       // Stub out the batch annotation method as before.
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
@@ -156,17 +167,24 @@ describe('Vision helper methods', () => {
         image: {source: {filename: 'image.jpg'}},
         features: {type: ['LOGO_DETECTION']},
       };
-      return vision.annotateImage(request).then(assert.fail).catch(err => {
-        assert.deepEqual(err, {error: 404});
-      });
+      return vision
+        .annotateImage(request)
+        .then(assert.fail)
+        .catch(err => {
+          assert.deepEqual(err, {error: 404});
+        });
     });
 
     it('retains call options sent', () => {
       var vision = Vision.v1();
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
@@ -192,9 +210,13 @@ describe('Vision helper methods', () => {
     it('fires a callback if provided', done => {
       var vision = Vision.v1();
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
@@ -242,10 +264,13 @@ describe('Vision helper methods', () => {
     it('requires an image and throws without one', () => {
       var vision = Vision.v1();
       var request = {};
-      return vision.annotateImage(request).then(assert.fail).catch(err => {
-        var expected = 'Attempted to call `annotateImage` with no image.';
-        assert(err.message === expected);
-      });
+      return vision
+        .annotateImage(request)
+        .then(assert.fail)
+        .catch(err => {
+          var expected = 'Attempted to call `annotateImage` with no image.';
+          assert(err.message === expected);
+        });
     });
   });
 
@@ -254,9 +279,13 @@ describe('Vision helper methods', () => {
       var vision = Vision.v1();
       var annotate = sandbox.spy(vision, 'annotateImage');
       var batchAnnotate = sandbox.stub(vision, 'batchAnnotateImages');
-      batchAnnotate.callsArgWith(2, undefined, {responses: [{
-        logoAnnotations: [{description: 'Google'}],
-      }]});
+      batchAnnotate.callsArgWith(2, undefined, {
+        responses: [
+          {
+            logoAnnotations: [{description: 'Google'}],
+          },
+        ],
+      });
 
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
@@ -272,14 +301,18 @@ describe('Vision helper methods', () => {
         // Inspect the calls to annotateImage and batchAnnotateImages and
         // ensure they matched the expected signature.
         assert(annotate.callCount === 1);
-        assert(annotate.calledWith({
-          features: [{type: 3}],
-          image: imageRequest.image,
-        }));
+        assert(
+          annotate.calledWith({
+            features: [{type: 3}],
+            image: imageRequest.image,
+          })
+        );
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith(
-          [{image: imageRequest.image, features: [{type: 3}]}]
-        ));
+        assert(
+          batchAnnotate.calledWith([
+            {image: imageRequest.image, features: [{type: 3}]},
+          ])
+        );
       });
     });
 
@@ -289,9 +322,12 @@ describe('Vision helper methods', () => {
         image: {content: new Buffer('bogus==')},
         features: [{type: 0}],
       };
-      vision.logoDetection(imageRequest).then(assert.fail).catch(ex => {
-        assert(ex.message.indexOf('Setting explicit') > -1);
-      });
+      vision
+        .logoDetection(imageRequest)
+        .then(assert.fail)
+        .catch(ex => {
+          assert(ex.message.indexOf('Setting explicit') > -1);
+        });
     });
   });
 });
