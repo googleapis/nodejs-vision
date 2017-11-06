@@ -192,10 +192,12 @@ module.exports = apiVersion => {
   // them and create single-feature methods for each dynamically, for
   // documentation purpose, we manually list all the single-feature methods
   // below.
-  const features = gax.grpc().loadProto(
-    path.join(__dirname, '..', '..', 'protos'),
-    'google/cloud/vision/v1/image_annotator.proto'
-  ).google.cloud.vision[apiVersion].Feature.Type;
+  const features = gax
+    .grpc()
+    .loadProto(
+      path.join(__dirname, '..', '..', 'protos'),
+      'google/cloud/vision/v1/image_annotator.proto'
+    ).google.cloud.vision[apiVersion].Feature.Type;
 
   /**
    * Annotate a single image with face detection.
