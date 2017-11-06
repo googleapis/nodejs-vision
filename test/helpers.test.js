@@ -65,7 +65,7 @@ describe('Vision helper methods', () => {
         // Inspect the calls to batchAnnotateImages and ensure they matched
         // the expected signature.
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith([request]));
+        assert(batchAnnotate.calledWith({requests: [request]));
       });
     });
 
@@ -103,7 +103,7 @@ describe('Vision helper methods', () => {
           image: {content: 'ZmFrZUltYWdl'},
           features: {type: ['LOGO_DETECTION']},
         });
-        assert(batchAnnotate.calledWith([request]));
+        assert(batchAnnotate.calledWith({requests: [request]}));
       });
     });
 
@@ -154,7 +154,7 @@ describe('Vision helper methods', () => {
           image: {content: 'ZmFrZUltYWdl'},
           features: {type: ['LOGO_DETECTION']},
         });
-        assert(batchAnnotate.calledWith([request]));
+        assert(batchAnnotate.calledWith({requests: [request]}));
       });
     });
 
@@ -209,7 +209,7 @@ describe('Vision helper methods', () => {
         // Inspect the calls to batchAnnotateImages and ensure they matched
         // the expected signature.
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith([request], {foo: 'bar'}));
+        assert(batchAnnotate.calledWith({requests: [request]}, {foo: 'bar'}));
       });
     });
 
@@ -240,7 +240,7 @@ describe('Vision helper methods', () => {
         // Inspect the calls to batchAnnotate and ensure that they match
         // what we expected.
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith([request], undefined));
+        assert(batchAnnotate.calledWith({requests: [request]}, undefined));
         done();
       });
     });
@@ -263,7 +263,7 @@ describe('Vision helper methods', () => {
         // Inspect the calls to batchAnnotate and ensure that they match
         // what we expected.
         assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith([request], undefined));
+        assert(batchAnnotate.calledWith({requests: [request]}, undefined));
       });
     });
 
