@@ -24,6 +24,15 @@
 /**
  * @namespace google.cloud.vision.v1
  */
+/**
+ * @namespace google.protobuf
+ */
+/**
+ * @namespace google.rpc
+ */
+/**
+ * @namespace google.type
+ */
 
 'use strict';
 
@@ -43,12 +52,10 @@ for (let gapicVersion of Object.keys(gapic)) {
 /**
  * The `@google-cloud/vision` package has the following named exports:
  *
- * - `ImageAnnotatorClient` - Reference to
- *   {@link v1.ImageAnnotatorClient}
- * - `v1` - This is used for selecting or pinning a
- *   particular backend service version. It exports:
- *     - `ImageAnnotatorClient` - Reference to
- *       {@link v1.ImageAnnotatorClient}
+ * - `ImageAnnotatorClient` - Reference to {@link v1.ImageAnnotatorClient}.
+ * - `v1` - This is used for selecting or pinning a particular backend service
+ *   version. It exports:
+ *   - `ImageAnnotatorClient` - Reference to {@link v1.ImageAnnotatorClient}.
  *
  * @module {object} @google-cloud/vision
  * @alias nodejs-vision
@@ -67,12 +74,6 @@ for (let gapicVersion of Object.keys(gapic)) {
  *   projectId: 'your-project-id',
  *   keyFilename: '/path/to/keyfile.json',
  * });
- */
-
-/**
- * @type {object}
- * @property {constructor} ImageAnnotatorClient
- *   Reference to {@link v1.ImageAnnotatorClient}
  */
 module.exports = gapic.v1;
 

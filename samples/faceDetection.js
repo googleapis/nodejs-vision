@@ -20,10 +20,10 @@
 // specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable and use
 // the project specified by the GCLOUD_PROJECT environment variable. See
 // https://googlecloudplatform.github.io/gcloud-node/#/docs/google-cloud/latest/guides/authentication
-var Vision = require('@google-cloud/vision');
+var vision = require('@google-cloud/vision');
 
-// Instantiate a vision client
-var vision = Vision();
+// Creates a client
+var client = new vision.ImageAnnotatorClient();
 // [END auth]
 
 var fs = require('fs');
@@ -33,8 +33,8 @@ var fs = require('fs');
  */
 function detectFaces(inputFile, callback) {
   // Make a call to the Vision API to detect the faces
-  const request = {source: {filename: inputFile}};
-  vision
+  const request = {image: {source: {filename: inputFile}}};
+  client
     .faceDetection(request)
     .then(results => {
       const faces = results[0].faceAnnotations;
@@ -121,6 +121,7 @@ exports.main = main;
 if (module === require.main) {
   if (process.argv.length < 3) {
     console.log('Usage: node faceDetection <inputFile> [outputFile]');
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
   var inputFile = process.argv[2];

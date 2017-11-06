@@ -25,12 +25,12 @@ var path = require('path');
 // specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable and use
 // the project specified by the GCLOUD_PROJECT environment variable. See
 // https://googlecloudplatform.github.io/gcloud-node/#/docs/google-cloud/latest/guides/authentication
-var Vision = require('@google-cloud/vision');
+var vision = require('@google-cloud/vision');
 var natural = require('natural');
 var redis = require('redis');
 
 // Instantiate a vision client
-var vision = Vision();
+var client = new vision.ImageAnnotatorClient();
 // [END import_libraries]
 
 function Index() {
@@ -66,8 +66,6 @@ Index.prototype.add = function(filename, document, callback) {
   var PUNCTUATION = ['.', ',', ':', ''];
   var tokenizer = new natural.WordTokenizer();
   var tokens = tokenizer.tokenize(document);
-
-  // TODO: Remove stop words
 
   var tasks = tokens
     .filter(function(token) {
@@ -158,35 +156,38 @@ function getTextFromFiles(index, inputFiles, callback) {
   inputFiles.forEach(filename => {
     let request = {
       image: {content: fs.readFileSync(filename).toString('base64')},
-      features: {type: 'TEXT_DETECTION'},
+      features: [{type: 'TEXT_DETECTION'}],
     };
     requests.push(request);
   });
-  vision.batchAnnotateImages({requests: requests}).then(results => {
-    let detections = results[0].responses;
-    var textResponse = {};
-    var tasks = [];
-    inputFiles.forEach(function(filename, i) {
-      var response = detections[i];
-      if (response.error) {
-        console.log('API Error for ' + filename, response.error);
-        return;
-      } else if (Array.isArray(response)) {
-        textResponse[filename] = 1;
-      } else {
-        textResponse[filename] = 0;
-      }
-      tasks.push(function(cb) {
-        extractDescriptions(filename, index, response, cb);
+  client
+    .batchAnnotateImages({requests: requests})
+    .then(results => {
+      let detections = results[0].responses;
+      var textResponse = {};
+      var tasks = [];
+      inputFiles.forEach(function(filename, i) {
+        var response = detections[i];
+        if (response.error) {
+          console.log('API Error for ' + filename, response.error);
+          return;
+        } else if (Array.isArray(response)) {
+          textResponse[filename] = 1;
+        } else {
+          textResponse[filename] = 0;
+        }
+        tasks.push(function(cb) {
+          extractDescriptions(filename, index, response, cb);
+        });
       });
-    });
-    async.parallel(tasks, function(err) {
-      if (err) {
-        return callback(err);
-      }
-      callback(null, textResponse);
-    });
-  });
+      async.parallel(tasks, function(err) {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, textResponse);
+      });
+    })
+    .catch(callback);
 }
 
 // Run the example
@@ -268,6 +269,7 @@ if (module === require.main) {
     '\tCommands: analyze, lookup';
   if (process.argv.length < 3) {
     console.log(generalError);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
   var args = process.argv.slice(2);
@@ -275,17 +277,20 @@ if (module === require.main) {
   if (command === 'analyze') {
     if (!args.length) {
       console.log('Usage: node textDetection analyze <dir>');
+      // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
     main(args[0], console.log);
   } else if (command === 'lookup') {
     if (!args.length) {
       console.log('Usage: node textDetection lookup <word> ...');
+      // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
     lookup(args, console.log);
   } else {
     console.log(generalError);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
 }

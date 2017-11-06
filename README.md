@@ -64,23 +64,25 @@ Google APIs Client Libraries, in [Client Libraries Explained][explained].
 
 ```javascript
 // Imports the Google Cloud client library
-const Vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision');
 
 // Creates a client
-const vision = new Vision();
+const client = new vision.ImageAnnotatorClient();
 
 // The name of the image file to annotate
 const fileName = './resources/wakeupcat.jpg';
 
 // Prepare the request object
 const request = {
-  source: {
-    filename: fileName,
+  image: {
+    source: {
+      filename: fileName,
+    },
   },
 };
 
 // Performs label detection on the image file
-vision
+client
   .labelDetection(request)
   .then(results => {
     const labels = results[0].labelAnnotations;
@@ -100,15 +102,7 @@ has instructions for running the samples.
 
 | Sample                      | Source Code                       | Try it |
 | --------------------------- | --------------------------------- | ------ |
-| Face Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Image Property Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Label Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Landmark Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Logo Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Safe Search Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Crop Hints Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Web Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Text Detection | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
+| Detection samples | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
 
 The [Vision API Node.js Client API Reference][client-docs] documentation
 also contains samples.
