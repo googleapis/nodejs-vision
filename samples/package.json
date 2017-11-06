@@ -4,16 +4,11 @@
   "private": true,
   "license": "Apache-2.0",
   "author": "Google Inc.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git"
-  },
+  "repository": "googleapis/nodejs-vision",
   "engines": {
     "node": ">=4.3.2"
   },
   "scripts": {
-    "lint": "samples lint",
-    "pretest": "npm run lint",
     "test": "samples test run --cmd ava -- -T 1m --verbose system-test/*.test.js"
   },
   "dependencies": {
@@ -32,9 +27,5 @@
   },
   "optionalDependencies": {
     "canvas": "1.6.5"
-  },
-  "cloud-repo-tools": {
-    "requiresKeyFile": true,
-    "requiresProjectId": true
   }
 }
