@@ -173,7 +173,8 @@ module.exports = apiVersion => {
       request.image = image;
 
       // Call the GAPIC batch annotation function.
-      return this.batchAnnotateImages([request], callOptions, (err, r) => {
+      let requests = {requests: [request]};
+      return this.batchAnnotateImages(requests, callOptions, (err, r) => {
         // If there is an error, handle it.
         if (err) {
           return callback(err);
