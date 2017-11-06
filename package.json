@@ -58,6 +58,7 @@
     "is": "^3.0.1"
   },
   "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "^2.1.1",
     "@google-cloud/storage": "*",
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^3.0.1",
