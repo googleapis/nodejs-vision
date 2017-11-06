@@ -18,17 +18,17 @@
 function detectFaces(fileName) {
   // [START vision_face_detection]
   // Imports the Google Cloud client library
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
-  vision
+  client
     .faceDetection({source: {filename: fileName}})
     .then(results => {
       const faces = results[0].faceAnnotations;
@@ -51,10 +51,10 @@ function detectFaces(fileName) {
 function detectFacesGCS(bucketName, fileName) {
   // [START vision_face_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -69,7 +69,7 @@ function detectFacesGCS(bucketName, fileName) {
   };
 
   // Performs face detection on the gcs file
-  vision
+  client
     .faceDetection(request)
     .then(results => {
       const faces = results[0].faceAnnotations;
@@ -92,10 +92,10 @@ function detectFacesGCS(bucketName, fileName) {
 function detectLabels(fileName) {
   // [START vision_label_detection]
   // Imports the Google Cloud client library
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -103,7 +103,7 @@ function detectLabels(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs label detection on the local file
-  vision
+  client
     .labelDetection({source: {filename: fileName}})
     .then(results => {
       const labels = results[0].labelAnnotations;
@@ -119,10 +119,10 @@ function detectLabels(fileName) {
 function detectLabelsGCS(bucketName, fileName) {
   // [START vision_label_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -137,7 +137,7 @@ function detectLabelsGCS(bucketName, fileName) {
   };
 
   // Performs label detection on the gcs file
-  vision
+  client
     .labelDetection(request)
     .then(results => {
       const labels = results[0].labelAnnotations;
@@ -152,10 +152,10 @@ function detectLabelsGCS(bucketName, fileName) {
 
 function detectLandmarks(fileName) {
   // [START vision_landmark_detection]
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -163,7 +163,7 @@ function detectLandmarks(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs landmark detection on the local file
-  vision
+  client
     .landmarkDetection({source: {filename: fileName}})
     .then(results => {
       const landmarks = results[0].landmarkAnnotations;
@@ -179,10 +179,10 @@ function detectLandmarks(fileName) {
 function detectLandmarksGCS(bucketName, fileName) {
   // [START vision_landmark_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -197,7 +197,7 @@ function detectLandmarksGCS(bucketName, fileName) {
   };
 
   // Performs landmark detection on the gcs file
-  vision
+  client
     .landmarkDetection(request)
     .then(results => {
       const landmarks = results[0].landmarkAnnotations;
@@ -212,10 +212,10 @@ function detectLandmarksGCS(bucketName, fileName) {
 
 function detectText(fileName) {
   // [START vision_text_detection]
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -223,7 +223,7 @@ function detectText(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs text detection on the local file
-  vision
+  client
     .textDetection({source: {filename: fileName}})
     .then(results => {
       const detections = results[0].textAnnotations;
@@ -239,10 +239,10 @@ function detectText(fileName) {
 function detectTextGCS(bucketName, fileName) {
   // [START vision_text_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -257,7 +257,7 @@ function detectTextGCS(bucketName, fileName) {
   };
 
   // Performs text detection on the gcs file
-  vision
+  client
     .textDetection(request)
     .then(results => {
       const detections = results[0].textAnnotations;
@@ -272,10 +272,10 @@ function detectTextGCS(bucketName, fileName) {
 
 function detectLogos(fileName) {
   // [START vision_logo_detection]
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -283,7 +283,7 @@ function detectLogos(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs logo detection on the local file
-  vision
+  client
     .logoDetection({source: {filename: fileName}})
     .then(results => {
       const logos = results[0].logoAnnotations;
@@ -299,10 +299,10 @@ function detectLogos(fileName) {
 function detectLogosGCS(bucketName, fileName) {
   // [START vision_logo_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -317,7 +317,7 @@ function detectLogosGCS(bucketName, fileName) {
   };
 
   // Performs logo detection on the gcs file
-  vision
+  client
     .logoDetection(request)
     .then(results => {
       const logos = results[0].logoAnnotations;
@@ -332,10 +332,10 @@ function detectLogosGCS(bucketName, fileName) {
 
 function detectProperties(fileName) {
   // [START vision_image_property_detection]
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -343,7 +343,7 @@ function detectProperties(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs property detection on the local file
-  vision
+  client
     .imageProperties({source: {filename: fileName}})
     .then(results => {
       const properties = results[0].imagePropertiesAnnotation;
@@ -359,10 +359,10 @@ function detectProperties(fileName) {
 function detectPropertiesGCS(bucketName, fileName) {
   // [START vision_image_property_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -377,7 +377,7 @@ function detectPropertiesGCS(bucketName, fileName) {
   };
 
   // Performs property detection on the gcs file
-  vision
+  client
     .imageProperties(request)
     .then(results => {
       const properties = results[0].imagePropertiesAnnotation;
@@ -392,10 +392,10 @@ function detectPropertiesGCS(bucketName, fileName) {
 
 function detectSafeSearch(fileName) {
   // [START vision_safe_search_detection]
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -403,7 +403,7 @@ function detectSafeSearch(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs safe search detection on the local file
-  vision
+  client
     .safeSearchDetection({source: {filename: fileName}})
     .then(results => {
       const detections = results[0].safeSearchAnnotation;
@@ -422,10 +422,10 @@ function detectSafeSearch(fileName) {
 function detectSafeSearchGCS(bucketName, fileName) {
   // [START vision_safe_search_detection_gcs]
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -440,7 +440,7 @@ function detectSafeSearchGCS(bucketName, fileName) {
   };
 
   // Performs safe search property detection on the remote file
-  vision
+  client
     .safeSearchDetection(request)
     .then(results => {
       const detections = results[0].safeSearchAnnotation;
@@ -460,10 +460,10 @@ function detectCropHints(fileName) {
   // [START vision_crop_hint_detection]
 
   // Imports the Google Cloud client library
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -471,7 +471,7 @@ function detectCropHints(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Find crop hints for the local file
-  vision
+  client
     .cropHints({source: {filename: fileName}})
     .then(results => {
       const cropHints = results[0].cropHintsAnnotation;
@@ -493,10 +493,10 @@ function detectCropHintsGCS(bucketName, fileName) {
   // [START vision_crop_hint_detection_gcs]
 
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -511,7 +511,7 @@ function detectCropHintsGCS(bucketName, fileName) {
   };
 
   // Find crop hints for the remote file
-  vision
+  client
     .cropHints(request)
     .then(results => {
       const cropHints = results[0].cropHintsAnnotation;
@@ -533,10 +533,10 @@ function detectWeb(fileName) {
   // [START vision_web_detection]
 
   // Imports the Google Cloud client library
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -544,7 +544,7 @@ function detectWeb(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Detect similar images on the web to a local file
-  vision
+  client
     .webDetection({source: {filename: fileName}})
     .then(results => {
       const webDetection = results[0].webDetection;
@@ -587,10 +587,10 @@ function detectWebGCS(bucketName, fileName) {
   // [START vision_web_detection_gcs]
 
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -605,7 +605,7 @@ function detectWebGCS(bucketName, fileName) {
   };
 
   // Detect similar images on the web to a remote file
-  vision
+  client
     .webDetection(request)
     .then(results => {
       const webDetection = results[0].webDetection;
@@ -648,10 +648,10 @@ function detectFulltext(fileName) {
   // [START vision_fulltext_detection]
 
   // Imports the Google Cloud client library
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -659,7 +659,7 @@ function detectFulltext(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Read a local image as a text document
-  vision
+  client
     .documentTextDetection({source: {filename: fileName}})
     .then(results => {
       const fullTextAnnotation = results[0].fullTextAnnotation;
@@ -675,10 +675,10 @@ function detectFulltextGCS(bucketName, fileName) {
   // [START vision_fulltext_detection_gcs]
 
   // Imports the Google Cloud client libraries
-  const Vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
-  const vision = new Vision();
+  let client = new vision.v1.ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -693,7 +693,7 @@ function detectFulltextGCS(bucketName, fileName) {
   };
 
   // Read a remote image as a text document
-  vision
+  client
     .documentTextDetection(request)
     .then(results => {
       const fullTextAnnotation = results[0].fullTextAnnotation;
