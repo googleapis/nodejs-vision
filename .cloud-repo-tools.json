@@ -6,64 +6,8 @@
   "release_quality": "beta",
   "samples": [
     {
-      "id": "face_detection",
-      "name": "Face Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "image_property_detection",
-      "name": "Image Property Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "label_detection",
-      "name": "Label Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "landmark_detection",
-      "name": "Landmark Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "logo_detection",
-      "name": "Logo Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "safe_search_detection",
-      "name": "Safe Search Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "crop_hint_detection",
-      "name": "Crop Hints Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "web_detection",
-      "name": "Web Detection",
-      "file": "detect.js",
-      "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.js --help"
-    },
-    {
-      "id": "fulltext_detection",
-      "name": "Text Detection",
+      "id": "detect",
+      "name": "Detection samples",
       "file": "detect.js",
       "docs_link": "https://cloud.google.com/vision/docs",
       "usage": "node detect.js --help"
