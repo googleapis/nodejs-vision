@@ -25,7 +25,6 @@ var is = require('is');
 
 var promisify = require('@google-cloud/common').util.promisify;
 var gax = require('google-gax');
-var protoFiles = require('google-proto-files');
 
 /*!
  * Find a given image and fire a callback with the appropriate image structure.
@@ -193,12 +192,10 @@ module.exports = apiVersion => {
   // them and create single-feature methods for each dynamically, for
   // documentation purpose, we manually list all the single-feature methods
   // below.
-  const features = gax.grpc().load([
-    {
-      root: protoFiles('..'),
-      file: `google/cloud/vision/${apiVersion}/image_annotator.proto`,
-    },
-  ]).google.cloud.vision[apiVersion].Feature.Type;
+  const features = gax.grpc().loadProto(
+    path.join(__dirname, '..', '..', 'protos'),
+    'google/cloud/vision/v1/image_annotator.proto'
+  ).google.cloud.vision[apiVersion].Feature.Type;
 
   /**
    * Annotate a single image with face detection.
