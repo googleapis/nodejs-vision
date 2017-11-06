@@ -10,6 +10,7 @@
   "repository": "GoogleCloudPlatform/google-cloud-node",
   "main": "src/index.js",
   "files": [
+    "protos",
     "src",
     "AUTHORS",
     "LICENSE"
