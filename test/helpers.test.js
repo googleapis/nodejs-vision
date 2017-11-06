@@ -315,9 +315,9 @@ describe('Vision helper methods', () => {
         );
         assert(batchAnnotate.callCount === 1);
         assert(
-          batchAnnotate.calledWith([
-            {image: imageRequest.image, features: [{type: 3}]},
-          ])
+          batchAnnotate.calledWith({
+            requests: [{image: imageRequest.image, features: [{type: 3}]}],
+          })
         );
       });
     });
