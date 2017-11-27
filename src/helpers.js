@@ -24,38 +24,65 @@ const promisify = require('@google-cloud/common').util.promisify;
 const gax = require('google-gax');
 
 /*!
- * Find a given image and fire a callback with the appropriate image structure.
+ * Coerce several nicer iterations of "how to specify an image" to the
+ * full sturcture expected by the Vision API.
  *
- * @param {object} image An object representing what is known about the
- *   image.
+ * @param {object|string|Buffer} request An object representing an
+ *   AnnotateImageRequest. May also be a string representing the path (filename
+ *   or URL) to the image, or a buffer representing the image itself.
  * @param {function} callback The callback to run.
  */
-var coerceImage = (image, callback) => {
-  // If this is a buffer, read it and send the object
-  // that the Vision API expects.
-  if (Buffer.isBuffer(image)) {
-    callback(null, {
-      content: image.toString('base64'),
-    });
-    return;
+let coerceRequest = (request, callback) => {
+  // If request is not an object, then it is a specification of an image
+  // in raw form; coerce it to an object.
+  if (is.string(request) === true) {
+    // Is this a URL or a local file?
+    // Guess based on what the string looks like, and build the full
+    // request object in the correct format.
+    if (request.indexOf('://') === -1 || request.indexOf('file://') === 0) {
+      request = {image: {source: {filename: request}}};
+    }
+    else {
+      request = {image: {source: {imageUri: request}}};
+    }
+  }
+  else if (Buffer.isBuffer(request)) {
+    // Drop the buffer one level lower; it will get dealt with later
+    // in the function. This allows sending <Buffer> and {image: <Buffer>} to
+    // both work identically.
+    request = {image: request};
   }
 
-  // File exists on disk.
-  if (image.source && image.source.filename) {
-    fs.readFile(image.source.filename, {encoding: 'base64'}, (err, blob) => {
+  // At this point, request must be an object with an `image` key; if not,
+  // it is an error. If there is no image, throw an exception.
+  if (!is.object(request) || is.undefined(request.image)) {
+    return callback(new Error('No image present.'));
+  }
+
+  // If this is a buffer, read it and send the object
+  // that the Vision API expects.
+  if (Buffer.isBuffer(request.image)) {
+    request.image = {content: image.toString('base64')};
+  }
+
+  // If the file is specified as a filename and exists on disk, read it
+  // and coerce it into the base64 content.
+  if (request.image.source && request.image.source.filename) {
+    fs.readFile(request.image.source.filename, {encoding: 'base64'}, (err, blob) => {
       if (err) {
         callback(err);
         return;
       }
-      callback(null, {content: blob.toString('base64')});
+      request.image.content = blob.toString('base64');
+      delete request.image.source;
     });
-    return;
   }
 
-  // No other options were relevant; return the image with no modification.
-  callback(null, image);
+  // Done; run the callback with the AnnotateImageRequest.
+  callback(null, request);
   return;
 };
+
 
 /*!
  *
@@ -108,8 +135,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#annotateImage
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -163,21 +193,15 @@ module.exports = apiVersion => {
       callOptions = undefined;
     }
 
-    // If there is no image, throw an exception.
-    if (is.undefined(request.image)) {
-      throw new Error('Attempted to call `annotateImage` with no image.');
-    }
-
     // If we got a filename for the image, open the file and transform
     // it to content.
-    return coerceImage(request.image, (err, image) => {
+    return coerceRequest(request, (err, req) => {
       if (err) {
         return callback(err);
       }
-      request.image = image;
 
       // Call the GAPIC batch annotation function.
-      let requests = {requests: [request]};
+      let requests = {requests: [req]};
       return this.batchAnnotateImages(requests, callOptions, (err, r) => {
         // If there is an error, handle it.
         if (err) {
@@ -212,8 +236,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#faceDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -266,8 +293,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#landmarkDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -320,8 +350,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#logoDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -365,8 +398,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#labelDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -410,8 +446,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#textDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -455,8 +494,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#documentTextDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -500,8 +542,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#safeSearchDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -545,8 +590,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#imageProperties
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -590,8 +638,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#cropHints
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
@@ -635,8 +686,11 @@ module.exports = apiVersion => {
    * @see google.cloud.vision.v1.AnnotateImageRequest
    *
    * @method v1.ImageAnnotatorClient#webDetection
-   * @param {object} request A representation of the request being sent to the
-   *     Vision API. This is an {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   * @param {object|string|Buffer} request A representation of the request
+   *     being sent to the Vision API. This is an
+   *     {@link google.cloud.vision.v1.AnnotateImageRequest AnnotateImageRequest}.
+   *     For simple cases, you may also send a string (the URL or filename of
+   *     the image) or a buffer (the image itself).
    * @param {object} request.image A dictionary-like object representing the
    *     image. This should have a single key (`source`, `content`).
    *
