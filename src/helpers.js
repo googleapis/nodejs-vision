@@ -33,7 +33,7 @@ const gax = require('google-gax');
  * @returns An object representing an AnnotateImageRequest.
  */
 let _requestToObject = request => {
-  if (is.string(request) === true) {
+  if (is.string(request)) {
     // Is this a URL or a local file?
     // Guess based on what the string looks like, and build the full
     // request object in the correct format.
