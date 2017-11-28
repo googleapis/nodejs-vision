@@ -79,7 +79,7 @@ let _coerceRequest = (request, callback) => {
   if (request.image.source && request.image.source.filename) {
     fs.readFile(
       request.image.source.filename,
-      {encoding: 'base64'},
+      {encoding: null},
       (err, blob) => {
         if (err) {
           callback(err);
@@ -87,13 +87,12 @@ let _coerceRequest = (request, callback) => {
         }
         request.image.content = blob.toString('base64');
         delete request.image.source;
+        return callback(null, request);
       }
     );
+  } else {
+    return callback(null, request);
   }
-
-  // Done; run the callback with the AnnotateImageRequest.
-  callback(null, request);
-  return;
 };
 
 /*!
