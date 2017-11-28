@@ -24,35 +24,44 @@ const promisify = require('@google-cloud/common').util.promisify;
 const gax = require('google-gax');
 
 /*!
- * Coerce several nicer iterations of "how to specify an image" to the
- * full sturcture expected by the Vision API.
+ * Convert non-object request forms into a correctly-formatted object.
  *
  * @param {object|string|Buffer} request An object representing an
- *   AnnotateImageRequest. May also be a string representing the path (filename
- *   or URL) to the image, or a buffer representing the image itself.
- * @param {function} callback The callback to run.
+ *   AnnotateImageRequest. May also be a string representing the path
+ *   (filename or URL) to the image, or a buffer representing the image itself.
+ *
+ * @returns An object representing an AnnotateImageRequest.
  */
-let coerceRequest = (request, callback) => {
-  // If request is not an object, then it is a specification of an image
-  // in raw form; coerce it to an object.
+let _requestToObject = request => {
   if (is.string(request) === true) {
     // Is this a URL or a local file?
     // Guess based on what the string looks like, and build the full
     // request object in the correct format.
     if (request.indexOf('://') === -1 || request.indexOf('file://') === 0) {
       request = {image: {source: {filename: request}}};
-    }
-    else {
+    } else {
       request = {image: {source: {imageUri: request}}};
     }
-  }
-  else if (Buffer.isBuffer(request)) {
+  } else if (Buffer.isBuffer(request)) {
     // Drop the buffer one level lower; it will get dealt with later
     // in the function. This allows sending <Buffer> and {image: <Buffer>} to
     // both work identically.
     request = {image: request};
   }
+  return request;
+};
 
+/*!
+ * Coerce several nicer iterations of "how to specify an image" to the
+ * full sturcture expected by the Vision API.
+ *
+ * @param {object} request An object representing an AnnotateImageRequest.
+ *   It may include `image.source.filename` or a buffer passed to
+ *   `image.content`, which are coerced into their canonical forms by this
+ *   function.
+ * @param {function} callback The callback to run.
+ */
+let _coerceRequest = (request, callback) => {
   // At this point, request must be an object with an `image` key; if not,
   // it is an error. If there is no image, throw an exception.
   if (!is.object(request) || is.undefined(request.image)) {
@@ -62,27 +71,30 @@ let coerceRequest = (request, callback) => {
   // If this is a buffer, read it and send the object
   // that the Vision API expects.
   if (Buffer.isBuffer(request.image)) {
-    request.image = {content: image.toString('base64')};
+    request.image = {content: request.image.toString('base64')};
   }
 
   // If the file is specified as a filename and exists on disk, read it
   // and coerce it into the base64 content.
   if (request.image.source && request.image.source.filename) {
-    fs.readFile(request.image.source.filename, {encoding: 'base64'}, (err, blob) => {
-      if (err) {
-        callback(err);
-        return;
+    fs.readFile(
+      request.image.source.filename,
+      {encoding: 'base64'},
+      (err, blob) => {
+        if (err) {
+          callback(err);
+          return;
+        }
+        request.image.content = blob.toString('base64');
+        delete request.image.source;
       }
-      request.image.content = blob.toString('base64');
-      delete request.image.source;
-    });
+    );
   }
 
   // Done; run the callback with the AnnotateImageRequest.
   callback(null, request);
   return;
 };
-
 
 /*!
  *
@@ -95,12 +107,29 @@ let coerceRequest = (request, callback) => {
  *   asking for the single feature annotation.
  */
 var _createSingleFeatureMethod = featureValue => {
-  return function(annotateImageRequest, callOptions) {
+  return function(annotateImageRequest, callOptions, callback) {
+    // Sanity check: If we got a string or buffer, we need this to be
+    // in object form now, so we can tack on the features list.
+    //
+    // Do the minimum required conversion, which can also be guaranteed to
+    // be synchronous (e.g. no file loading yet; that is handled by
+    // annotateImage later.
+    annotateImageRequest = _requestToObject(annotateImageRequest);
+
+    // If a callback was provided and options were skipped, normalize
+    // the argument names.
+    if (is.undefined(callback) && is.function(callOptions)) {
+      callback = callOptions;
+      callOptions = undefined;
+    }
+
+    // Add the feature to the request.
     annotateImageRequest.features = annotateImageRequest.features || [
       {
         type: featureValue,
       },
     ];
+
     // If the user submitted explicit features that do not line up with
     // the precise method called, throw an exception.
     for (let feature of annotateImageRequest.features) {
@@ -111,8 +140,9 @@ var _createSingleFeatureMethod = featureValue => {
         );
       }
     }
+
     // Call the underlying #annotateImage method.
-    return this.annotateImage(annotateImageRequest, callOptions);
+    return this.annotateImage(annotateImageRequest, callOptions, callback);
   };
 };
 
@@ -195,7 +225,7 @@ module.exports = apiVersion => {
 
     // If we got a filename for the image, open the file and transform
     // it to content.
-    return coerceRequest(request, (err, req) => {
+    return _coerceRequest(request, (err, req) => {
       if (err) {
         return callback(err);
       }
