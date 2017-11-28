@@ -115,7 +115,7 @@ describe('Vision helper methods', () => {
       let readFile = sandbox.stub(fs, 'readFile');
       readFile
         .withArgs('image.jpg')
-        .callsArgWith(2, null, Buffer.from('fakeImage'));
+        .callsArgWith(1, null, Buffer.from('fakeImage'));
       readFile.callThrough();
 
       // Stub out the batch annotation method as before.
@@ -164,7 +164,7 @@ describe('Vision helper methods', () => {
       // Stub out `fs.readFile` and return a bogus image object.
       // This allows us to test filename detection.
       let readFile = sandbox.stub(fs, 'readFile');
-      readFile.withArgs('image.jpg').callsArgWith(2, {error: 404});
+      readFile.withArgs('image.jpg').callsArgWith(1, {error: 404});
       readFile.callThrough();
 
       // Ensure that the annotateImage method arrifies the request and

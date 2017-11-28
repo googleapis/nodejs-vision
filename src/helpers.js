@@ -77,19 +77,15 @@ let _coerceRequest = (request, callback) => {
   // If the file is specified as a filename and exists on disk, read it
   // and coerce it into the base64 content.
   if (request.image.source && request.image.source.filename) {
-    fs.readFile(
-      request.image.source.filename,
-      {encoding: null},
-      (err, blob) => {
-        if (err) {
-          callback(err);
-          return;
-        }
-        request.image.content = blob.toString('base64');
-        delete request.image.source;
-        return callback(null, request);
+    fs.readFile(request.image.source.filename, (err, blob) => {
+      if (err) {
+        callback(err);
+        return;
       }
-    );
+      request.image.content = blob.toString('base64');
+      delete request.image.source;
+      return callback(null, request);
+    });
   } else {
     return callback(null, request);
   }
