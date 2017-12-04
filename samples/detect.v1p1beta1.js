@@ -74,6 +74,39 @@ function detectText(fileName) {
   // [END vision_detect_document]
 }
 
+function detectSafeSearch(fileName) {
+  // [START vision_safe_search_detection]
+  const vision = require('@google-cloud/vision').v1p1beta1;
+
+  // Creates a client
+  const client = new vision.ImageAnnotatorClient();
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const fileName = 'Local image file, e.g. /path/to/image.png';
+
+  // Performs safe search detection on the local file
+  client
+    .safeSearchDetection(fileName)
+    .then(results => {
+      const detections = results[0].safeSearchAnnotation;
+
+      console.log(`Adult: ${detections.adult}`);
+      console.log(`Medical: ${detections.medical}`);
+      console.log(`Spoof: ${detections.spoof}`);
+      console.log(`Violence: ${detections.violence}`);
+      console.log(`Racy: ${detections.racy}`);
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  // [END vision_safe_search_detection]
+}
+
+// =========================================================================
+// =========================================================================
+// =========================================================================
 
 function detectFaces(fileName) {
   // [START vision_face_detection]
@@ -161,34 +194,6 @@ function detectProperties(fileName) {
   // [END vision_image_property_detection]
 }
 
-function detectSafeSearch(fileName) {
-  // [START vision_safe_search_detection]
-  const vision = require('@google-cloud/vision').v1p1beta1;
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
-
-  // Performs safe search detection on the local file
-  client
-    .safeSearchDetection(fileName)
-    .then(results => {
-      const detections = results[0].safeSearchAnnotation;
-
-      console.log(`Adult: ${detections.adult}`);
-      console.log(`Spoof: ${detections.spoof}`);
-      console.log(`Medical: ${detections.medical}`);
-      console.log(`Violence: ${detections.violence}`);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END vision_safe_search_detection]
-}
 
 function detectWeb(fileName) {
   // [START vision_web_detection]
