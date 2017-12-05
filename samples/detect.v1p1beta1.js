@@ -198,12 +198,8 @@ function detectWeb(fileName) {
   // [END vision_web_detection]
 }
 
-// =========================================================================
-// =========================================================================
-// =========================================================================
-
-function detectFaces(fileName) {
-  // [START vision_face_detection]
+function detectWebEntitiesIncludingGeoResults(fileName) {
+  // [START vision_web_entities_include_geo_results]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p1beta1;
 
@@ -215,142 +211,43 @@ function detectFaces(fileName) {
    */
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
-  client
-    .faceDetection(fileName)
-    .then(results => {
-      const faces = results[0].faceAnnotations;
+  const request = {
+    image: {
+      source: {
+        filename: fileName
+      }
+    },
+    imageContext: {
+      webDetectionParams: {
+        includeGeoResults: true
+      }
+    }
+  };
 
-      console.log('Faces:');
-      faces.forEach((face, i) => {
-        console.log(`  Face #${i + 1}:`);
-        console.log(`    Joy: ${face.joyLikelihood}`);
-        console.log(`    Anger: ${face.angerLikelihood}`);
-        console.log(`    Sorrow: ${face.sorrowLikelihood}`);
-        console.log(`    Surprise: ${face.surpriseLikelihood}`);
+  // Performs safe search detection on the local file
+  client
+    .webDetection(request)
+    .then(results => {
+      const webDetection = results[0].webDetection;
+
+      webDetection.webEntities.forEach(entity => {
+        console.log(`Score: ${entity.score}`);
+        console.log(`Description: ${entity.description}`);
       });
     })
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END vision_face_detection]
-}
-
-function detectLabels(fileName) {
-  // [START vision_label_detection]
-  // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision').v1p1beta1;
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
-
-  // Performs label detection on the local file
-  client
-    .labelDetection(fileName)
-    .then(results => {
-      const labels = results[0].labelAnnotations;
-      console.log('Labels:');
-      labels.forEach(label => console.log(label));
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END vision_label_detection]
-}
-
-function detectProperties(fileName) {
-  // [START vision_image_property_detection]
-  const vision = require('@google-cloud/vision').v1p1beta1;
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
-
-  // Performs property detection on the local file
-  client
-    .imageProperties(fileName)
-    .then(results => {
-      const properties = results[0].imagePropertiesAnnotation;
-      const colors = properties.dominantColors.colors;
-      colors.forEach(color => console.log(color));
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END vision_image_property_detection]
-}
-
-
-function detectFulltext(fileName) {
-  // [START vision_fulltext_detection]
-
-  // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision').v1p1beta1;
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
-
-  // Read a local image as a text document
-  client
-    .documentTextDetection(fileName)
-    .then(results => {
-      const fullTextAnnotation = results[0].fullTextAnnotation;
-      console.log(fullTextAnnotation.text);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END vision_fulltext_detection]
-}
-
-function detectFulltextGCS(bucketName, fileName) {
-  // [START vision_fulltext_detection_gcs]
-
-  // Imports the Google Cloud client libraries
-  const vision = require('@google-cloud/vision').v1p1beta1;
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following lines before running the sample.
-   */
-  // const bucketName = 'Bucket where the file resides, e.g. my-bucket';
-  // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
-
-  // Read a remote image as a text document
-  client
-    .documentTextDetection(`gs://${bucketName}/${fileName}`)
-    .then(results => {
-      const fullTextAnnotation = results[0].fullTextAnnotation;
-      console.log(fullTextAnnotation.text);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END vision_fulltext_detection_gcs]
+  // [END vision_web_entities_include_geo_results]
 }
 
 require(`yargs`) // eslint-disable-line
   .demand(1)
   .command(
-    `faces <fileName>`,
-    `Detects faces in a local image file.`,
+    `web-geo <fileName>`,
+    `...`,
     {},
-    opts => detectFaces(opts.fileName)
+    opts => detectWebEntitiesIncludingGeoResults(opts.fileName)
   )
   .command(
     `faces-gcs <bucketName> <fileName>`,
