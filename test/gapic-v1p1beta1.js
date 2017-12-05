@@ -79,7 +79,6 @@ describe('ImageAnnotatorClient', () => {
       });
     });
   });
-
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {

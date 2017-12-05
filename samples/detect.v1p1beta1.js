@@ -143,7 +143,9 @@ function detectWeb(fileName) {
 
           if (page.partialMatchingImages.length) {
             const partialMatchingImages = page.partialMatchingImages;
-            console.log(`Partial Matches found: ${partialMatchingImages.length}`);
+            console.log(
+              `Partial Matches found: ${partialMatchingImages.length}`
+            );
             partialMatchingImages.forEach(image => {
               console.log(`Image url: ${image.url}`);
             });
@@ -180,7 +182,7 @@ function detectWeb(fileName) {
       if (webDetection.visuallySimilarImages.length) {
         const visuallySimilarImages = webDetection.visuallySimilarImages;
         console.log(
-          `Visually similar images found: ${visuallySimilarImages.length}`  
+          `Visually similar images found: ${visuallySimilarImages.length}`
         );
         visuallySimilarImages.forEach(image => {
           console.log(`  Image url: ${image.url}`);
@@ -209,14 +211,14 @@ function detectWebEntitiesIncludingGeoResults(fileName) {
   const request = {
     image: {
       source: {
-        filename: fileName
-      }
+        filename: fileName,
+      },
     },
     imageContext: {
       webDetectionParams: {
-        includeGeoResults: true
-      }
-    }
+        includeGeoResults: true,
+      },
+    },
   };
 
   // Performs safe search detection on the local file
@@ -236,7 +238,7 @@ function detectWebEntitiesIncludingGeoResults(fileName) {
   // [END vision_web_entities_include_geo_results]
 }
 
-  //.usage('$0 <command> <local-image-file>', 'Cloud Vision Beta API Samples')
+//.usage('$0 <command> <local-image-file>', 'Cloud Vision Beta API Samples')
 require(`yargs`) // eslint-disable-line
   .demand(1)
   .command(

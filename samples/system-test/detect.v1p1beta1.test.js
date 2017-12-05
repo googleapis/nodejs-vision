@@ -18,21 +18,17 @@
 const path = require(`path`);
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
-const uuid = require(`uuid`);
 
 const cmd = `node detect.v1p1beta1.js`;
 const cwd = path.join(__dirname, `..`);
-const files = [
-  `text.jpg`,
-  `wakeupcat.jpg`,
-  `landmark.jpg`,
-  `city.jpg`,
-].map(name => {
-  return {
-    name,
-    localPath: path.resolve(path.join(__dirname, `../resources/${name}`)),
-  };
-});
+const files = [`text.jpg`, `wakeupcat.jpg`, `landmark.jpg`, `city.jpg`].map(
+  name => {
+    return {
+      name,
+      localPath: path.resolve(path.join(__dirname, `../resources/${name}`)),
+    };
+  }
+);
 
 test.before(tools.checkCredentials);
 
@@ -55,10 +51,7 @@ test(`should detect safe search properties from image file`, async t => {
 });
 
 test(`should detect web entities including best guess labels`, async t => {
-  const output = await tools.runAsync(
-    `${cmd} web ${files[2].localPath}`,
-    cwd
-  );
+  const output = await tools.runAsync(`${cmd} web ${files[2].localPath}`, cwd);
   t.true(output.includes('Description: Palace of Fine Arts Theatre'));
   t.true(output.includes('Best guess label: palace of fine arts'));
 });
