@@ -40,7 +40,7 @@ function detectFulltext(fileName) {
           const blockWords = [];
           block.paragraphs.forEach(paragraph => {
             paragraph.words.forEach(word => blockWords.push(word));
-            console.log(`Paragraph Confidence: ${paragraph.confidence.toFixed(2)}`);
+            console.log(`Paragraph confidence: ${paragraph.confidence}`);
           });
 
           let blockText = '';
@@ -50,16 +50,16 @@ function detectFulltext(fileName) {
             let wordText = '';
             word.symbols.forEach(symbol => {
               wordText = wordText + symbol.text;
-              console.log(`  Symbol text: ${symbol.text}`);
-              console.log(`  Confidence: ${symbol.confidence.toFixed(2)}`);
+              console.log(`Symbol text: ${symbol.text}`);
+              console.log(`Symbol confidence: ${symbol.confidence}`);
             });
             console.log(`Word text: ${wordText}`);
-            console.log(`Confidence: ${word.confidence.toFixed(2)}`);
+            console.log(`Word confidence: ${word.confidence}`);
             blockText = blockText + ` ${wordText}`;
           });
 
-          console.log(`Block content: ${blockText}`);
-          console.log(`Block confidence: ${block.confidence.toFixed(2)}`);
+          console.log(`Block text: ${blockText}`);
+          console.log(`Block confidence: ${block.confidence}`);
         });
       });
     })
