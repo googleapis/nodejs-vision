@@ -55,7 +55,9 @@
     "samples-test": "cd samples/ && npm link ../ && npm test && cd ../",
     "system-test": "repo-tools test run --cmd mocha -- system-test/*.js --no-timeouts",
     "test-no-cover": "repo-tools test run --cmd mocha -- test/*.js --no-timeouts",
-    "test": "repo-tools test run --cmd npm -- run cover"
+    "test": "repo-tools test run --cmd npm -- run cover",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@google-cloud/common": "^0.16.0",
@@ -64,7 +66,8 @@
     "google-gax": "^0.14.2",
     "google-proto-files": "^0.15.0",
     "is": "^3.0.1",
-    "lodash.merge": "^4.6.0"
+    "lodash.merge": "^4.6.0",
+    "snyk": "^1.69.7"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^2.1.1",
@@ -84,5 +87,6 @@
     "prettier": "^1.7.4",
     "safe-buffer": "^5.1.1",
     "sinon": "^4.1.2"
-  }
+  },
+  "snyk": true
 }
