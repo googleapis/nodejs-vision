@@ -100,10 +100,15 @@ class ImageAnnotatorClient {
     );
     var protoFilesRoot = new gax.grpc.GoogleProtoFilesRoot();
     protoFilesRoot = protobuf.loadSync(
-      path.join(__dirname, '..', '..', 'protos', 'google/cloud/vision/v1p2beta1/image_annotator.proto'),
+      path.join(
+        __dirname,
+        '..',
+        '..',
+        'protos',
+        'google/cloud/vision/v1p2beta1/image_annotator.proto'
+      ),
       protoFilesRoot
     );
-
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
@@ -123,8 +128,12 @@ class ImageAnnotatorClient {
     this._descriptors.longrunning = {
       asyncBatchAnnotateFiles: new gax.LongrunningDescriptor(
         this.operationsClient,
-        asyncBatchAnnotateFilesResponse.decode.bind(asyncBatchAnnotateFilesResponse),
-        asyncBatchAnnotateFilesMetadata.decode.bind(asyncBatchAnnotateFilesMetadata)
+        asyncBatchAnnotateFilesResponse.decode.bind(
+          asyncBatchAnnotateFilesResponse
+        ),
+        asyncBatchAnnotateFilesMetadata.decode.bind(
+          asyncBatchAnnotateFilesMetadata
+        )
       ),
     };
 
@@ -349,9 +358,12 @@ class ImageAnnotatorClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.asyncBatchAnnotateFiles(request, options, callback);
+    return this._innerApiCalls.asyncBatchAnnotateFiles(
+      request,
+      options,
+      callback
+    );
   }
 }
-
 
 module.exports = ImageAnnotatorClient;
