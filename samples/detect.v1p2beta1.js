@@ -15,7 +15,6 @@
 
 'use strict';
 
-
 function detectPdfText(bucketName, fileName) {
   // [START vision_async_detect_document_ocr]
 
@@ -37,43 +36,48 @@ function detectPdfText(bucketName, fileName) {
           // Supported mime_types are: 'application/pdf' and 'image/tiff'
           mimeType: 'application/pdf',
           gcsSource: {
-            uri: gcsSourceUri
-          }
+            uri: gcsSourceUri,
+          },
         },
         features: [
           {
-            type: 'DOCUMENT_TEXT_DETECTION'
-          }
+            type: 'DOCUMENT_TEXT_DETECTION',
+          },
         ],
         outputConfig: {
           gcsDestination: {
-            uri: gcsDestinationUri
-          }
-        }
-      }
-    ]
+            uri: gcsDestinationUri,
+          },
+        },
+      },
+    ],
   };
 
   client
     .asyncBatchAnnotateFiles(request)
     .then(results => {
-      console.log(results);      
+      console.log(results);
       const operation = results[0];
       // Get a Promise representation of the final result of the job
-      operation.promise().then(filesResponse => {
-        let destinationUri = filesResponse[0]['responses'][0]['outputConfig']['gcsDestination']['uri'];
-        //console.log('Json saved to: ' + destinationUri);
-        return destinationUri;
-      }).catch(function(error) {
-        console.log(error);
-      });
+      operation
+        .promise()
+        .then(filesResponse => {
+          let destinationUri =
+            filesResponse[0]['responses'][0]['outputConfig']['gcsDestination'][
+              'uri'
+            ];
+          //console.log('Json saved to: ' + destinationUri);
+          return destinationUri;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
     .catch(function(error) {
       console.log(error);
     });
   // [END vision_async_detect_document_ocr]
 }
-
 
 //.usage('$0 <command> <local-image-file>', 'Cloud Vision Beta API Samples')
 require(`yargs`) // eslint-disable-line
@@ -90,5 +94,3 @@ require(`yargs`) // eslint-disable-line
   .epilogue(`For more information, see https://cloud.google.com/vision/docs`)
   .help()
   .strict().argv;
-
-

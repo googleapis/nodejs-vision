@@ -25,9 +25,7 @@ const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
 const cmd = `node detect.v1p2beta1.js`;
 const cwd = path.join(__dirname, `..`);
 
-const files = [
-  `pdf-ocr.pdf`,
-].map(name => {
+const files = [`pdf-ocr.pdf`].map(name => {
   return {
     name,
     localPath: path.resolve(path.join(__dirname, `../resources/${name}`)),
