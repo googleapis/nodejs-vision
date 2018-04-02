@@ -24,31 +24,38 @@ function detectPdfText(bucketName, fileName) {
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
 
+  /**
+   * TODO(developer): Uncomment the following lines before running the sample.
+   */
+  // const bucketName = 'Bucket where the file resides, e.g. my-bucket';
+  // const fileName = 'Path to PDF file within bucket, e.g. path/to/document.pdf';
+
   const gcsSourceUri = `gs://${bucketName}/${fileName}`;
   const gcsDestinationUri = `gs://${bucketName}/${fileName}.json`;
 
-  console.log(gcsDestinationUri);
-
+  const inputConfig = {
+    // Supported mime_types are: 'application/pdf' and 'image/tiff'
+    mimeType: 'application/pdf',
+    gcsSource: {
+      uri: gcsSourceUri,
+    },
+  };
+  const outputConfig = {
+    gcsDestination: {
+      uri: gcsDestinationUri,
+    },
+  };
+  const features = [
+    {
+      type: 'DOCUMENT_TEXT_DETECTION',
+    },
+  ];
   const request = {
     requests: [
       {
-        inputConfig: {
-          // Supported mime_types are: 'application/pdf' and 'image/tiff'
-          mimeType: 'application/pdf',
-          gcsSource: {
-            uri: gcsSourceUri,
-          },
-        },
-        features: [
-          {
-            type: 'DOCUMENT_TEXT_DETECTION',
-          },
-        ],
-        outputConfig: {
-          gcsDestination: {
-            uri: gcsDestinationUri,
-          },
-        },
+        inputConfig: inputConfig,
+        features: features,
+        outputConfig: outputConfig,
       },
     ],
   };
