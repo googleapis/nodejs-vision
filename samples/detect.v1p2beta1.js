@@ -19,17 +19,17 @@ function detectPdfText(bucketName, fileName) {
   // [START vision_async_detect_document_ocr]
 
   // Imports the Google Cloud client libraries
-  var vision = require('@google-cloud/vision').v1p2beta1;
+  const vision = require('@google-cloud/vision').v1p2beta1;
 
   // Creates a client
-  var client = new vision.ImageAnnotatorClient();
+  const client = new vision.ImageAnnotatorClient();
 
-  let gcsSourceUri = `gs://${bucketName}/${fileName}`;
-  let gcsDestinationUri = `gs://${bucketName}/${fileName}.json`;
+  const gcsSourceUri = `gs://${bucketName}/${fileName}`;
+  const gcsDestinationUri = `gs://${bucketName}/${fileName}.json`;
 
   console.log(gcsDestinationUri);
 
-  let request = {
+  const request = {
     requests: [
       {
         inputConfig: {
@@ -63,11 +63,8 @@ function detectPdfText(bucketName, fileName) {
         .promise()
         .then(filesResponse => {
           let destinationUri =
-            filesResponse[0]['responses'][0]['outputConfig']['gcsDestination'][
-              'uri'
-            ];
-          //console.log('Json saved to: ' + destinationUri);
-          return destinationUri;
+            filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
+          console.log('Json saved to: ' + destinationUri);
         })
         .catch(function(error) {
           console.log(error);
