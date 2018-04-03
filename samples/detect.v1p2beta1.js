@@ -27,8 +27,10 @@ function detectPdfText(bucketName, fileName) {
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
    */
-  // const bucketName = 'Bucket where the file resides, e.g. my-bucket';
-  // const fileName = 'Path to PDF file within bucket, e.g. path/to/document.pdf';
+  // Bucket where the file resides
+  // const bucketName = 'my-bucket';
+  // Path to PDF file within bucket
+  // const fileName = 'path/to/document.pdf';
 
   const gcsSourceUri = `gs://${bucketName}/${fileName}`;
   const gcsDestinationUri = `gs://${bucketName}/${fileName}.json`;
@@ -45,11 +47,7 @@ function detectPdfText(bucketName, fileName) {
       uri: gcsDestinationUri,
     },
   };
-  const features = [
-    {
-      type: 'DOCUMENT_TEXT_DETECTION',
-    },
-  ];
+  const features = [{type: 'DOCUMENT_TEXT_DETECTION'}];
   const request = {
     requests: [
       {
