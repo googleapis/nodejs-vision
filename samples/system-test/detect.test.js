@@ -46,10 +46,10 @@ test.before(async () => {
 });
 
 test.after.always(async () => {
-  // const bucket = storage.bucket(bucketName);
-  // await bucket.deleteFiles({force: true});
-  // await bucket.deleteFiles({force: true}); // Try a second time...
-  // await bucket.delete();
+  const bucket = storage.bucket(bucketName);
+  await bucket.deleteFiles({force: true});
+  await bucket.deleteFiles({force: true}); // Try a second time...
+  await bucket.delete();
 });
 
 test(`should detect faces in a local file`, async t => {
