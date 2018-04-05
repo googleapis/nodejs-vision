@@ -532,7 +532,9 @@ function detectWeb(fileName) {
       }
 
       if (webDetection.bestGuessLabels.length) {
-        console.log(`Best guess labels found: ${webDetection.bestGuessLabels.length}`);
+        console.log(
+          `Best guess labels found: ${webDetection.bestGuessLabels.length}`
+        );
         webDetection.bestGuessLabels.forEach(label => {
           console.log(`  Label: ${label.label}`);
         });
@@ -594,7 +596,9 @@ function detectWebGCS(bucketName, fileName) {
       }
 
       if (webDetection.bestGuessLabels.length) {
-        console.log(`Best guess labels found: ${webDetection.bestGuessLabels.length}`);
+        console.log(
+          `Best guess labels found: ${webDetection.bestGuessLabels.length}`
+        );
         webDetection.bestGuessLabels.forEach(label => {
           console.log(`  Label: ${label.label}`);
         });

@@ -31,7 +31,7 @@ const files = [
   `text.jpg`,
   `wakeupcat.jpg`,
   `faulkner.jpg`,
-  `city.jpg`
+  `city.jpg`,
 ].map(name => {
   return {
     name,
