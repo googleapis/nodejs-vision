@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "0.15.2",
+  "version": "0.19.0",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -38,7 +38,7 @@
     "Jason Dobry <jdobry@google.com>",
     "Jun Mukai <mukai@google.com>",
     "Luke Sneeringer <lukesneeringer@google.com>",
-    "Rebecca Taylor <remily@google.com>",
+    "Rebecca Taylor <rebeccataylor@google.com>",
     "Song Wang <songwang@google.com>",
     "Stephen Sawchuk <sawchuk@gmail.com>",
     "Tim Swast <swast@google.com>",
@@ -58,16 +58,17 @@
     "test": "repo-tools test run --cmd npm -- run cover"
   },
   "dependencies": {
-    "@google-cloud/common": "^0.16.1",
+    "@google-cloud/common": "^0.17.0",
     "async": "^2.0.1",
     "extend": "^3.0.0",
-    "google-gax": "^0.14.2",
+    "google-gax": "^0.16.0",
     "google-proto-files": "^0.15.0",
     "is": "^3.0.1",
-    "lodash.merge": "^4.6.0"
+    "lodash.merge": "^4.6.0",
+    "protobufjs": "^6.8.6"
   },
   "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^2.1.1",
+    "@google-cloud/nodejs-repo-tools": "^2.2.3",
     "@google-cloud/storage": "^1.5.2",
     "codecov": "^3.0.0",
     "eslint": "^4.15.0",
@@ -81,8 +82,8 @@
     "node-uuid": "^1.4.7",
     "nyc": "^11.3.0",
     "power-assert": "^1.4.4",
-    "prettier": "^1.7.4",
+    "prettier": "^1.11.1",
     "safe-buffer": "^5.1.1",
-    "sinon": "^4.1.2"
+    "sinon": "^5.0.0"
   }
 }
