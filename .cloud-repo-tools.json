@@ -13,11 +13,11 @@
       "usage": "node detect.js --help"
     },
     {
-      "id": "detect.v1p1beta1.js",
-      "name": "Detection samples for Beta API",
-      "file": "detect.v1p1beta1.js",
+      "id": "detect.v1p2beta1.js",
+      "name": "Detection samples for Beta API (v1p2beta1)",
+      "file": "detect.v1p2beta1.js",
       "docs_link": "https://cloud.google.com/vision/docs",
-      "usage": "node detect.v1p1beta1.js --help"
+      "usage": "node detect.v1p2beta1.js --help"
     }
   ]
 }
