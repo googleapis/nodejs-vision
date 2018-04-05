@@ -31,6 +31,7 @@ const files = [
   `text.jpg`,
   `wakeupcat.jpg`,
   `faulkner.jpg`,
+  `city.jpg`
 ].map(name => {
   return {
     name,
@@ -45,10 +46,10 @@ test.before(async () => {
 });
 
 test.after.always(async () => {
-  const bucket = storage.bucket(bucketName);
-  await bucket.deleteFiles({force: true});
-  await bucket.deleteFiles({force: true}); // Try a second time...
-  await bucket.delete();
+  // const bucket = storage.bucket(bucketName);
+  // await bucket.deleteFiles({force: true});
+  // await bucket.deleteFiles({force: true}); // Try a second time...
+  // await bucket.delete();
 });
 
 test(`should detect faces in a local file`, async t => {
@@ -161,7 +162,8 @@ test(`should detect safe-search in a local file`, async t => {
     `${cmd} safe-search ${files[4].localPath}`,
     cwd
   );
-  t.true(output.includes(`Medical:`));
+  t.true(output.includes('VERY_LIKELY'));
+  t.true(output.includes('Racy:'));
 });
 
 test(`should detect safe-search in a remote file`, async t => {
@@ -193,10 +195,11 @@ test(`should detect crop hints in a remote file`, async t => {
 test(`should detect similar web images in a local file`, async t => {
   const output = await tools.runAsync(`${cmd} web ${files[5].localPath}`, cwd);
   t.true(output.includes('Full matches found:'));
-  t.true(output.includes('URL: https://cloud.google.com/vision/docs/images/'));
   t.true(output.includes('Partial matches found:'));
   t.true(output.includes('Web entities found:'));
   t.true(output.includes('Description: Google Cloud Platform'));
+  t.true(output.includes('Best guess labels found'));
+  t.true(output.includes('Label:'));
 });
 
 test(`should detect similar web images in a remote file`, async t => {
@@ -205,10 +208,31 @@ test(`should detect similar web images in a remote file`, async t => {
     cwd
   );
   t.true(output.includes('Full matches found:'));
-  t.true(output.includes('URL: https://cloud.google.com/vision/docs/images/'));
   t.true(output.includes('Partial matches found:'));
   t.true(output.includes('Web entities found:'));
-  t.true(output.includes('Description: Google'));
+  t.true(output.includes('Description: Google Cloud Platform'));
+  t.true(output.includes('Best guess labels found'));
+  t.true(output.includes('Label:'));
+});
+
+test(`should detect web entities with geo metadata in local file`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} web-geo ${files[6].localPath}`,
+    cwd
+  );
+  t.true(output.includes('Description:'));
+  t.true(output.includes('Score:'));
+  t.true(output.includes('Zepra'));
+});
+
+test(`should detect web entities with geo metadata in remote file`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} web-geo-gcs ${bucketName} ${files[6].name}`,
+    cwd
+  );
+  t.true(output.includes('Description:'));
+  t.true(output.includes('Score:'));
+  t.true(output.includes('Zepra'));
 });
 
 test(`should read a document from a local file`, async t => {
@@ -217,6 +241,8 @@ test(`should read a document from a local file`, async t => {
     cwd
   );
   t.true(output.includes('Google Cloud Platform'));
+  t.true(output.includes('Word text: Cloud'));
+  t.true(output.includes('Word confidence: 0.9'));
 });
 
 test(`should read a document from a remote file`, async t => {
