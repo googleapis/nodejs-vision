@@ -1,3 +1,5 @@
+[//]: # "This README.md file is auto-generated, all changes to this file will be lost."
+[//]: # "To regenerate it, use `npm run generate-scaffolding`."
 <img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
 
 # Google Cloud Vision API: Node.js Samples
@@ -11,7 +13,7 @@ The [Cloud Vision API](https://cloud.google.com/vision/docs) allows developers t
 * [Before you begin](#before-you-begin)
 * [Samples](#samples)
   * [Detection samples](#detection-samples)
-  * [Detection samples for Beta API](#detection-samples-for-beta-api)
+  * [Detection samples for Beta API (v1p2beta1)](#detection-samples-for-beta-api-v1p2beta1)
 
 ## Before you begin
 
@@ -52,6 +54,10 @@ Commands:
   detect.js web <fileName>                           Finds similar photos on the web for a local image file.
   detect.js web-gcs <bucketName> <fileName>          Finds similar photos on the web for an image in Google Cloud
                                                      Storage.
+  detect.js web-geo <fileName>                       Detects web entities with improved results using geographic
+                                                     metadata
+  detect.js web-geo-gcs <bucketName> <fileName>      Detects web entities with improved results using geographic
+                                                     metadata
   detect.js fulltext <fileName>                      Extracts full text from a local image file.
   detect.js fulltext-gcs <bucketName> <fileName>     Extracts full text from an image in Google Cloud Storage.
 
@@ -78,6 +84,8 @@ Examples:
   node detect.js crops-gcs my-bucket your-image.jpg
   node detect.js web ./resources/wakeupcat.jpg
   node detect.js web-gcs my-bucket your-image.jpg
+  node detect.js web-geo ./resources/city.jpg
+  node detect.js web-geo-gcs my-bucket your-image.jpg
   node detect.js fulltext ./resources/wakeupcat.jpg
   node detect.js fulltext-gcs my-bucket your-image.jpg
 
@@ -87,39 +95,32 @@ For more information, see https://cloud.google.com/vision/docs
 [detect_0_docs]: https://cloud.google.com/vision/docs
 [detect_0_code]: detect.js
 
-### Detection samples for Beta API
+### Detection samples for Beta API (v1p2beta1)
 
-View the [source code][detect.v1p1beta1.js_1_code].
+View the [source code][detect.v1p2beta1.js_1_code].
 
-[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.v1p1beta1.js,samples/README.md)
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.v1p2beta1.js,samples/README.md)
 
-__Usage:__ `node detect.v1p1beta1.js --help`
+__Usage:__ `node detect.v1p2beta1.js --help`
 
 ```
-detect.v1p1beta1.js <command>
+detect.v1p2beta1.js <command>
 
 Commands:
-  detect.v1p1beta1.js web-entities-geo <fileName>  Detects web entities with improved results using geographic metadata
-  detect.v1p1beta1.js safe-search <fileName>       Detects safe search properties including additional racy category
-  detect.v1p1beta1.js web <fileName>               Detects web entities including new best guess labels describing
-                                                   content
-  detect.v1p1beta1.js fulltext <fileName>          Extracts full text from an image file including new confidence scores
+  detect.v1p2beta1.js pdf <bucketName> <fileName>  Extracts full text from a pdf file
 
 Options:
   --version  Show version number                                                                               [boolean]
   --help     Show help                                                                                         [boolean]
 
 Examples:
-  node detect.v1p1beta1.js safe-search ./resources/wakeupcat.jpg
-  node detect.v1p1beta1.js web-entities-geo ./resources/city.jpg
-  node detect.v1p1beta1.js web ./resources/wakeupcat.jpg
-  node detect.v1p1beta1.js fulltext ./resources/wakeupcat.jpg
+  node detect.v1p2beta1.js pdf my-bucket my-pdf.pdf
 
 For more information, see https://cloud.google.com/vision/docs
 ```
 
-[detect.v1p1beta1.js_1_docs]: https://cloud.google.com/vision/docs
-[detect.v1p1beta1.js_1_code]: detect.v1p1beta1.js
+[detect.v1p2beta1.js_1_docs]: https://cloud.google.com/vision/docs
+[detect.v1p2beta1.js_1_code]: detect.v1p2beta1.js
 
-[shell_img]: //gstatic.com/cloudssh/images/open-btn.png
+[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
 [shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/README.md

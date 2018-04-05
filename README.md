@@ -1,3 +1,5 @@
+[//]: # "This README.md file is auto-generated, all changes to this file will be lost."
+[//]: # "To regenerate it, use `npm run generate-scaffolding`."
 <img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
 
 # [Google Cloud Vision API: Node.js Client](https://github.com/googleapis/nodejs-vision)
@@ -91,7 +93,7 @@ has instructions for running the samples.
 | Sample                      | Source Code                       | Try it |
 | --------------------------- | --------------------------------- | ------ |
 | Detection samples | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.js,samples/README.md) |
-| Detection samples for Beta API | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.v1p1beta1.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.v1p1beta1.js,samples/README.md) |
+| Detection samples for Beta API (v1p2beta1) | [source code](https://github.com/googleapis/nodejs-vision/blob/master/samples/detect.v1p2beta1.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-vision&page=editor&open_in_editor=samples/detect.v1p2beta1.js,samples/README.md) |
 
 The [Vision API Node.js Client API Reference][client-docs] documentation
 also contains samples.
@@ -121,4 +123,4 @@ See [LICENSE](https://github.com/googleapis/nodejs-vision/blob/master/LICENSE)
 
 [client-docs]: https://cloud.google.com/nodejs/docs/reference/vision/latest/
 [product-docs]: https://cloud.google.com/vision/docs
-[shell_img]: //gstatic.com/cloudssh/images/open-btn.png
+[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
