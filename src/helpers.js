@@ -23,6 +23,23 @@ const promisify = require('@google-cloud/common').util.promisify;
 
 const gax = require('google-gax');
 
+/**
+ * An enumeration of the supported types of feature detection.
+ */
+const features = {
+  TYPE_UNSPECIFIED: 0,
+  FACE_DETECTION: 1,
+  LANDMARK_DETECTION: 2,
+  LOGO_DETECTION: 3,
+  LABEL_DETECTION: 4,
+  TEXT_DETECTION: 5,
+  DOCUMENT_TEXT_DETECTION: 11,
+  SAFE_SEARCH_DETECTION: 6,
+  IMAGE_PROPERTIES: 7,
+  CROP_HINTS: 9,
+  WEB_DETECTION: 10
+};
+
 /*!
  * Convert non-object request forms into a correctly-formatted object.
  *
@@ -242,17 +259,6 @@ module.exports = apiVersion => {
       });
     });
   });
-
-  // Get a list of features available on the API. Although we could iterate over
-  // them and create single-feature methods for each dynamically, for
-  // documentation purpose, we manually list all the single-feature methods
-  // below.
-  const features = gax
-    .grpc()
-    .loadProto(
-      path.join(__dirname, '..', 'protos'),
-      `google/cloud/vision/${apiVersion}/image_annotator.proto`
-    ).google.cloud.vision[apiVersion].Feature.Type.values;
 
   /**
    * Annotate a single image with face detection.
