@@ -20,25 +20,9 @@ const fs = require('fs');
 const is = require('is');
 const path = require('path');
 const promisify = require('@google-cloud/common').util.promisify;
+const protobuf = require('protobufjs');
 
 const gax = require('google-gax');
-
-/**
- * An enumeration of the supported types of feature detection.
- */
-const features = {
-  TYPE_UNSPECIFIED: 0,
-  FACE_DETECTION: 1,
-  LANDMARK_DETECTION: 2,
-  LOGO_DETECTION: 3,
-  LABEL_DETECTION: 4,
-  TEXT_DETECTION: 5,
-  DOCUMENT_TEXT_DETECTION: 11,
-  SAFE_SEARCH_DETECTION: 6,
-  IMAGE_PROPERTIES: 7,
-  CROP_HINTS: 9,
-  WEB_DETECTION: 10
-};
 
 /*!
  * Convert non-object request forms into a correctly-formatted object.
@@ -259,6 +243,20 @@ module.exports = apiVersion => {
       });
     });
   });
+
+  let protoFilesRoot = new gax.grpc.GoogleProtoFilesRoot();
+  protoFilesRoot = protobuf.loadSync(
+    path.join(
+      __dirname,
+      '..',
+      'protos',
+      `google/cloud/vision/${apiVersion}/image_annotator.proto`
+    ),
+    protoFilesRoot
+  );
+  const features = protoFilesRoot.lookup(
+    `google.cloud.vision.${apiVersion}.Feature.Type`
+  ).values;
 
   /**
    * Annotate a single image with face detection.
