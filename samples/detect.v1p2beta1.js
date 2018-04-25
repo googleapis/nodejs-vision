@@ -18,7 +18,11 @@
 function detectPdfText(bucketName, fileName) {
   // [START vision_async_detect_document_ocr]
 
-  // Imports the Google Cloud client libraries
+  // Imports the Google Cloud client library for Beta API
+  /**
+   * TODO(developer): Update client library import to use new
+   * version of API when desired features become available
+   */
   const vision = require('@google-cloud/vision').v1p2beta1;
 
   // Creates a client
