@@ -84,6 +84,6 @@
     "power-assert": "^1.4.4",
     "prettier": "^1.11.1",
     "safe-buffer": "^5.1.1",
-    "sinon": "^5.0.0"
+    "sinon": "^6.0.0"
   }
 }
