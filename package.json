@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -36,9 +36,12 @@
     "Ernest Landrito <landrito@google.com>",
     "Gus Class <gguuss@gmail.com>",
     "Jason Dobry <jdobry@google.com>",
+    "Jonathan Lui <jonathanlui@google.com>",
     "Jun Mukai <mukai@google.com>",
+    "Kelvin Jin <kelvinjin@google.com>",
     "Luke Sneeringer <lukesneeringer@google.com>",
-    "Rebecca Taylor <rebeccataylor@google.com>",
+    "Rebecca Taylor <remily@google.com>",
+    "Shahin <happyhuman@users.noreply.github.com>",
     "Song Wang <songwang@google.com>",
     "Stephen Sawchuk <sawchuk@gmail.com>",
     "Tim Swast <swast@google.com>",
