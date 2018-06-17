@@ -3,58 +3,40 @@ workflows:
   version: 2
   tests:
     jobs: &workflow_jobs
-      - node4:
-          filters:
-            tags:
-              only: /.*/
       - node6:
-          filters:
+          filters: &all_commits
             tags:
               only: /.*/
       - node8:
-          filters:
-            tags:
-              only: /.*/
-      - node9:
-          filters:
-            tags:
-              only: /.*/
+          filters: *all_commits
+      - node10:
+          filters: *all_commits
       - lint:
           requires:
-            - node4
             - node6
             - node8
-            - node9
-          filters:
-            tags:
-              only: /.*/
+            - node10
+          filters: *all_commits
       - docs:
           requires:
-            - node4
             - node6
             - node8
-            - node9
-          filters:
-            tags:
-              only: /.*/
+            - node10
+          filters: *all_commits
       - system_tests:
           requires:
             - lint
             - docs
-          filters:
+          filters: &master_and_releases
             branches:
               only: master
-            tags:
+            tags: &releases
               only: '/^v[\d.]+$/'
       - sample_tests:
           requires:
             - lint
             - docs
-          filters:
-            branches:
-              only: master
-            tags:
-              only: '/^v[\d.]+$/'
+          filters: *master_and_releases
       - publish_npm:
           requires:
             - system_tests
@@ -62,8 +44,7 @@ workflows:
           filters:
             branches:
               ignore: /.*/
-            tags:
-              only: '/^v[\d.]+$/'
+            tags: *releases
   nightly:
     triggers:
       - schedule:
@@ -73,9 +54,9 @@ workflows:
               only: master
     jobs: *workflow_jobs
 jobs:
-  node4:
+  node6:
     docker:
-      - image: 'node:4'
+      - image: 'node:6'
         user: node
     steps: &unit_tests_steps
       - checkout
@@ -90,14 +71,15 @@ jobs:
             else
               echo "Not a nightly build, skipping this step."
             fi
-      - run:
-          name: Install modules and dependencies.
+      - run: &npm_install_and_link
+          name: Install and link the module
           command: |-
+            mkdir -p /home/node/.npm-global
             npm install
-            repo_tools="node_modules/@google-cloud/nodejs-repo-tools/bin/tools"
-            if ! test -x "$repo_tools"; then
-              chmod +x "$repo_tools"
-            fi
+            npm link
+            chmod +x node_modules/@google-cloud/nodejs-repo-tools/bin/tools
+          environment:
+            NPM_CONFIG_PREFIX: /home/node/.npm-global
       - run:
           name: Run unit tests.
           command: npm test
@@ -105,19 +87,14 @@ jobs:
           name: Submit coverage data to codecov.
           command: node_modules/.bin/codecov
           when: always
-  node6:
-    docker:
-      - image: 'node:6'
-        user: node
-    steps: *unit_tests_steps
   node8:
     docker:
       - image: 'node:8'
         user: node
     steps: *unit_tests_steps
-  node9:
+  node10:
     docker:
-      - image: 'node:9'
+      - image: 'node:10'
         user: node
     steps: *unit_tests_steps
   lint:
@@ -127,19 +104,8 @@ jobs:
     steps:
       - checkout
       - run: *remove_package_lock
-      - run:
-          name: Install modules and dependencies.
-          command: |
-            mkdir -p /home/node/.npm-global
-            npm install
-            repo_tools="node_modules/@google-cloud/nodejs-repo-tools/bin/tools"
-            if ! test -x "$repo_tools"; then
-              chmod +x "$repo_tools"
-            fi
-            npm link
-          environment:
-            NPM_CONFIG_PREFIX: /home/node/.npm-global
-      - run:
+      - run: *npm_install_and_link
+      - run: &samples_npm_install_and_link
           name: Link the module being tested to the samples.
           command: |
             cd samples/
@@ -160,14 +126,7 @@ jobs:
     steps:
       - checkout
       - run: *remove_package_lock
-      - run:
-          name: Install modules and dependencies.
-          command: |-
-            npm install
-            repo_tools="node_modules/@google-cloud/nodejs-repo-tools/bin/tools"
-            if ! test -x "$repo_tools"; then
-              chmod +x "$repo_tools"
-            fi
+      - run: *npm_install_and_link
       - run:
           name: Build documentation.
           command: npm run docs
@@ -184,27 +143,8 @@ jobs:
             openssl aes-256-cbc -d -in .circleci/key.json.enc \
                 -out .circleci/key.json \
                 -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
-      - run:
-          name: Install and link the module.
-          command: |
-            mkdir -p /home/node/.npm-global
-            npm install
-            repo_tools="node_modules/@google-cloud/nodejs-repo-tools/bin/tools"
-            if ! test -x "$repo_tools"; then
-              chmod +x "$repo_tools"
-            fi
-            npm link
-          environment:
-            NPM_CONFIG_PREFIX: /home/node/.npm-global
-      - run:
-          name: Link the module being tested to the samples.
-          command: |
-            cd samples/
-            npm link @google-cloud/vision
-            npm install
-            cd ..
-          environment:
-            NPM_CONFIG_PREFIX: /home/node/.npm-global
+      - run: *npm_install_and_link
+      - run: *samples_npm_install_and_link
       - run:
           name: Run sample tests.
           command: npm run samples-test
@@ -230,14 +170,7 @@ jobs:
             openssl aes-256-cbc -d -in .circleci/key.json.enc \
                 -out .circleci/key.json \
                 -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
-      - run:
-          name: Install modules and dependencies.
-          command: |-
-            npm install
-            repo_tools="node_modules/@google-cloud/nodejs-repo-tools/bin/tools"
-            if ! test -x "$repo_tools"; then
-              chmod +x "$repo_tools"
-            fi
+      - run: *npm_install_and_link
       - run:
           name: Run system tests.
           command: npm run system-test
