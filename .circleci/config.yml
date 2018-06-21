@@ -109,6 +109,7 @@ jobs:
           name: Link the module being tested to the samples.
           command: |
             cd samples/
+            npm link @google-cloud/vision
             npm install
             npm link @google-cloud/vision
             cd ..
