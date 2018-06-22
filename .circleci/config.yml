@@ -111,7 +111,6 @@ jobs:
             cd samples/
             npm link ../
             npm install
-            npm link @google-cloud/vision
             cd ..
           environment:
             NPM_CONFIG_PREFIX: /home/node/.npm-global
