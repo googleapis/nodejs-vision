@@ -61,9 +61,9 @@
     "test": "repo-tools test run --cmd npm -- run cover"
   },
   "dependencies": {
-    "@google-cloud/common": "^0.18.2",
-    "google-gax": "^0.16.0",
-    "google-proto-files": "^0.16.0",
+    "@google-cloud/common": "^0.20.1",
+    "google-gax": "^0.17.1",
+    "google-proto-files": "^0.16.1",
     "is": "^3.2.1",
     "lodash.merge": "^4.6.1",
     "protobufjs": "^6.8.6"
