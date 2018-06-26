@@ -22,7 +22,7 @@
     "@google-cloud/nodejs-repo-tools": "^2.3.0",
     "@google-cloud/storage": "^1.7.0",
     "ava": "^0.25.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.0"
   },
   "optionalDependencies": {
     "canvas": "^1.6.11"
