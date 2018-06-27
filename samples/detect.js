@@ -776,10 +776,6 @@ function detectPdfText(bucketName, fileName) {
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1;
 
-  console.log('-------------------------------------------');
-  console.log(vision);
-  console.log('-------------------------------------------');
-
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
 
