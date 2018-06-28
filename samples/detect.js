@@ -818,16 +818,11 @@ function detectPdfText(bucketName, fileName) {
     .then(results => {
       const operation = results[0];
       // Get a Promise representation of the final result of the job
-      operation
-        .promise()
-        .then(filesResponse => {
-          let destinationUri =
-            filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
-          console.log('Json saved to: ' + destinationUri);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      return operation.promise();
+    }).then(filesResponse => {
+      let destinationUri =
+        filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
+      console.log('Json saved to: ' + destinationUri);
     })
     .catch(function(error) {
       console.log(error);
