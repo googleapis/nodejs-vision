@@ -825,8 +825,8 @@ function detectPdfText(bucketName, fileName) {
         filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
       console.log('Json saved to: ' + destinationUri);
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(err => {
+      console.error('ERROR:', err);
     });
   // [END vision_async_detect_document_ocr]
 }
