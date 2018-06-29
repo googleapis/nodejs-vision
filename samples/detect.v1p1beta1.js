@@ -69,7 +69,11 @@ function detectFulltext(fileName) {
 
 function detectSafeSearch(fileName) {
   // [START vision_safe_search_detection]
-  // Imports the Google Cloud client library
+  // Imports the Google Cloud client library for Beta API
+  /**
+  * TODO(developer): Update client library import to use new
+  * version of API when desired features become available
+  */
   const vision = require('@google-cloud/vision').v1p1beta1;
 
   // Creates a client
@@ -101,7 +105,11 @@ function detectSafeSearch(fileName) {
 
 function detectWeb(fileName) {
   // [START vision_web_detection]
-  // Imports the Google Cloud client library
+  // Imports the Google Cloud client library for Beta API
+  /**
+  * TODO(developer): Update client library import to use new
+  * version of API when desired features become available
+  */
   const vision = require('@google-cloud/vision').v1p1beta1;
 
   // Creates a client
@@ -195,7 +203,11 @@ function detectWeb(fileName) {
 
 function detectWebEntitiesIncludingGeoResults(fileName) {
   // [START vision_web_entities_include_geo_results]
-  // Imports the Google Cloud client library
+  // Imports the Google Cloud client library for Beta API
+  /**
+  * TODO(developer): Update client library import to use new
+  * version of API when desired features become available
+  */
   const vision = require('@google-cloud/vision').v1p1beta1;
 
   // Creates a client
