@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 gapic = gcp.GAPICGenerator()
 
-versions = ['v1', 'v1p1beta1', 'v1p2beta1']
+versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1']
 
 for version in versions:
     library = gapic.node_library('vision', version)
