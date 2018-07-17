@@ -39,7 +39,8 @@ describe('ImageAnnotatorSmokeTest', () => {
       features: features,
     };
     var requests = [requestsElement];
-    client.batchAnnotateImages({requests: requests})
+    client
+      .batchAnnotateImages({requests: requests})
       .then(responses => {
         var response = responses[0];
         console.log(response);
