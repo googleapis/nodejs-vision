@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, Inc.
+ * Copyright 2018, Google, LLC
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,11 @@ function localizeObjects(file) {
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
   const fs = require('fs');
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Standard Endpoint
   const client = new vision.ImageAnnotatorClient();
@@ -60,6 +65,8 @@ function localizeObjectsGCS(uri) {
 }
 
 function detectHandwritingOCR(file) {
+  // [START vision detectHandwritingOCR]
+  // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
 
   // Creates a client
@@ -79,18 +86,16 @@ function detectHandwritingOCR(file) {
     .catch(err => {
       console.error('ERROR:', err);
     });
+  // [END vision detectHandwritingOCR]
 }
 
 function detectHandwritingGCS(uri) {
+  // [START vision detectHandwritingOCRGCS]
+  // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
-
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   client
     .documentTextDetection(uri)
@@ -101,6 +106,7 @@ function detectHandwritingGCS(uri) {
     .catch(err => {
       console.error('ERROR:', err);
     });
+  // [END vision detectHandwritingOCRGCS]
 }
 
 require(`yargs`)
