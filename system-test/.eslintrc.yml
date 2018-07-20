@@ -4,3 +4,4 @@ env:
 rules:
   node/no-unpublished-require: off
   no-console: off
+  no-deprecated-api: warn
