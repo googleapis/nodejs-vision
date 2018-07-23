@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, Inc.
+ * Copyright 2018, Google, LLC.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,6 +56,11 @@ function localizeObjectsGCS(uri) {
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
+  
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
 
   client
     .objectLocalization(uri)
@@ -107,6 +112,11 @@ function detectHandwritingGCS(uri) {
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
+  
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
 
   client
     .documentTextDetection(uri)
