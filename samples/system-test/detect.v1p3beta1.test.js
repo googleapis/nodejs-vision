@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, Google, LLC
+ * Copyright 2017, Google, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,9 +55,9 @@ test("ObjectLocalizer should detect 'Duck', 'Bird' and 'Toy' in duck_and_truck.j
     cwd
   );
   t.true(
-    output.includes(`"name": "Bird",`) &&
-      output.includes(`"name": "Duck"`) &&
-      output.includes(`"name": "Toy"`)
+    output.includes(`Name: Bird`) &&
+      output.includes(`Name: Duck`) &&
+      output.includes(`Name: Toy`)
   );
 });
 
@@ -67,9 +67,9 @@ test(`ObjectLocalizerGCS should detect 'Bird'in duck_and_truck.jpg in GCS bucket
     cwd
   );
   t.true(
-    output.includes(`"name": "Bird",`) &&
-      output.includes(`"name": "Duck"`) &&
-      output.includes(`"name": "Toy"`)
+    output.includes(`Name: Bird`) &&
+      output.includes(`Name: Duck`) &&
+      output.includes(`Name: Toy`)
   );
 });
 
