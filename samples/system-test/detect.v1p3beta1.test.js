@@ -79,9 +79,6 @@ test(`should read handwriting in local handwritten.jpg sample`, async t => {
     cwd
   );
   t.true(
-    // output.includes(
-    //   "'Full text: This is \n with \n d hand written message \n Google Cloud Platform. \n to \n use \n'"
-    // )
     output.includes(`hand written message`)
   );
 });
