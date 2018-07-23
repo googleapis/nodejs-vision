@@ -15,7 +15,7 @@
 
 'use strict';
 
-function localizeObjects(file) {
+function localizeObjects(fileName) {
   // [START vision_localize_objects]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
@@ -29,7 +29,7 @@ function localizeObjects(file) {
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
   const request = {
-    image: {content: fs.readFileSync(file)},
+    image: {content: fs.readFileSync(fileName)},
   };
 
   client
