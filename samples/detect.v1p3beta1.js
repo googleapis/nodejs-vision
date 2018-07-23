@@ -15,8 +15,6 @@
 
 'use strict';
 
-//CF: change service path, update helpers file to newest library when able.
-
 function localizeObjects(fileName) {
   // [START vision_localize_objects]
   // Imports the Google Cloud client libraries
