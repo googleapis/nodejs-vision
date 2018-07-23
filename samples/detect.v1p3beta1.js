@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, LLC
+ * Copyright 2018, Google, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,27 +15,35 @@
 
 'use strict';
 
+//CF: change service path, update helpers file to newest library when able.
+
 function localizeObjects(fileName) {
   // [START vision_localize_objects]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
   const fs = require('fs');
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
-
-  // Creates a client
+  // Standard Endpoint
   const client = new vision.ImageAnnotatorClient();
   const request = {
     image: {content: fs.readFileSync(fileName)},
   };
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const fileName = 'Local image file, e.g. /path/to/image.png';
   client
     .objectLocalization(request)
     .then(results => {
-      console.log(JSON.stringify(results, null, '\t'));
+      const objects = results[0].localizedObjectAnnotations;
+      objects.forEach(object => {
+        console.log(`Name: ${object.name}`);
+        console.log(`Confidence: ${object.score}`);
+        console.log(
+          JSON.stringify(object.boundingPoly.normalizedVertices, null, `\t`)
+        );
+      });
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -54,7 +62,14 @@ function localizeObjectsGCS(uri) {
   client
     .objectLocalization(uri)
     .then(results => {
-      console.log(JSON.stringify(results, null, '\t'));
+      const objects = results[0].localizedObjectAnnotations;
+      objects.forEach(object => {
+        console.log(`Name: ${object.name}`);
+        console.log(`Confidence: ${object.score}`);
+        console.log(
+          JSON.stringify(object.boundingPoly.normalizedVertices, null, `\t`)
+        );
+      });
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -62,7 +77,7 @@ function localizeObjectsGCS(uri) {
   // [END vision_localize_objects_uri]
 }
 
-function detectHandwritingOCR(file) {
+function detectHandwritingOCR(fileName) {
   // [START vision_handwritten_ocr]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
@@ -73,10 +88,10 @@ function detectHandwritingOCR(file) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const file = 'Local image file, e.g. /path/to/image.png';
+  // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   client
-    .documentTextDetection(file)
+    .documentTextDetection(fileName)
     .then(results => {
       const fullTextAnnotation = results[0].fullTextAnnotation;
       console.log(`Full text: ${fullTextAnnotation.text}`);
@@ -163,9 +178,9 @@ require(`yargs`)
     },
   })
   .example(`node $0 localizeObjects -f ./resources/duck_and_truck.jpg`)
-  .example(`node $0 localizeObjectsGCS gcsuri`)
+  .example(`node $0 localizeObjectsGCS gs://my-bucket/image.jpg`)
   .example(`node $0 detectHandwriting ./resources/handwritten.jpg`)
-  .example(`node $0 detectHandwritingGCS gcsuri`)
+  .example(`node $0 detectHandwritingGCS gs://my-bucket/image.jpg`)
   .wrap(120)
   .recommendCommands()
   .epilogue(`For more information, see https://cloud.google.com/vision/docs`)
