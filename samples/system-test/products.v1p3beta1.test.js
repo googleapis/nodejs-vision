@@ -33,7 +33,9 @@ const testProduct = {
   productCategory: 'homegoods',
 };
 testProduct.productPath = productSearch.productPath(
-  testProduct.projectId, testProduct.location, testProduct.productId
+  testProduct.projectId,
+  testProduct.location,
+  testProduct.productId
 );
 testProduct.createdProductPaths = [];
 
@@ -57,13 +59,14 @@ test.before(async () => {
   try {
     await productSearch.createProduct({
       parent: productSearch.locationPath(
-        testProduct.projectId, testProduct.location
+        testProduct.projectId,
+        testProduct.location
       ),
       productId: testProduct.productId,
       product: {
         displayName: testProduct.productDisplayName,
         productCategory: testProduct.productCategory,
-      }
+      },
     });
     testProduct.createdProductPaths.push(testProduct.productPath);
   } catch (err) {} // ignore error
@@ -80,13 +83,19 @@ test.after(async () => {
 test(`should create product`, async t => {
   var newProductId = `ProductId${uuid.v4()}`;
   var newProductPath = productSearch.productPath(
-    testProduct.projectId, testProduct.location, newProductId
+    testProduct.projectId,
+    testProduct.location,
+    newProductId
   );
   t.falsy(await getProductOrFalse(newProductPath));
   testProduct.createdProductPaths.push(newProductPath);
 
   const output = await tools.runAsync(
-    `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`,
+    `${cmd} createProduct "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${newProductId}" "${testProduct.productDisplayName}" "${
+      testProduct.productCategory
+    }"`,
     cwd
   );
 
@@ -103,20 +112,32 @@ test(`should list products`, async t => {
     cwd
   );
 
-  t.true(output.includes(`Product name: projects/${testProduct.projectId}/locations/${testProduct.location}/products/${testProduct.productId}`));
+  t.true(
+    output.includes(
+      `Product name: projects/${testProduct.projectId}/locations/${
+        testProduct.location
+      }/products/${testProduct.productId}`
+    )
+  );
   t.true(output.includes(`Product id: ${testProduct.productId}`));
-  t.true(output.includes(`Product display name: ${testProduct.productDisplayName}`));
+  t.true(
+    output.includes(`Product display name: ${testProduct.productDisplayName}`)
+  );
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
   t.true(output.includes(`Product labels:`));
 });
 
 test(`should delete product`, async t => {
-  const product = await productSearch.getProduct({name: `${testProduct.productPath}`});
+  const product = await productSearch.getProduct({
+    name: `${testProduct.productPath}`,
+  });
   t.truthy(product);
 
   const output = await tools.runAsync(
-    `${cmd} deleteProduct "${testProduct.projectId}" "${testProduct.location}" "${testProduct.productId}"`,
+    `${cmd} deleteProduct "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${testProduct.productId}"`,
     cwd
   );
 

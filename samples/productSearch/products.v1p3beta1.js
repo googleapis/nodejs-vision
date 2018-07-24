@@ -15,7 +15,13 @@
 
 'use strict';
 
-function createProduct(projectId, location, productId, productDisplayName, productCategory) {
+function createProduct(
+  projectId,
+  location,
+  productId,
+  productDisplayName,
+  productCategory
+) {
   // [START product_search_create_product]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
@@ -130,13 +136,17 @@ require(`yargs`) // eslint-disable-line
     `createProduct <projectId> <location> <productId> <productDisplayName> <productCategory>`,
     `Create product`,
     {},
-    opts => createProduct(opts.projectId, opts.location, opts.productId, opts.productDisplayName, opts.productCategory)
+    opts =>
+      createProduct(
+        opts.projectId,
+        opts.location,
+        opts.productId,
+        opts.productDisplayName,
+        opts.productCategory
+      )
   )
-  .command(
-    `listProducts <projectId> <location>`,
-    `List products`,
-    {},
-    opts => listProducts(opts.projectId, opts.location)
+  .command(`listProducts <projectId> <location>`, `List products`, {}, opts =>
+    listProducts(opts.projectId, opts.location)
   )
   .command(
     `deleteProduct <projectId> <location> <productId>`,
