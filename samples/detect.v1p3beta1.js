@@ -25,14 +25,16 @@ function localizeObjects(fileName) {
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
-  const request = {
-    image: {content: fs.readFileSync(fileName)},
-  };
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
   // const fileName = 'Local image file, e.g. /path/to/image.png';
+  
+  const request = {
+    image: {content: fs.readFileSync(fileName)},
+  };
+  
   client
     .objectLocalization(request)
     .then(results => {
