@@ -56,6 +56,7 @@ function localizeObjectsGCS(uri) {
   // [START vision_localize_objects_uri]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
+  const fs = require(`fs`);
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();
