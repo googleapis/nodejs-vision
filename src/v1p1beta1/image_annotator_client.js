@@ -120,7 +120,9 @@ class ImageAnnotatorClient {
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
-    var imageAnnotatorStubMethods = ['batchAnnotateImages'];
+    var imageAnnotatorStubMethods = [
+      'batchAnnotateImages',
+    ];
     for (let methodName of imageAnnotatorStubMethods) {
       this._innerApiCalls[methodName] = gax.createApiCall(
         imageAnnotatorStub.then(
@@ -222,5 +224,6 @@ class ImageAnnotatorClient {
     return this._innerApiCalls.batchAnnotateImages(request, options, callback);
   }
 }
+
 
 module.exports = ImageAnnotatorClient;
