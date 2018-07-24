@@ -29,7 +29,7 @@ function localizeObjects(fileName) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
+  // const fileName = `/path/to/localImage.png`;
   
   const request = {
     image: {content: fs.readFileSync(fileName)},
@@ -64,7 +64,7 @@ function localizeObjectsGCS(uri) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
+  // const uri = `gs://bucket/bucketImage.png`;
 
   client
     .objectLocalization(uri)
@@ -94,7 +94,7 @@ function detectHandwritingOCR(fileName) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const fileName = 'Local image file, e.g. /path/to/image.png';
+  // const fileName = `/path/to/localImage.png`;
 
   const request = {
     image: {
@@ -127,7 +127,7 @@ function detectHandwritingGCS(uri) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
+  // const uri = `gs://bucket/bucketImage.png`;
 
   const request = {
     image: {
