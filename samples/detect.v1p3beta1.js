@@ -23,7 +23,6 @@ function localizeObjects(fileName) {
   const vision = require('@google-cloud/vision').v1p3beta1;
   const fs = require('fs');
 
-  // Standard Endpoint
   const client = new vision.ImageAnnotatorClient();
   const request = {
     image: {content: fs.readFileSync(fileName)},
