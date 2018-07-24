@@ -21,7 +21,7 @@ const vision = require('@google-cloud/vision').v1p3beta1;
 const productSearch = new vision.ProductSearchClient();
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
-const cmd = `node productSearch/products.v1p3beta1.js`;
+const cmd = `node products.v1p3beta1.js`;
 const cwd = path.join(__dirname, `..`);
 
 // Shared fixture data for product tests
