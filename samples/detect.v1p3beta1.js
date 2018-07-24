@@ -97,7 +97,9 @@ function detectHandwritingOCR(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   const request = {
-    image: {content: fs.readFileSync(fileName)},
+    image: {
+      content: fs.readFileSync(fileName)
+    },
     feature: {
       languageHints: ['en-t-i0-handwrit'],
     },
@@ -128,7 +130,9 @@ function detectHandwritingGCS(uri) {
   // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
 
   const request = {
-    image: {content: fs.readFileSync(uri)},
+    image: {
+      content: fs.readFileSync(uri)
+    },
     feature: {
       languageHints: ['en-t-i0-handwrit'],
     },
