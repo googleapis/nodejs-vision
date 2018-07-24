@@ -106,6 +106,22 @@ test(`should create product`, async t => {
   t.true(newProduct.productCategory == testProduct.productCategory);
 });
 
+test(`should get product`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} getProduct "${testProduct.projectId}" "${testProduct.location}" "${
+      testProduct.productId
+    }"`,
+    cwd
+  );
+
+  t.true(output.includes(`Product name: ${testProduct.productPath}`));
+  t.true(output.includes(`Product id: ${testProduct.productId}`));
+  t.true(output.includes(`Product display name:`));
+  t.true(output.includes(`Product description:`));
+  t.true(output.includes(`Product category: ${testProduct.productCategory}`));
+  t.true(output.includes(`Product labels:`));
+});
+
 test(`should list products`, async t => {
   const output = await tools.runAsync(
     `${cmd} listProducts "${testProduct.projectId}" "${testProduct.location}"`,
