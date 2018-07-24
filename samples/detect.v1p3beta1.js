@@ -40,9 +40,8 @@ function localizeObjects(fileName) {
       objects.forEach(object => {
         console.log(`Name: ${object.name}`);
         console.log(`Confidence: ${object.score}`);
-        console.log(
-          JSON.stringify(object.boundingPoly.normalizedVertices, null, `\t`)
-        );
+        const veritices = object.boundingPoly.normalizedVertices;
+        veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
       });
     })
     .catch(err => {
@@ -71,9 +70,8 @@ function localizeObjectsGCS(uri) {
       objects.forEach(object => {
         console.log(`Name: ${object.name}`);
         console.log(`Confidence: ${object.score}`);
-        console.log(
-          JSON.stringify(object.boundingPoly.normalizedVertices, null, `\t`)
-        );
+        const veritices = object.boundingPoly.normalizedVertices;
+        veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
       });
     })
     .catch(err => {
