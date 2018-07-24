@@ -128,17 +128,9 @@ test(`should list products`, async t => {
     cwd
   );
 
-  t.true(
-    output.includes(
-      `Product name: projects/${testProduct.projectId}/locations/${
-        testProduct.location
-      }/products/${testProduct.productId}`
-    )
-  );
+  t.true(output.includes(`Product name: ${testProduct.productPath}`));
   t.true(output.includes(`Product id: ${testProduct.productId}`));
-  t.true(
-    output.includes(`Product display name: ${testProduct.productDisplayName}`)
-  );
+  t.true(output.includes(`Product display name: ${testProduct.productDisplayName}`));
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
   t.true(output.includes(`Product labels:`));
