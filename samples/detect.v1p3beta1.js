@@ -95,8 +95,14 @@ function detectHandwritingOCR(fileName) {
    */
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
+  const request = {
+    image: {content: fs.readFileSync(fileName)},
+    feature: {
+      languageHints: ['en-t-i0-handwrit'],
+    },
+  };
   client
-    .documentTextDetection(fileName)
+    .documentTextDetection(request)
     .then(results => {
       const fullTextAnnotation = results[0].fullTextAnnotation;
       console.log(`Full text: ${fullTextAnnotation.text}`);
@@ -120,8 +126,15 @@ function detectHandwritingGCS(uri) {
    */
   // const uri = path to GCS image file 'Local image file, e.g. gs:/bucket/image.png';
 
+  const request = {
+    image: {content: fs.readFileSync(uri)},
+    feature: {
+      languageHints: ['en-t-i0-handwrit'],
+    },
+  };
+
   client
-    .documentTextDetection(uri)
+    .documentTextDetection(request)
     .then(results => {
       const fullTextAnnotation = results[0].fullTextAnnotation;
       console.log(`Full text: ${fullTextAnnotation.text}`);
@@ -181,7 +194,7 @@ require(`yargs`)
     },
     handwritingGcsUri: {
       alias: 'u',
-      default: `gs://nodejs-docs-samples//handwritten.jpg`,
+      default: `gs://cloud-samples-data/vision/handwritten.jpg`,
       global: true,
       requiresArg: true,
       type: 'string',
