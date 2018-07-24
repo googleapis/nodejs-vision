@@ -65,6 +65,41 @@ function createProduct(
   // [END product_search_create_product]
 }
 
+function getProduct(projectId, location, productId) {
+  // [START product_search_get_product]
+  // Imports the Google Cloud client library
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  // Creates a client
+  const client = new vision.ProductSearchClient();
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+
+  // Resource path that represents Google Cloud Platform location.
+  const productPath = client.productPath(projectId, location, productId);
+
+  client
+    .getProduct({name: productPath})
+    .then(results => {
+      const product = results[0];
+      console.log(`Product name: ${product.name}`);
+      console.log(`Product id: ${product.name.split('/').pop()}`);
+      console.log(`Product display name: ${product.displayName}`);
+      console.log(`Product description: ${product.description}`);
+      console.log(`Product category: ${product.productCategory}`);
+      console.log(`Product labels: ${product.productLabels}`);
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  // [END product_search_get_product]
+}
+
 function listProducts(projectId, location) {
   // [START product_search_list_products]
   // Imports the Google Cloud client library
@@ -144,6 +179,12 @@ require(`yargs`) // eslint-disable-line
         opts.productDisplayName,
         opts.productCategory
       )
+  )
+  .command(
+    `getProduct <projectId> <location> <productId>`,
+    `Get product`,
+    {},
+    opts => getProduct(opts.projectId, opts.location, opts.productId)
   )
   .command(`listProducts <projectId> <location>`, `List products`, {}, opts =>
     listProducts(opts.projectId, opts.location)
