@@ -21,7 +21,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()gcp.CommonTemplates()
+gapic = gcp.GAPICGenerator()common_templates = gcp.CommonTemplates()
 
 
 versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1']
