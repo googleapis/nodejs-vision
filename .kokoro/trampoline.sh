@@ -18,6 +18,7 @@ set -eo pipefail
 # Always run the cleanup script, regardless of the success of bouncing into
 # the container.
 function cleanup() {
+    chmod +x ${KOKORO_GFILE_DIR}/trampoline_cleanup.sh
     ${KOKORO_GFILE_DIR}/trampoline_cleanup.sh
     echo "cleanup";
 }
