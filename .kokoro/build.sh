@@ -16,5 +16,6 @@
 
 set -eo pipefail
 
+cd github/nodejs-vision
 npm install
 npm test
