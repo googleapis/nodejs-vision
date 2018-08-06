@@ -18,4 +18,8 @@ set -eo pipefail
 
 cd github/nodejs-vision
 npm install
+cd samples/
+npm link ../
+npm install
 npm run lint
+cd ../
