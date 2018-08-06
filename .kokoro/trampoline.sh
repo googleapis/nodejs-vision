@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+set -xeo pipefail
 
 # Always run the cleanup script, regardless of the success of bouncing into
 # the container.
