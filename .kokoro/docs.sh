@@ -20,10 +20,4 @@ cd github/nodejs-vision
 
 npm install
 
-# Install and link samples
-cd samples/
-npm link ../
-npm install
-cd ..
-
 npm run docs
