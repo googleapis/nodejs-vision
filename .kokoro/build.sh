@@ -19,3 +19,4 @@ set -eo pipefail
 cd github/nodejs-vision
 npm install
 npm test
+node_modules/.bin/codecov

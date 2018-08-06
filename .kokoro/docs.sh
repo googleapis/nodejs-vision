@@ -17,5 +17,7 @@
 set -eo pipefail
 
 cd github/nodejs-vision
+
 npm install
+
 npm run docs
