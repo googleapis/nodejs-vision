@@ -116,11 +116,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProductSets = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProductSets = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.productSets);
       };
@@ -168,11 +164,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -205,11 +197,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -304,11 +292,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -329,11 +313,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -450,11 +430,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProducts = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProducts = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.products);
       };
@@ -502,11 +478,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         name: formattedName,
       };
@@ -543,11 +515,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         name: formattedName,
       };
@@ -646,11 +614,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         name: formattedName,
       };
@@ -671,11 +635,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         name: formattedName,
       };
@@ -703,11 +663,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var referenceImage = {};
       var referenceImageId = 'referenceImageId1946713331';
       var request = {
@@ -744,11 +700,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var referenceImage = {};
       var referenceImageId = 'referenceImageId1946713331';
       var request = {
@@ -781,20 +733,13 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      var formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       var request = {
         name: formattedName,
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.deleteReferenceImage = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.deleteReferenceImage = mockSimpleGrpcMethod(request);
 
       client.deleteReferenceImage(request, err => {
         assert.ifError(err);
@@ -809,12 +754,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      var formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       var request = {
         name: formattedName,
       };
@@ -842,11 +782,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         parent: formattedParent,
       };
@@ -863,11 +799,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listReferenceImages = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listReferenceImages = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.referenceImages);
       };
@@ -886,11 +818,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      var formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       var request = {
         parent: formattedParent,
       };
@@ -919,12 +847,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      var formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       var request = {
         name: formattedName,
       };
@@ -957,12 +880,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      var formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       var request = {
         name: formattedName,
       };
@@ -991,11 +909,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var product = 'product-309474065';
       var request = {
         name: formattedName,
@@ -1003,9 +917,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.addProductToProductSet = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.addProductToProductSet = mockSimpleGrpcMethod(request);
 
       client.addProductToProductSet(request, err => {
         assert.ifError(err);
@@ -1020,11 +932,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var product = 'product-309474065';
       var request = {
         name: formattedName,
@@ -1054,11 +962,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var product = 'product-309474065';
       var request = {
         name: formattedName,
@@ -1066,9 +970,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.removeProductFromProductSet = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.removeProductFromProductSet = mockSimpleGrpcMethod(request);
 
       client.removeProductFromProductSet(request, err => {
         assert.ifError(err);
@@ -1083,11 +985,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var product = 'product-309474065';
       var request = {
         name: formattedName,
@@ -1117,11 +1015,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -1136,11 +1030,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProductsInProductSet = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProductsInProductSet = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.products);
       };
@@ -1159,11 +1049,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      var formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      var formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       var request = {
         name: formattedName,
       };
@@ -1203,24 +1089,17 @@ describe('ProductSearchClient', () => {
       var expectedResponse = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .importProductSets(request)
-        .then(responses => {
-          var operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.importProductSets(request).then(responses => {
+        var operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes importProductSets with error', done => {
@@ -1238,26 +1117,18 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .importProductSets(request)
-        .then(responses => {
-          var operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.importProductSets(request).then(responses => {
+        var operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1265,16 +1136,11 @@ describe('ProductSearchClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.importProductSets
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.importProductSets
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.importProductSets.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.importProductSets.metadataDecoder instanceof Function);
     });
   });
+
 });
 describe('ImageAnnotatorClient', () => {
   describe('batchAnnotateImages', () => {
@@ -1351,24 +1217,17 @@ describe('ImageAnnotatorClient', () => {
       var expectedResponse = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          var operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        var operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes asyncBatchAnnotateFiles with error', done => {
@@ -1384,26 +1243,18 @@ describe('ImageAnnotatorClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          var operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        var operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1411,16 +1262,11 @@ describe('ImageAnnotatorClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.metadataDecoder instanceof Function);
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {
@@ -1444,11 +1290,12 @@ function mockLongRunningGrpcMethod(expectedRequest, response, error) {
         return new Promise((resolve, reject) => {
           if (error) {
             reject(error);
-          } else {
+          }
+          else {
             resolve([response]);
           }
         });
-      },
+      }
     };
     return Promise.resolve([mockOperation]);
   };

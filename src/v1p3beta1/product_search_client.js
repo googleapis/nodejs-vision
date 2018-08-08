@@ -155,15 +155,10 @@ class ProductSearchClient {
     };
     var protoFilesRoot = new gax.GoogleProtoFilesRoot();
     protoFilesRoot = protobuf.loadSync(
-      path.join(
-        __dirname,
-        '..',
-        '..',
-        'protos',
-        'google/cloud/vision/v1p3beta1/product_search_service.proto'
-      ),
+      path.join(__dirname, '..', '..', 'protos', 'google/cloud/vision/v1p3beta1/product_search_service.proto'),
       protoFilesRoot
     );
+
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
@@ -240,8 +235,7 @@ class ProductSearchClient {
             }
         ),
         defaults[methodName],
-        this._descriptors.page[methodName] ||
-          this._descriptors.longrunning[methodName]
+        this._descriptors.page[methodName] || this._descriptors.longrunning[methodName]
       );
     }
   }
@@ -509,7 +503,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a ProductSet.
@@ -908,7 +902,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a Product.
@@ -1382,7 +1376,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a ReferenceImage.
@@ -1493,11 +1487,7 @@ class ProductSearchClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.addProductToProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.addProductToProductSet(request, options, callback);
   }
 
   /**
@@ -1552,11 +1542,7 @@ class ProductSearchClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.removeProductFromProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.removeProductFromProductSet(request, options, callback);
   }
 
   /**
@@ -1659,11 +1645,7 @@ class ProductSearchClient {
     }
     options = options || {};
 
-    return this._innerApiCalls.listProductsInProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.listProductsInProductSet(request, options, callback);
   }
 
   /**
@@ -1722,7 +1704,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Asynchronous API that imports a list of reference images to specified
@@ -1916,7 +1898,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromLocationName(locationName) {
-    return this._pathTemplates.locationPathTemplate.match(locationName).project;
+    return this._pathTemplates.locationPathTemplate
+      .match(locationName)
+      .project;
   }
 
   /**
@@ -1927,7 +1911,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromLocationName(locationName) {
-    return this._pathTemplates.locationPathTemplate.match(locationName)
+    return this._pathTemplates.locationPathTemplate
+      .match(locationName)
       .location;
   }
 
@@ -1939,7 +1924,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .project;
   }
 
@@ -1951,7 +1937,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .location;
   }
 
@@ -1963,7 +1950,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product_set.
    */
   matchProductSetFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .product_set;
   }
 
@@ -1975,7 +1963,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).project;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .project;
   }
 
   /**
@@ -1986,7 +1976,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).location;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .location;
   }
 
   /**
@@ -1997,7 +1989,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product.
    */
   matchProductFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).product;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .product;
   }
 
   /**
@@ -2008,9 +2002,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).project;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .project;
   }
 
   /**
@@ -2021,9 +2015,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).location;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .location;
   }
 
   /**
@@ -2034,9 +2028,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product.
    */
   matchProductFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).product;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .product;
   }
 
   /**
@@ -2047,10 +2041,11 @@ class ProductSearchClient {
    * @returns {String} - A string representing the reference_image.
    */
   matchReferenceImageFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).reference_image;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .reference_image;
   }
 }
+
 
 module.exports = ProductSearchClient;
