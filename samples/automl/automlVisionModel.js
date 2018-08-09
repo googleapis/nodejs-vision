@@ -43,8 +43,8 @@ function createModel(
   // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
   // const modelName = `Name of the model, e.g. "myModel"`;
   // const trainBudget = `Budget for training model, e.g. 50`;
-  // A resource that represents Google Cloud Platform location.
 
+  // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
 
   // Check train budget condition.
