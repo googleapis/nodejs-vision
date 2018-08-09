@@ -14,6 +14,8 @@
 
 @echo "Starting Windows build"
 
+cd github/nodejs-vision
+
 call npm install || goto :error
 call npm run test
 
