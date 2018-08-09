@@ -17,7 +17,9 @@
 cd github/nodejs-vision
 
 call npm install || goto :error
-call npm run test
+call npm run test || goto :error
+
+goto :EOF
 
 :error
 exit /b 1
