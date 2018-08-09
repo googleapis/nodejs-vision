@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-/*eslint no-console: 0*/
-
 /**
  * This application demonstrates how to perform basic operations on dataset
  * with the Google AutoML Natural Language API.
@@ -24,8 +22,6 @@
  */
 
 'use strict';
-const projectId = `203278707824`;
-const computeRegion = process.env.REGION_NAME;
 
 function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // [START automl_vision_predict]
@@ -131,4 +127,3 @@ require(`yargs`)
   .recommendCommands()
   .help()
   .strict().argv;
-

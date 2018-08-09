@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-/*eslint no-console: 0*/
-
 /**
  * This application demonstrates how to perform basic operations on dataset
  * with the Google AutoML Vision API.

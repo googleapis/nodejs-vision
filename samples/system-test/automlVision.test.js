@@ -22,9 +22,9 @@ const tools = require(`@google-cloud/nodejs-repo-tools`);
 const uuid = require(`uuid`);
 
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
-const cmdDataset = `node ../automl/automlVisionDataset.js`;
-const cmdModel = `node ../automl/automlVisionModel.js`;
-const cmdPredict = `node ../automl/automlVisionPredict.js`;
+const cmdDataset = `node ./automl/automlVisionDataset.js`;
+const cmdModel = `node ./automl/automlVisionModel.js`;
+const cmdPredict = `node ./automl/automlVisionPredict.js`;
 
 const flowerTrainData = `gs://`;
 const cwd = path.join(__dirname, `..`);
@@ -32,8 +32,8 @@ const cwd = path.join(__dirname, `..`);
 const testDataSetName = `testDataSet`;
 const dummyDataSet = `dummyDataSet`;
 const testModelName = "dummyModel";
-const sampleImage = `../automl/resources/testImage.jpg`;
-const sampleImage2 = `../automl/resources/testImage2.jpg`;
+const sampleImage = `./automl/resources/testImage.jpg`;
+const sampleImage2 = `./automl/resources/testImage2.jpg`;
 
 // skipped because it's been taking too long to delete datasets
 test.skip(`It should create a create, list, and delete a dataset`, async t => {
