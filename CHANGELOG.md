@@ -4,6 +4,32 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/nodejs-vision?activeTab=versions
 
+## v0.22.0
+
+- build: configure Windows build on Kokoro (#165)
+- chore: do not use npm ci (#167)
+- build(kokoro): samples-test.sh need GCLOUD_PROJECT env; node6 and node8 is using wrong .sh (#162)
+- build(kokoro): setup samples and system test (#161)
+- chore: ignore package-lock.json (#160)
+- build: rename build.sh => test.sh; presubmit jobs runs lint and docs properly (#158)
+- fix(samples): missing fs requires causing sample-test to fail (#157)
+- build: add set -x to .sh to show the command being executed (#156)
+- add samples linking to kokoro jobs (#155)
+- Kokoro multi ver (#153)
+- chore: update renovate config (#152)
+- have presubmit.cfg in separate node* folders (#151)
+- split presubmit to multiple node versions (#149)
+
+### Implementation Changes
+
+### New Features
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
 ## v0.21.1
 
 Patch release to bring in updates to google-gax@0.18.0 so it no longer emits deprecation warnings with grpc (#120), along with other dependency updates and documentation changes.
