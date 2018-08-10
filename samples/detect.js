@@ -611,7 +611,7 @@ function detectWebGCS(bucketName, fileName) {
 }
 
 function detectWebGeo(fileName) {
-  // [START vision_web_entities_include_geo_results]
+  // [START vision_web_detection_include_geo]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision');
 
@@ -650,11 +650,11 @@ function detectWebGeo(fileName) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END vision_web_entities_include_geo_results]
+  // [END vision_web_detection_include_geo]
 }
 
 function detectWebGeoGCS(bucketName, fileName) {
-  // [START vision_web_entities_include_geo_results]
+  // [START vision_web_detection_include_geo_gcs]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision');
 
@@ -694,7 +694,7 @@ function detectWebGeoGCS(bucketName, fileName) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END vision_web_entities_include_geo_results]
+  // [END vision_web_detection_include_geo_gcs]
 }
 
 function detectFulltext(fileName) {
