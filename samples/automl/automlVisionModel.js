@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, Inc.
+ * Copyright 2018, Google, LLC.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,8 @@
  */
 
 `use strict`;
+
+/* eslint node/no-extraneous-require: off */
 
 function createModel(
   projectId,
@@ -109,6 +111,7 @@ function getOperationStatus(operationFullId) {
    * TODO(developer): Uncomment the following line before running the sample.
    */
   // const operationFullId = `Full name of an operation, eg. “Projects/<projectId>/locations/us-central1/operations/<operationId>
+
   // Get the latest state of a long-running operation.
 
   client.operationsClient.getOperation(operationFullId).then(responses => {
@@ -473,7 +476,7 @@ function deleteModel(projectId, computeRegion, modelId) {
     })
     .then(responses => {
       // The final result of the operation.
-      console.log(`Model deleted.`);
+      if (responses[2].done === true) console.log(`Model deleted.`);
     })
     .catch(err => {
       console.error(err);

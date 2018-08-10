@@ -21,6 +21,8 @@
  * https://cloud.google.com/vision/automl/docs/
  */
 
+/* eslint node/no-extraneous-require: off */
+
 `use strict`;
 
 function createDataset(projectId, computeRegion, datasetName, multilabel) {
@@ -205,7 +207,7 @@ function importData(projectId, computeRegion, datasetId, path) {
     })
     .then(responses => {
       // The final result of the operation.
-      console.log(`Data imported.`);
+      if (responses[2].done === true) console.log(`Data imported.`);
     })
     .catch(err => {
       console.error(err);
@@ -247,7 +249,7 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
     })
     .then(responses => {
       // The final result of the operation.
-      console.log(`Data exported.`);
+      if (responses[2].done === true) console.log(`Data exported.`);
     })
     .catch(err => {
       console.error(err);
@@ -280,7 +282,7 @@ function deleteDataset(projectId, computeRegion, datasetId) {
     })
     .then(responses => {
       // The final result of the operation.
-      console.log(`Dataset deleted.`);
+      if (responses[2].done === true) console.log(`Dataset deleted.`);
     })
     .catch(err => {
       console.error(err);
