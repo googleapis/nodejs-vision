@@ -771,7 +771,7 @@ function detectFulltextGCS(bucketName, fileName) {
 }
 
 function detectPdfText(bucketName, fileName) {
-  // [START vision_async_detect_document_ocr]
+  // [START vision_text_detection_pdf_gcs]
 
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1;
@@ -828,7 +828,7 @@ function detectPdfText(bucketName, fileName) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END vision_async_detect_document_ocr]
+  // [END vision_text_detection_pdf_gcs]
 }
 
 require(`yargs`) // eslint-disable-line
