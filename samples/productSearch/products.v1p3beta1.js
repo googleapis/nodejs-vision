@@ -22,7 +22,7 @@ function createProduct(
   productDisplayName,
   productCategory
 ) {
-  // [START product_search_create_product]
+  // [START vision_product_search_create_product]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -62,11 +62,11 @@ function createProduct(
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_create_product]
+  // [END vision_product_search_create_product]
 }
 
 function getProduct(projectId, location, productId) {
-  // [START product_search_get_product]
+  // [START vision_product_search_get_product]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -97,11 +97,11 @@ function getProduct(projectId, location, productId) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_get_product]
+  // [END vision_product_search_get_product]
 }
 
 function listProducts(projectId, location) {
-  // [START product_search_list_products]
+  // [START vision_product_search_list_products]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -133,11 +133,11 @@ function listProducts(projectId, location) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_list_products]
+  // [END vision_product_search_list_products]
 }
 
 function deleteProduct(projectId, location, productId) {
-  // [START product_search_delete_product]
+  // [START vision_product_search_delete_product]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -162,7 +162,7 @@ function deleteProduct(projectId, location, productId) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_delete_product]
+  // [END vision_product_search_delete_product]
 }
 
 require(`yargs`) // eslint-disable-line
