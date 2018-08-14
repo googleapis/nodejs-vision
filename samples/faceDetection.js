@@ -15,7 +15,7 @@
 
 'use strict';
 
-// [START vision_face_detection_client]
+// [START vision_face_detection_tutorial_client]
 // By default, the client will authenticate using the service account file
 // specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable and use
 // the project specified by the GCLOUD_PROJECT environment variable. See
@@ -26,12 +26,12 @@ var vision = require('@google-cloud/vision');
 var client = new vision.ImageAnnotatorClient();
 
 var fs = require('fs');
-// [END vision_face_detection_client]
+// [END vision_face_detection_tutorial_client]
 
 /**
  * Uses the Vision API to detect faces in the given file.
  */
-// [START vision_face_detection_send_request]
+// [START vision_face_detection_tutorial_send_request]
 function detectFaces(inputFile, callback) {
   // Make a call to the Vision API to detect the faces
   const request = {image: {source: {filename: inputFile}}};
@@ -48,12 +48,12 @@ function detectFaces(inputFile, callback) {
       callback(err);
     });
 }
-// [END vision_face_detection_send_request]
+// [END vision_face_detection_tutorial_send_request]
 
 /**
  * Draws a polygon around the faces, then saves to outputFile.
  */
-// [START vision_face_detection_process_response]
+// [START vision_face_detection_tutorial_process_response]
 function highlightFaces(inputFile, faces, outputFile, Canvas, callback) {
   fs.readFile(inputFile, (err, image) => {
     if (err) {
@@ -99,10 +99,10 @@ function highlightFaces(inputFile, faces, outputFile, Canvas, callback) {
     pngStream.on('end', callback);
   });
 }
-// [END vision_face_detection_process_response]
+// [END vision_face_detection_tutorial_process_response]
 
 // Run the example
-// [START vision_face_detection_run_application]
+// [START vision_face_detection_tutorial_run_application]
 function main(inputFile, outputFile, Canvas, callback) {
   outputFile = outputFile || 'out.png';
   detectFaces(inputFile, (err, faces) => {
@@ -120,7 +120,7 @@ function main(inputFile, outputFile, Canvas, callback) {
     });
   });
 }
-// [END vision_face_detection_run_application]
+// [END vision_face_detection_tutorial_run_application]
 
 exports.main = main;
 
