@@ -21,7 +21,7 @@ function createProductSet(
   productSetId,
   productSetDisplayName
 ) {
-  // [START product_search_create_product_set]
+  // [START vision_product_search_create_product_set]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -59,11 +59,11 @@ function createProductSet(
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_create_product_set]
+  // [END vision_product_search_create_product_set]
 }
 
 function getProductSet(projectId, location, productSetId) {
-  // [START product_search_get_product_set]
+  // [START vision_product_search_get_product_set]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -94,11 +94,11 @@ function getProductSet(projectId, location, productSetId) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_get_product_set]
+  // [END vision_product_search_get_product_set]
 }
 
 function listProductSets(projectId, location) {
-  // [START product_search_list_product_sets]
+  // [START vision_product_search_list_product_sets]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -126,11 +126,11 @@ function listProductSets(projectId, location) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_list_product_sets]
+  // [END vision_product_search_list_product_sets]
 }
 
 function deleteProductSet(projectId, location, productSetId) {
-  // [START product_search_delete_product_set]
+  // [START vision_product_search_delete_product_set]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -159,7 +159,7 @@ function deleteProductSet(projectId, location, productSetId) {
     .catch(err => {
       console.error('ERROR:', err);
     });
-  // [END product_search_delete_product_set]
+  // [END vision_product_search_delete_product_set]
 }
 
 require(`yargs`) // eslint-disable-line
