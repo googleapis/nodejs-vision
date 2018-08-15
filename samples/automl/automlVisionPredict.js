@@ -33,6 +33,15 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // Create client for prediction service.
   const client = new automl.v1beta1.PredictionServiceClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // const computeRegion = `region-name, e.g. "us-central1"`;
+  // const modelId = `id of the model, e.g. “ICN12345”`;
+  // const filePath = `local text file path of content to be classified, e.g. "./resources/test.txt"`;
+  // const scoreThreshold = `value between 0.0 and 1.0, e.g. "0.5"';
+
   // Get the full path of the model.
   const modelFullId = client.modelPath(projectId, computeRegion, modelId);
 
