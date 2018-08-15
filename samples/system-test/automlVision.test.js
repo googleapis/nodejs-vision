@@ -79,10 +79,6 @@ test.skip(`It should create a dataset, import data, and start making a model`, a
   // poll operation status, here confirming that operation is not complete yet
   output = await tools.runAsync(`${cmdModel} getOperationStatus -i "${dataSetId}" -o "${operationName}"`);
   t.true(output.includes(`done: false`));
-
-  // delete dataset 
-  // output = await tools.runAsync(`${cmdDataset} deleteDataset -i "${dataSetId}"`);
-  // t.true(output.includes(`Dataset deleted.`));
 });
 
 test(`It should display evaluation from prexisting model`, async t => {
@@ -90,6 +86,7 @@ test(`It should display evaluation from prexisting model`, async t => {
   const flowersDatasetId = `ICN7628761482635807401`;
   const flowersname = `projects/203278707824/locations/us-central1/datasets/ICN7628761482635807401`;
   const flowersDisplayName = `flowersTest`;
+  const donotdeleteModelId = `ICN723541179344731436`;
   
   //confirm dataset exists
   let output = await tools.runAsync(`${cmdDataset} listDatasets`);

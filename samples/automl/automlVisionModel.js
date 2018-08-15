@@ -502,7 +502,7 @@ require(`yargs`)
     },
     filter_: {
       alias: `f`,
-      default: `image_classification_dataset_metadata:*`,
+      //default: `image_classification_dataset_metadata:*`,
       type: `string`,
       requiresArg: true,
       description: `Name of the Dataset to search for`,
