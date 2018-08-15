@@ -502,7 +502,7 @@ require(`yargs`)
     },
     filter_: {
       alias: `f`,
-      //default: `imageClassificationModelMetadata:*`,
+      default: `image_classification_dataset_metadata:*`,
       type: `string`,
       requiresArg: true,
       description: `Name of the Dataset to search for`,
@@ -597,7 +597,7 @@ require(`yargs`)
   )
   .example(`node $0 createModel -i "DatasetID" -m "myModelName" -t "2"`)
   .example(`node $0 getOperationStatus -i "datasetId" -o "OperationFullID"`)
-  .example(`node $0 listModels -f`)
+  .example(`node $0 listModels -f "image_classification_dataset_metadata:*"`)
   .example(`node $0 getModel -a "ModelID"`)
   .example(`node $0 listModelEvaluations -a "ModelID"`)
   .example(`node $0 getModelEvaluation -a "ModelId" -e "ModelEvaluationID"`)

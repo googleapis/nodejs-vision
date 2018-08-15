@@ -315,7 +315,7 @@ require(`yargs`)
     },
     filter_: {
       alias: `f`,
-      default: `imageClassificationDatasetMetadata:*`,
+      default: `image_classification_dataset_metadata:*`,
       type: `string`,
       requiresArg: true,
       description: `Name of the Dataset to search for`,
@@ -385,7 +385,7 @@ require(`yargs`)
       )
   )
   .example(`node $0 createDataset -n "newDataSet"`)
-  .example(`node $0 listDatasets -f "imageClassificationDatasetMetadata:*"`)
+  .example(`node $0 listDatasets -f "image_classification_dataset_metadata:*"`)
   .example(`node $0 getDataset -i "DATASETID"`)
   .example(`node $0 deleteDataset -i "DATASETID"`)
   .example(
