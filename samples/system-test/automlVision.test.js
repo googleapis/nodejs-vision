@@ -43,15 +43,8 @@ test.skip(`It should create a create, list, and delete a dataset`, async t => {
 
   // Create dataset 
   output = await tools.runAsync(`${cmdDataset} createDataset -n "${testDataSetName}"`);
-  const parsedOut = output.split(`\n`);
-  const dataSetName = parsedOut[0].split(`:`)[1].trim();
-  const dataSetId = parsedOut[1].split(`:`)[1].trim();
-  const dataSetDisplayName = parsedOut[2].split(`:`)[1].trim();
+  const dataSetId = output.split(`\n`)[1].split(`:`)[1].trim();
   t.true(output.includes(`Dataset display name:  ${testDataSetName}`));
-
-  console.log(`dataSetName: ${dataSetName}`);
-  console.log(`dataSetId: ${dataSetId}`);
-  console.log(`dataSetDisplayName: ${dataSetDisplayName}`);
 
   // delete dataset 
   output = await tools.runAsync(`${cmdDataset} deleteDataset -i "${dataSetId}"`);
@@ -67,15 +60,8 @@ test.skip(`It should create a dataset, import data, and start making a model`, a
   
     // Create dataset 
     output = await tools.runAsync(`${cmdDataset} createDataset -n "${dummyDataSet}"`);
-    const parsedOut = output.split(`\n`);
-    const dataSetName = parsedOut[0].split(`:`)[1].trim();
-    const dataSetId = parsedOut[1].split(`:`)[1].trim();
-    const dataSetDisplayName = parsedOut[2].split(`:`)[1].trim();
+    const dataSetId = output.split(`\n`)[1].split(`:`)[1].trim();
     t.true(output.includes(`Dataset display name:  ${dummyDataSet}`));
-  
-    console.log(`dataSetName: ${dataSetName}`);
-    console.log(`dataSetId: ${dataSetId}`);
-    console.log(`dataSetDisplayName: ${dataSetDisplayName}`);
 
   // Import Data
   output = await tools.runAsync(`${cmdDataset} importData -i "${dataSetId}" -p "gs://nodejs-docs-samples-vcm/flowerTraindata20lines.csv"`);

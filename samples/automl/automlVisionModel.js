@@ -40,9 +40,9 @@ function createModel(
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
+  // const datasetId = `Id of the dataset`;
   // const modelName = `Name of the model, e.g. "myModel"`;
   // const trainBudget = `Budget for training model, e.g. 50`;
 
@@ -130,7 +130,7 @@ function listModels(projectId, computeRegion, filter_) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
 
@@ -217,7 +217,7 @@ function getModel(projectId, computeRegion, modelId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
 
@@ -293,7 +293,7 @@ function listModelEvaluations(projectId, computeRegion, modelId, filter_) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
   // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
@@ -331,7 +331,7 @@ function getModelEvaluation(
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
   // const modelEvaluationId = `Id of your model evaluation, e.g “ICN12345”
@@ -367,7 +367,7 @@ function displayEvaluation(projectId, computeRegion, modelId, filter_) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
   // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
@@ -460,7 +460,7 @@ function deleteModel(projectId, computeRegion, modelId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
 
@@ -538,9 +538,9 @@ require(`yargs`)
     projectId: {
       alias: `z`,
       type: `number`,
-      default: process.env.PROJECT_ID,
+      default: process.env.GCLOUD_PROJECT,
       requiresArg: true,
-      description: `The Project ID to use. Defaults to the value of the GCLOUD_PROJECTID`,
+      description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
     },
     trainBudget: {
       alias: `t`,

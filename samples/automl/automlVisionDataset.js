@@ -34,7 +34,7 @@ function createDataset(projectId, computeRegion, datasetName, multilabel) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const datasetName = `name of the dataset to create, e.g. “myDataset”`;
   // const modelName = `Name of the model, e.g. "myModel"`;
@@ -94,7 +94,7 @@ function listDatasets(projectId, computeRegion, filter_) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const filter_ = `filter expressions, must specify field e.g. “imageClassificationModelMetadata:*”`;
 
@@ -140,9 +140,9 @@ function getDataset(projectId, computeRegion, datasetId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
+  // const datasetId = `Id of the dataset`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -181,10 +181,10 @@ function importData(projectId, computeRegion, datasetId, path) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
-  // const path = `Cloud Storage Uri, target must be in AutoML Vision CSV format, e.g. “gs://myproject/mytraindata.csv”;`
+  // const datasetId = `Id of the dataset`;
+  // const path = `string or array of .csv paths in AutoML Vision CSV format, e.g. “gs://myproject/mytraindata.csv”;`
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -224,9 +224,9 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
+  // const datasetId = `Id of the dataset`;
   // const outputUri = `Google Cloud Storage URI for the export directory, e.g. “gs://myproject/output”;`
 
   // Get the full path of the dataset.
@@ -266,9 +266,9 @@ function deleteDataset(projectId, computeRegion, datasetId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `numeric Id of the project from PROJECT_ID env variable, e.g. 123456`;
+  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset, e.g. "ICN3874392874098"`;
+  // const datasetId = `Id of the dataset`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -332,7 +332,6 @@ require(`yargs`)
     outputUri: {
       alias: `o`,
       type: `string`,
-      //default: `gs://nodejs-docs-samples-vcm/dataSetOutput.csv`,
       requiresArg: true,
       description: `URI (or local path) to export dataset`,
     },
@@ -342,14 +341,14 @@ require(`yargs`)
       global: true,
       default: `gs://nodejs-docs-samples-vcm/flowerTraindataMini.csv`,
       requiresArg: true,
-      description: `URI or local path to dataset`,
+      description: `URI or local path to input .csv, or array of .csv paths`,
     },
     projectId: {
       alias: `z`,
       type: `number`,
-      default: process.env.PROJECT_ID,
+      default: process.env.GCLOUD_PROJECT,
       requiresArg: true,
-      description: `The Project ID to use. Defaults to the value of the GCLOUD_PROJECTID`,
+      description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
     },
   })
   .command(`createDataset`, `creates a new Dataset`, {}, opts =>

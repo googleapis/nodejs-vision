@@ -27,8 +27,6 @@
 
 function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // [START automl_vision_predict]
-  console.log(`projectId: ${projectId}`);
-  console.log(`compute region: ${computeRegion}`);
   const automl = require('@google-cloud/automl');
   const fs = require('fs');
 
@@ -60,11 +58,11 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   client
     .predict({name: modelFullId, payload: payload, params: params})
     .then(responses => {
-      console.log('Prediction results:');
-      for (let result of responses[0].payload) {
+      console.log(`Prediction results:`);
+      responses[0].payload.forEach(result => {
         console.log('Predicted class name: ', result.displayName);
         console.log('Predicted class score: ', result.classification.score);
-      }
+      });
     })
     .catch(err => {
       console.error(err);
@@ -101,7 +99,7 @@ require(`yargs`)
       type: `number`,
       default: process.env.PROJECT_ID,
       requiresArg: true,
-      description: `The Project ID to use. Defaults to the value of the GCLOUD_PROJECTID`,
+      description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
     },
     scoreThreshold: {
       alias: `s`,
