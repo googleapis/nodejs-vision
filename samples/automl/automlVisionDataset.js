@@ -25,7 +25,7 @@
 
 `use strict`;
 
-function createDataset(projectId, computeRegion, datasetName, multilabel) {
+function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   // [START automl_vision_createDataset]
   const automl = require(`@google-cloud/automl`);
 
@@ -37,14 +37,14 @@ function createDataset(projectId, computeRegion, datasetName, multilabel) {
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const datasetName = `name of the dataset to create, e.g. “myDataset”`;
-  // const modelName = `Name of the model, e.g. "myModel"`;
+  // const multiLabel = `type of classification problem, e.g. "false"`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
 
   // Classification type is assigned based on multilabel value.
   var classificationType = `MULTICLASS`;
-  if (multilabel) {
+  if (multiLabel) {
     classificationType = `MULTILABEL`;
   }
 
