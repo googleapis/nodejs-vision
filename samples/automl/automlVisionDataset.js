@@ -189,7 +189,7 @@ function importData(projectId, computeRegion, datasetId, path) {
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
 
-  // Get the multiple Google Cloud Storage URIs.
+  // Get one or more Google Cloud Storage URI(s).
   const inputUris = path.split(`,`);
   const inputConfig = {
     gcsSource: {
