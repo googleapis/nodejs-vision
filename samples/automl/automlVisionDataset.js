@@ -107,19 +107,19 @@ function listDatasets(projectId, computeRegion, filter_) {
 
       // Display the dataset information.
       console.log(`List of datasets:`);
-      for (let i = 0; i < dataset.length; i += 1) {
-        console.log(`Dataset name: `, dataset[i].name);
-        console.log(`Dataset Id: `, dataset[i].name.split(`/`).pop(-1));
-        console.log(`Dataset display name: `, dataset[i].displayName);
-        console.log(`Dataset example count: `, dataset[i].exampleCount);
+      for (let i of dataset) {
+        console.log(`Dataset name: `, i.name);
+        console.log(`Dataset Id: `, i.name.split(`/`).pop(-1));
+        console.log(`Dataset display name: `, i.displayName);
+        console.log(`Dataset example count: `, i.exampleCount);
         console.log(`Image Classification type:`);
         console.log(
           `\t`,
-          dataset[i].imageClassificationDatasetMetadata.classificationType
+          i.imageClassificationDatasetMetadata.classificationType
         );
         console.log(`Dataset create time: `);
-        console.log(`\tseconds: `, dataset[i].createTime.seconds);
-        console.log(`\tnanos: `, dataset[i].createTime.nanos);
+        console.log(`\tseconds: `, i.createTime.seconds);
+        console.log(`\tnanos: `, i.createTime.nanos);
         console.log(`\n`);
       }
     })
