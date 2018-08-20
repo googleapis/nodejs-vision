@@ -65,7 +65,6 @@
     "test": "npm run cover"
   },
   "dependencies": {
-    "@google-cloud/automl": "^0.1.1",
     "@google-cloud/promisify": "^0.3.0",
     "argparse": "^1.0.10",
     "google-gax": "^0.18.0",

@@ -23,8 +23,6 @@
 
 `use strict`;
 
-/* eslint node/no-extraneous-require: off */
-
 function createModel(
   projectId,
   computeRegion,

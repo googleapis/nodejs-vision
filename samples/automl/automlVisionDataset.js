@@ -21,8 +21,6 @@
  * https://cloud.google.com/vision/automl/docs/
  */
 
-/* eslint node/no-extraneous-require: off */
-
 `use strict`;
 
 function createDataset(projectId, computeRegion, datasetName, multiLabel) {

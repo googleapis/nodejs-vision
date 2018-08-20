@@ -21,8 +21,6 @@
  * https://cloud.google.com/natural-language/automl/docs/
  */
 
-/* eslint node/no-extraneous-require: off */
-
 'use strict';
 
 function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
