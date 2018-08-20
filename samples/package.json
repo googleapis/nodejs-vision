@@ -23,7 +23,11 @@
     "@google-cloud/nodejs-repo-tools": "^2.3.0",
     "@google-cloud/storage": "^1.7.0",
     "ava": "^0.25.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "eslint": "^5.0.1",
+    "eslint-config-prettier": "^3.0.0",
+    "eslint-plugin-node": "^7.0.0",
+    "eslint-plugin-prettier": "^2.6.1"
   },
   "optionalDependencies": {
     "canvas": "^1.6.11"

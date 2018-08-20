@@ -95,7 +95,6 @@ test(`It should display evaluation from prexisting model`, async t => {
   // list model evaluations, confirm model exists
   output = await tools.runAsync(`${cmdModel} listModelEvaluations -a "${flowersModelId}"`);
   const flowersEvaluationName = output.split(`/n`)[0].split(`:`)[1].trim();
-  console.log(`Evaluation name: ${flowersEvaluationName}`);
 
   //display evaluation
   output = await tools.runAsync(`${cmdModel} displayEvaluation -a "${flowersModelId}"`);
