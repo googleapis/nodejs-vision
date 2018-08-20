@@ -184,7 +184,7 @@ function importData(projectId, computeRegion, datasetId, path) {
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const datasetId = `Id of the dataset`;
-  // const path = `string or array of .csv paths in AutoML Vision CSV format, e.g. “gs://myproject/mytraindata.csv”;`
+  // const path = `string or array of .csv paths in AutoML Vision CSV format, e.g. “gs://myproject/traindata.csv”;`
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
