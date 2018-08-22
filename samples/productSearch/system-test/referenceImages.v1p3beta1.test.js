@@ -21,7 +21,7 @@ const vision = require('@google-cloud/vision').v1p3beta1;
 const productSearch = new vision.ProductSearchClient();
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
-const cmd = `node products.v1p3beta1.js`;
+const cmd = `node referenceImages.v1p3beta1.js`;
 const cwd = path.join(__dirname, `..`);
 
 // Shared fixture data for product tests
@@ -31,6 +31,8 @@ const testProduct = {
   productId: 'test_product_id_1',
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
+  productReferenceImageId: 'referenceImageId1234',
+  productImageUri: 'gs://python-docs-samples-tests/product_search/shoes_1.jpg',
 };
 testProduct.productPath = productSearch.productPath(
   testProduct.projectId,
@@ -80,7 +82,7 @@ test.after(async () => {
   });
 });
 
-test(`should create product`, async t => {
+test(`should create reference image`, async t => {
   var newProductId = `ProductId${uuid.v4()}`;
   var newProductPath = productSearch.productPath(
     testProduct.projectId,
@@ -91,68 +93,11 @@ test(`should create product`, async t => {
   testProduct.createdProductPaths.push(newProductPath);
 
   const output = await tools.runAsync(
-    `${cmd} createProduct "${testProduct.projectId}" "${
-      testProduct.location
-    }" "${newProductId}" "${testProduct.productDisplayName}" "${
-      testProduct.productCategory
-    }"`,
+    `${cmd} createReferenceImage "${testProduct.projectId}" "${
+        testProduct.location}" "${testProduct.productId}" "${
+        testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
     cwd
   );
 
-  t.true(output.includes(`Product name: ${newProductPath}`));
-
-  const newProduct = await getProductOrFalse(newProductPath);
-  t.true(newProduct.displayName == testProduct.productDisplayName);
-  t.true(newProduct.productCategory == testProduct.productCategory);
-});
-
-test(`should get product`, async t => {
-  const output = await tools.runAsync(
-    `${cmd} getProduct "${testProduct.projectId}" "${testProduct.location}" "${
-      testProduct.productId
-    }"`,
-    cwd
-  );
-
-  t.true(output.includes(`Product name: ${testProduct.productPath}`));
-  t.true(output.includes(`Product id: ${testProduct.productId}`));
-  t.true(output.includes(`Product display name:`));
-  t.true(output.includes(`Product description:`));
-  t.true(output.includes(`Product category: ${testProduct.productCategory}`));
-  t.true(output.includes(`Product labels:`));
-});
-
-test(`should list products`, async t => {
-  const output = await tools.runAsync(
-    `${cmd} listProducts "${testProduct.projectId}" "${testProduct.location}"`,
-    cwd
-  );
-
-  t.true(output.includes(`Product name: ${testProduct.productPath}`));
-  t.true(output.includes(`Product id: ${testProduct.productId}`));
-  t.true(output.includes(`Product display name: ${testProduct.productDisplayName}`));
-  t.true(output.includes(`Product description:`));
-  t.true(output.includes(`Product category: ${testProduct.productCategory}`));
-  t.true(output.includes(`Product labels:`));
-});
-
-test(`should delete product`, async t => {
-  const product = await productSearch.getProduct({
-    name: `${testProduct.productPath}`,
-  });
-  t.truthy(product);
-
-  const output = await tools.runAsync(
-    `${cmd} deleteProduct "${testProduct.projectId}" "${
-      testProduct.location
-    }" "${testProduct.productId}"`,
-    cwd
-  );
-
-  try {
-    await productSearch.getProduct({name: `${testProduct.productPath}`});
-    t.fail('Product was not deleted');
-  } catch (err) {
-    t.true(err.message.includes('Not found'));
-  }
+  t.true(output.includes(`response.uri: gs://`));
 });
