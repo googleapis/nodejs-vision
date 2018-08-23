@@ -52,7 +52,7 @@ test.skip(`It should create a create, list, and delete a dataset`, async t => {
 });
 
 // see : https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/vision/automl/model_test.py
-// we make too models running this test, see hard-coded workaround below
+// we make two models running this test, see hard-coded workaround below
 test.skip(`It should create a dataset, import data, and start making a model`, async t => {
     // Check to see that this dataset does not yet exist
     let output = await tools.runAsync(`${cmdDataset} listDatasets`);
