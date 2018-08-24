@@ -77,7 +77,7 @@ function createModel(
       const model = responses[0];
 
       // Retrieve deployment state.
-      var deploymentState = ``;
+      let deploymentState = ``;
       if (model.deploymentState === 1) {
         deploymentState = `deployed`;
       } else if (model.deploymentState === 2) {
@@ -471,7 +471,9 @@ function deleteModel(projectId, computeRegion, modelId) {
     })
     .then(responses => {
       // The final result of the operation.
-      if (responses[2].done === true) console.log(`Model deleted.`);
+      if (responses[2].done === true) {
+        console.log(`Model deleted.`);
+      }
     })
     .catch(err => {
       console.error(err);

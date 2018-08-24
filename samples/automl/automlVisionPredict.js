@@ -46,11 +46,10 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // Read the file content for prediction.
   const content = fs.readFileSync(filePath, 'base64');
 
-  var params = {};
+  let params = {};
+
   if (scoreThreshold) {
-    params = {
-      scoreThreshold: scoreThreshold,
-    };
+    params.scoreThreshold = scoreThreshold;
   }
 
   // Set the payload by giving the content and type of the file.

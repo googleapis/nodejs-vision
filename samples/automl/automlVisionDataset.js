@@ -41,7 +41,7 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   const projectLocation = client.locationPath(projectId, computeRegion);
 
   // Classification type is assigned based on multilabel value.
-  var classificationType = `MULTICLASS`;
+  let classificationType = `MULTICLASS`;
   if (multiLabel) {
     classificationType = `MULTILABEL`;
   }
