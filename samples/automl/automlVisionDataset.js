@@ -64,18 +64,17 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
       const dataset = responses[0];
 
       // Display the dataset information.
-      console.log(`Dataset name: `, dataset.name);
-      console.log(`Dataset id: `, dataset.name.split(`/`).pop(-1));
-      console.log(`Dataset display name: `, dataset.displayName);
-      console.log(`Dataset example count: `, dataset.exampleCount);
+      console.log(`Dataset name: ${dataset.name}`);
+      console.log(`Dataset id: ${dataset.name.split(`/`).pop(-1)}`);
+      console.log(`Dataset display name: ${dataset.displayName}`);
+      console.log(`Dataset example count: ${dataset.exampleCount}`);
       console.log(`Image Classification type:`);
       console.log(
-        `\t`,
-        dataset.imageClassificationDatasetMetadata.classificationType
+        `\t ${dataset.imageClassificationDatasetMetadata.classificationType}`
       );
       console.log(`Dataset create time:`);
-      console.log(`\tseconds: `, dataset.createTime.seconds);
-      console.log(`\tnanos: `, dataset.createTime.nanos);
+      console.log(`\tseconds: ${dataset.createTime.seconds}`);
+      console.log(`\tnanos: ${dataset.createTime.nanos}`);
     })
     .catch(err => {
       console.error(err);
@@ -108,18 +107,18 @@ function listDatasets(projectId, computeRegion, filter_) {
       // Display the dataset information.
       console.log(`List of datasets:`);
       for (let i of dataset) {
-        console.log(`Dataset name: `, i.name);
-        console.log(`Dataset Id: `, i.name.split(`/`).pop(-1));
-        console.log(`Dataset display name: `, i.displayName);
-        console.log(`Dataset example count: `, i.exampleCount);
+        console.log(`Dataset name: ${i.name}`);
+        console.log(`Dataset Id: ${i.name.split(`/`).pop(-1)}`);
+        console.log(`Dataset display name: ${i.displayName}`);
+        console.log(`Dataset example count: ${i.exampleCount}`);
         console.log(`Image Classification type:`);
         console.log(
           `\t`,
           i.imageClassificationDatasetMetadata.classificationType
         );
         console.log(`Dataset create time: `);
-        console.log(`\tseconds: `, i.createTime.seconds);
-        console.log(`\tnanos: `, i.createTime.nanos);
+        console.log(`\tseconds: ${i.createTime.seconds}`);
+        console.log(`\tnanos: ${i.createTime.nanos}`);
         console.log(`\n`);
       }
     })
@@ -152,17 +151,18 @@ function getDataset(projectId, computeRegion, datasetId) {
       const dataset = responses[0];
 
       // Display the dataset information.
-      console.log(`Dataset name: `, dataset.name);
-      console.log(`Dataset Id: `, dataset.name.split(`/`).pop(-1));
-      console.log(`Dataset display name: `, dataset.displayName);
-      console.log(`Dataset example count: `, dataset.exampleCount);
+      console.log(`Dataset name: ${dataset.name}`);
+      console.log(`Dataset Id: ${dataset.name.split(`/`).pop(-1)}`);
+      console.log(`Dataset display name: ${dataset.displayName}`);
+      console.log(`Dataset example count: ${dataset.exampleCount}`);
       console.log(
-        `Classification type: `,
-        dataset.imageClassificationDatasetMetadata.classificationType
+        `Classification type: ${
+          dataset.imageClassificationDatasetMetadata.classificationType
+        }`
       );
       console.log(`Dataset create time: `);
-      console.log(`\tseconds: `, dataset.createTime.seconds);
-      console.log(`\tnanos: `, dataset.createTime.nanos);
+      console.log(`\tseconds: ${dataset.createTime.seconds}`);
+      console.log(`\tnanos: ${dataset.createTime.nanos}`);
     })
     .catch(err => {
       console.error(err);

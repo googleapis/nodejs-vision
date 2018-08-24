@@ -85,13 +85,13 @@ function createModel(
       }
 
       // Display the model information.
-      console.log(`Model name: `, model.name);
-      console.log(`Model id: `, model.name.split(`/`).pop(-1));
-      console.log(`Model display name: `, model.displayName);
+      console.log(`Model name: ${model.name}`);
+      console.log(`Model id: ${model.name.split(`/`).pop(-1)}`);
+      console.log(`Model display name: ${model.displayName}`);
       console.log(`Model create time:`);
-      console.log(`\tseconds: `, model.createTime.seconds);
-      console.log(`\tnanos: `, model.createTime.nanos);
-      console.log(`Model deployment state: `, deploymentState);
+      console.log(`\tseconds: ${model.createTime.seconds}`);
+      console.log(`\tnanos: ${model.createTime.nanos}`);
+      console.log(`Model deployment state: ${deploymentState}`);
     })
     .catch(err => {
       console.error(err);
@@ -143,60 +143,52 @@ function listModels(projectId, computeRegion, filter_) {
 
       // Display the model information.
       console.log(`List of models:`);
-      for (let i = 0; i < model.length; i += 1) {
-        console.log(`Model name: `, model[i].name);
-        console.log(`Model id: `, model[i].name.split(`/`).pop(-1));
-        console.log(`Model display name: `, model[i].displayName);
-        console.log(`Model dataset id: `, model[i].datasetId);
-        if (model[i].modelMetadata === `translationModelMetadata`) {
+      for (let i of model) {
+        console.log(`Model name: ${i.name}`);
+        console.log(`Model id: ${i.name.split(`/`).pop(-1)}`);
+        console.log(`Model display name: ${i.displayName}`);
+        console.log(`Model dataset id: ${i.datasetId}`);
+        if (i.modelMetadata === `translationModelMetadata`) {
           console.log(`Translation model metadata:`);
+          console.log(`\tBase model: ${i.translationModelMetadata.baseModel}`);
           console.log(
-            `\tBase model: `,
-            model[i].translationModelMetadata.baseModel
+            `\tSource language code: ${
+              i.translationModelMetadata.sourceLanguageCode
+            }`
           );
           console.log(
-            `\tSource language code: `,
-            model[i].translationModelMetadata.sourceLanguageCode
+            `\tTarget language code: ${
+              i.translationModelMetadata.targetLanguageCode
+            }`
           );
+        } else if (i.modelMetadata === `textClassificationModelMetadata`) {
           console.log(
-            `\tTarget language code: `,
-            model[i].translationModelMetadata.targetLanguageCode
+            `Text classification model metadata: ${
+              i.textClassificationModelMetadata
+            }`
           );
-        } else if (
-          model[i].modelMetadata === `textClassificationModelMetadata`
-        ) {
-          console.log(
-            `Text classification model metadata: `,
-            model[i].textClassificationModelMetadata
-          );
-        } else if (
-          model[i].modelMetadata === `imageClassificationModelMetadata`
-        ) {
+        } else if (i.modelMetadata === `imageClassificationModelMetadata`) {
           console.log(`Image classification model metadata:`);
           console.log(
-            `\tBase model id: `,
-            model[i].imageClassificationModelMetadata.baseModelId
+            `\tBase model id: ${i.imageClassificationModelMetadata.baseModelId}`
           );
           console.log(
-            `\tTrain budget: `,
-            model[i].imageClassificationModelMetadata.trainBudget
+            `\tTrain budget: ${i.imageClassificationModelMetadata.trainBudget}`
           );
           console.log(
-            `\tTrain cost: `,
-            model[i].imageClassificationModelMetadata.trainCost
+            `\tTrain cost: ${i.imageClassificationModelMetadata.trainCost}`
           );
           console.log(
-            `\tStop reason: `,
-            model[i].imageClassificationModelMetadata.stopReason
+            `\tStop reason: ${i.imageClassificationModelMetadata.stopReason}`
           );
         }
         console.log(`Model create time:`);
-        console.log(`\tseconds: `, model[i].createTime.seconds);
-        console.log(`\tnanos: `, model[i].createTime.nanos);
+        console.log(`\tseconds: ${i.createTime.seconds}`);
+        console.log(`\tnanos: ${i.createTime.nanos}`);
         console.log(`Model update time:`);
-        console.log(`\tseconds: `, model[i].updateTime.seconds);
-        console.log(`\tnanos: `, model[i].updateTime.nanos);
-        console.log(`Model deployment state: `, model[i].deploymentState);
+        console.log(`\tseconds: ${i.updateTime.seconds}`);
+        console.log(`\tnanos: ${i.updateTime.nanos}`);
+        console.log(`Model deployment state: ${i.deploymentState}`);
         console.log(`\n`);
       }
     })
@@ -229,52 +221,57 @@ function getModel(projectId, computeRegion, modelId) {
       const model = responses[0];
 
       // Display the model information.
-      console.log(`Model name: `, model.name);
-      console.log(`Model id: `, model.name.split(`/`).pop(-1));
-      console.log(`Model display name: `, model.displayName);
-      console.log(`Model dataset id: `, model.datasetId);
+      console.log(`Model name: ${model.name}`);
+      console.log(`Model id: ${model.name.split(`/`).pop(-1)}`);
+      console.log(`Model display name: ${model.displayName}`);
+      console.log(`Model dataset id: ${model.datasetId}`);
       if (model.modelMetadata === `translationModelMetadata`) {
         console.log(`Translation model metadata:`);
-        console.log(`\tBase model: `, model.translationModelMetadata.baseModel);
         console.log(
-          `\tSource language code: `,
-          model.translationModelMetadata.sourceLanguageCode
+          `\tBase model: ${model.translationModelMetadata.baseModel}`
         );
         console.log(
-          `\tTarget language code: `,
-          model.translationModelMetadata.targetLanguageCode
+          `\tSource language code: ${
+            model.translationModelMetadata.sourceLanguageCode
+          }`
+        );
+        console.log(
+          `\tTarget language code: ${
+            model.translationModelMetadata.targetLanguageCode
+          }`
         );
       } else if (model.modelMetadata === `textClassificationModelMetadata`) {
         console.log(
-          `Text classification model metadata: `,
-          model.textClassificationModelMetadata
+          `Text classification model metadata: ${
+            model.textClassificationModelMetadata
+          }`
         );
       } else if (model.modelMetadata === `imageClassificationModelMetadata`) {
         console.log(`Image classification model metadata:`);
         console.log(
-          `\tBase model id: `,
-          model.imageClassificationModelMetadata.baseModelId
+          `\tBase model id: ${
+            model.imageClassificationModelMetadata.baseModelId
+          }`
         );
         console.log(
-          `\tTrain budget: `,
-          model.imageClassificationModelMetadata.trainBudget
+          `\tTrain budget: ${
+            model.imageClassificationModelMetadata.trainBudget
+          }`
         );
         console.log(
-          `\tTrain cost: `,
-          model.imageClassificationModelMetadata.trainCost
+          `\tTrain cost: ${model.imageClassificationModelMetadata.trainCost}`
         );
         console.log(
-          `\tStop reason: `,
-          model.imageClassificationModelMetadata.stopReason
+          `\tStop reason: ${model.imageClassificationModelMetadata.stopReason}`
         );
       }
       console.log(`Model create time:`);
-      console.log(`\tseconds: `, model.createTime.seconds);
-      console.log(`\tnanos: `, model.createTime.nanos);
+      console.log(`\tseconds: ${model.createTime.seconds}`);
+      console.log(`\tnanos: ${model.createTime.nanos}`);
       console.log(`Model update time:`);
-      console.log(`\tseconds: `, model.updateTime.seconds);
-      console.log(`\tnanos: `, model.updateTime.nanos);
-      console.log(`Model deployment state: `, model.deploymentState);
+      console.log(`\tseconds: ${model.updateTime.seconds}`);
+      console.log(`\tnanos: ${model.updateTime.nanos}`);
+      console.log(`Model deployment state: ${model.deploymentState}`);
     })
     .catch(err => {
       console.error(err);
