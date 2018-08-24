@@ -58,6 +58,49 @@ function createReferenceImage(
     // [END vision_product_search_create_reference_image]
   }
 
+
+  function getReferenceImage(
+    projectId,
+    location,
+    productId,
+    referenceImageId
+  ) {
+    // [START vision_product_search_get_reference_image]
+
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  var client = new vision.ProductSearchClient({
+    // optional auth parameters.
+  });
+
+  var formattedParent = client.productPath(projectId, location, productId);
+
+  var referenceImage = {
+      uri: gcsUri
+  };
+
+  var referenceImageId = '';
+
+  var formattedName = client.referenceImagePath(projectId, location, productId, referenceImageId);
+  
+  var request = {
+    name: formattedName,
+  };
+  
+  client.getReferenceImage(request)
+    .then(responses => {
+      var response = responses[0];
+      console.log(`response.boundingPolys: ${response.boundingPolys}`);
+      console.log(`response.name: ${response.name}`);
+      console.log(`response.uri: ${response.uri}`);
+    })
+    .catch(err => {
+      console.err(err);
+    });
+
+    // [END vision_product_search_get_reference_image]
+  }
+
 require(`yargs`) // eslint-disable-line
 .demand(1)
 .command(
@@ -71,6 +114,18 @@ require(`yargs`) // eslint-disable-line
       opts.productId,
       opts.referenceImageId,
       opts.gcsUri
+    )
+)
+.command(
+  `getReferenceImage <projectId> <location> <productId> <referenceImageId>`,
+  `Get Reference Image`,
+  {},
+  opts =>
+    createReferenceImage(
+      opts.projectId,
+      opts.location,
+      opts.productId,
+      opts.referenceImageId
     )
 )
 .example(`node $0 COMMAND ARG`)

@@ -28,10 +28,10 @@ const cwd = path.join(__dirname, `..`);
 const testProduct = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'test_product_id_1',
-  productDisplayName: 'test_product_display_name_1',
+  productId: 'fake_product_id_for_testing',
+  productDisplayName: 'fake_product_display_name_for_testing',
   productCategory: 'homegoods',
-  productReferenceImageId: 'referenceImageId1234',
+  productReferenceImageId: 'fake_reference_image_id_for_testing',
   productImageUri: 'gs://python-docs-samples-tests/product_search/shoes_1.jpg',
 };
 testProduct.productPath = productSearch.productPath(
@@ -94,6 +94,25 @@ test(`should create reference image`, async t => {
 
   const output = await tools.runAsync(
     `${cmd} createReferenceImage "${testProduct.projectId}" "${
+        testProduct.location}" "${testProduct.productId}" "${
+        testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
+    cwd
+  );
+
+  t.true(output.includes(`response.uri: gs://`));
+});
+
+test(`should get reference image`, async t => {
+  var productPath = productSearch.productPath(
+    testProduct.projectId,
+    testProduct.location,
+    testProduct.productId
+  );
+
+  t.falsy(await getProductOrFalse(productPath));
+
+  const output = await tools.runAsync(
+    `${cmd} getReferenceImage "${testProduct.projectId}" "${
         testProduct.location}" "${testProduct.productId}" "${
         testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
     cwd
