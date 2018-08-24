@@ -15,6 +15,7 @@
     "@google-cloud/automl": "^0.1.1",
     "@google-cloud/vision": "^0.21.1",
     "async": "^2.6.1",
+    "mathjs": "^5.0.4",
     "natural": "^0.6.1",
     "redis": "^2.8.0",
     "yargs": "^12.0.0"
