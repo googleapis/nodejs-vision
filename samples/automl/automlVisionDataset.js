@@ -24,7 +24,7 @@
 `use strict`;
 
 function createDataset(projectId, computeRegion, datasetName, multiLabel) {
-  // [START automl_vision_createDataset]
+  // [START automl_vision_create_dataset]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -80,11 +80,11 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_createDataset]
+  // [END automl_vision_create_dataset]
 }
 
 function listDatasets(projectId, computeRegion, filter_) {
-  // [START automl_vision_listDatasets]
+  // [START automl_vision_list_datasets]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -126,11 +126,11 @@ function listDatasets(projectId, computeRegion, filter_) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_listDatasets]
+  // [END automl_vision_list_datasets]
 }
 
 function getDataset(projectId, computeRegion, datasetId) {
-  // [START automl_vision_getDataset]
+  // [START automl_vision_get_dataset]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -167,11 +167,11 @@ function getDataset(projectId, computeRegion, datasetId) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_getDataset]
+  // [END automl_vision_get_dataset]
 }
 
 function importData(projectId, computeRegion, datasetId, path) {
-  // [START automl_vision_importData]
+  // [START automl_vision_import_data]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -210,11 +210,11 @@ function importData(projectId, computeRegion, datasetId, path) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_importData]
+  // [END automl_vision_import_data]
 }
 
 function exportData(projectId, computeRegion, datasetId, outputUri) {
-  // [START automl_vision_exportData]
+  // [START automl_vision_export_data]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -252,11 +252,11 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_exportData]
+  // [END automl_vision_export_data]
 }
 
 function deleteDataset(projectId, computeRegion, datasetId) {
-  // [START automl_vision_deleteDataset]
+  // [START automl_vision_delete_dataset]
   const automl = require(`@google-cloud/automl`);
 
   const client = new automl.v1beta1.AutoMlClient();
@@ -285,7 +285,7 @@ function deleteDataset(projectId, computeRegion, datasetId) {
     .catch(err => {
       console.error(err);
     });
-  // [END automl_vision_deleteDataset]
+  // [END automl_vision_delete_dataset]
 }
 
 require(`yargs`)
