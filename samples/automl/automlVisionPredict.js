@@ -53,11 +53,8 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   }
 
   // Set the payload by giving the content and type of the file.
-  const payload = {
-    image: {
-      imageBytes: content,
-    },
-  };
+  const payload = {};
+  payload.image = {imageBytes: content};
 
   // params is additional domain-specific parameters.
   // currently there is no additional parameters supported.

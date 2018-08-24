@@ -102,25 +102,25 @@ function listDatasets(projectId, computeRegion, filter_) {
   client
     .listDatasets({parent: projectLocation, filter: filter_})
     .then(responses => {
-      const dataset = responses[0];
+      const datasets = responses[0];
 
       // Display the dataset information.
       console.log(`List of datasets:`);
-      for (let i of dataset) {
-        console.log(`Dataset name: ${i.name}`);
-        console.log(`Dataset Id: ${i.name.split(`/`).pop(-1)}`);
-        console.log(`Dataset display name: ${i.displayName}`);
-        console.log(`Dataset example count: ${i.exampleCount}`);
+      datasets.forEach(dataset => {
+        console.log(`Dataset name: ${dataset.name}`);
+        console.log(`Dataset Id: ${dataset.name.split(`/`).pop(-1)}`);
+        console.log(`Dataset display name: ${dataset.displayName}`);
+        console.log(`Dataset example count: ${dataset.exampleCount}`);
         console.log(`Image Classification type:`);
         console.log(
           `\t`,
-          i.imageClassificationDatasetMetadata.classificationType
+          dataset.imageClassificationDatasetMetadata.classificationType
         );
         console.log(`Dataset create time: `);
-        console.log(`\tseconds: ${i.createTime.seconds}`);
-        console.log(`\tnanos: ${i.createTime.nanos}`);
+        console.log(`\tseconds: ${dataset.createTime.seconds}`);
+        console.log(`\tnanos: ${dataset.createTime.nanos}`);
         console.log(`\n`);
-      }
+      });
     })
     .catch(err => {
       console.error(err);
