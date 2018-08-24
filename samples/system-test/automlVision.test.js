@@ -22,10 +22,10 @@ const tools = require(`@google-cloud/nodejs-repo-tools`);
 const uuid = require(`uuid`);
 
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
-const automl = `node ./automl/`;
-const cmdDataset = `${automl}automlVisionDataset.js`;
-const cmdModel = `${automl}automlVisionModel.js`;
-const cmdPredict = `${automl}automlVisionPredict.js`;
+const automl = `node ./automl`;
+const cmdDataset = `${automl}/automlVisionDataset.js`;
+const cmdModel = `${automl}/automlVisionModel.js`;
+const cmdPredict = `${automl}/automlVisionPredict.js`;
 
 const flowerTrainData = `gs://`;
 const cwd = path.join(__dirname, `..`);
