@@ -63,8 +63,8 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
     .then(responses => {
       console.log(`Prediction results:`);
       responses[0].payload.forEach(result => {
-        console.log('Predicted class name: ', result.displayName);
-        console.log('Predicted class score: ', result.classification.score);
+        console.log(`Predicted class name: ${result.displayName}`);
+        console.log(`Predicted class score: ${result.classification.score}`);
       });
     })
     .catch(err => {
