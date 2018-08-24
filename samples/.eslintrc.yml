@@ -1,5 +1,5 @@
 ---
 rules:
   no-console: off
-  node/no-extraneous-require: off
+  
 
