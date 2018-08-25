@@ -514,7 +514,7 @@ describe('Vision helper methods', () => {
 
     it('throws an error if trying to invoke a method not available in current version', () => {
       // Use v1 version of client.
-      const client = new vision.v1.ImageAnnotatorClient(CREDENTIALS);
+      const client = new vision.v1p1beta1.ImageAnnotatorClient(CREDENTIALS);
 
       assert.throws(() => {
         // Object localization is only available for v1p3beta1.
