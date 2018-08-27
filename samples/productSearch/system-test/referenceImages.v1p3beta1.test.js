@@ -18,7 +18,7 @@
 const path = require(`path`);
 const uuid = require(`uuid`);
 const vision = require('@google-cloud/vision').v1p3beta1;
-const productSearch = new vision.ProductSearchClient();
+const productSearchClient = new vision.ProductSearchClient();
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 const cmd = `node referenceImages.v1p3beta1.js`;
@@ -28,23 +28,23 @@ const cwd = path.join(__dirname, `..`);
 const testProduct = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'fake_product_id_for_testing',
-  productDisplayName: 'fake_product_display_name_for_testing',
+  productId: 'test_product_id_1',
+  productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
-  productReferenceImageId: 'fake_reference_image_id_for_testing',
+  productReferenceImageId: `ReferenceImage${uuid.v4()}`,
   productImageUri: 'gs://python-docs-samples-tests/product_search/shoes_1.jpg',
 };
-testProduct.productPath = productSearch.productPath(
+testProduct.productPath = productSearchClient.productPath(
   testProduct.projectId,
   testProduct.location,
-  testProduct.productId
+  testProduct.productId,
 );
 testProduct.createdProductPaths = [];
 
 // Helper function: returns product if exists else false
 async function getProductOrFalse(productPath) {
   try {
-    const response = await productSearch.getProduct({name: productPath});
+    const response = await productSearchClient.getProduct({name: productPath});
     return response[0];
   } catch (err) {
     if (err.message.includes('Not found')) {
@@ -56,10 +56,11 @@ async function getProductOrFalse(productPath) {
 }
 
 test.before(tools.checkCredentials);
+
 test.before(async () => {
   // Create a test product for each test
   try {
-    await productSearch.createProduct({
+    await productSearchClient.createProduct({
       parent: productSearch.locationPath(
         testProduct.projectId,
         testProduct.location
@@ -73,50 +74,37 @@ test.before(async () => {
     testProduct.createdProductPaths.push(testProduct.productPath);
   } catch (err) {} // ignore error
 });
+
 test.after(async () => {
   // Delete products after each test
   testProduct.createdProductPaths.forEach(async path => {
     try {
-      await productSearch.deleteProduct({name: path});
+      await productSearchClient.deleteProduct({name: path});
     } catch (err) {} // ignore error
   });
 });
 
 test(`should create reference image`, async t => {
-  var newProductId = `ProductId${uuid.v4()}`;
-  var newProductPath = productSearch.productPath(
-    testProduct.projectId,
-    testProduct.location,
-    newProductId
-  );
-  t.falsy(await getProductOrFalse(newProductPath));
-  testProduct.createdProductPaths.push(newProductPath);
-
   const output = await tools.runAsync(
     `${cmd} createReferenceImage "${testProduct.projectId}" "${
         testProduct.location}" "${testProduct.productId}" "${
         testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
     cwd
   );
-
   t.true(output.includes(`response.uri: gs://`));
 });
 
-test(`should get reference image`, async t => {
-  var productPath = productSearch.productPath(
-    testProduct.projectId,
-    testProduct.location,
-    testProduct.productId
-  );
-
-  t.falsy(await getProductOrFalse(productPath));
-
+test(`should delete reference image`, async t => {
   const output = await tools.runAsync(
-    `${cmd} getReferenceImage "${testProduct.projectId}" "${
+    `${cmd} deleteReferenceImage "${testProduct.projectId}" "${
         testProduct.location}" "${testProduct.productId}" "${
-        testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
+        testProduct.productReferenceImageId}"`,
     cwd
   );
 
-  t.true(output.includes(`response.uri: gs://`));
+  console.log('------------------------');
+  console.log(output);
+  console.log('------------------------');
+
+  t.true(output.includes(`Reference image deleted from product.`));
 });
