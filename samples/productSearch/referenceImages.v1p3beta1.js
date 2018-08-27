@@ -26,9 +26,7 @@ function createReferenceImage(
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient({
-    // optional auth parameters.
-  });
+  var client = new vision.ProductSearchClient();
 
   var formattedParent = client.productPath(projectId, location, productId);
 
@@ -36,8 +34,6 @@ function createReferenceImage(
       uri: gcsUri
   };
 
-  var referenceImageId = '';
-  
   var request = {
     parent: formattedParent,
     referenceImage: referenceImage,
@@ -47,17 +43,47 @@ function createReferenceImage(
   client.createReferenceImage(request)
     .then(responses => {
       var response = responses[0];
-      console.log(`response.boundingPolys: ${response.boundingPolys}`);
       console.log(`response.name: ${response.name}`);
       console.log(`response.uri: ${response.uri}`);
     })
     .catch(err => {
-      console.err(err);
+      console.error(err);
     });
 
     // [END vision_product_search_create_reference_image]
   }
 
+  function listReferenceImage(
+    projectId,
+    location,
+    productId
+  ) {
+    // [START vision_product_search_list_reference_images]
+
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  var client = new vision.ProductSearchClient();
+
+  var formattedParent = client.productPath(projectId, location, productId);
+
+  var request = {
+    parent: formattedParent,
+  };
+  
+  client.listReferenceImages(request)
+    .then(responses => {
+      var response = responses[0];
+      response.forEach(image => {
+        console.log(`image.name: ${image.name}`);
+        console.log(`image.uri: ${image.uri}`);  
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    // [END vision_product_search_list_reference_images]
+  }
 
   function getReferenceImage(
     projectId,
@@ -69,20 +95,10 @@ function createReferenceImage(
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient({
-    // optional auth parameters.
-  });
-
-  var formattedParent = client.productPath(projectId, location, productId);
-
-  var referenceImage = {
-      uri: gcsUri
-  };
-
-  var referenceImageId = '';
+  var client = new vision.ProductSearchClient();
 
   var formattedName = client.referenceImagePath(projectId, location, productId, referenceImageId);
-  
+
   var request = {
     name: formattedName,
   };
@@ -90,16 +106,44 @@ function createReferenceImage(
   client.getReferenceImage(request)
     .then(responses => {
       var response = responses[0];
-      console.log(`response.boundingPolys: ${response.boundingPolys}`);
       console.log(`response.name: ${response.name}`);
       console.log(`response.uri: ${response.uri}`);
     })
     .catch(err => {
-      console.err(err);
+      console.log(err);
     });
 
     // [END vision_product_search_get_reference_image]
   }
+
+  function deleteReferenceImage(
+    projectId,
+    location,
+    productId,
+    referenceImageId
+  ) {
+    // [START vision_product_search_delete_reference_image]
+
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  var client = new vision.ProductSearchClient();
+
+  var formattedName = client.referenceImagePath(projectId, location, productId, referenceImageId);
+
+  var request = {
+    name: formattedName,
+  };
+  
+  client.deleteReferenceImage(request)
+    .then(responses => {
+      console.log(`Reference image deleted from product.`);  
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    // [END vision_product_search_delete_reference_image]
+  }  
 
 require(`yargs`) // eslint-disable-line
 .demand(1)
@@ -117,11 +161,34 @@ require(`yargs`) // eslint-disable-line
     )
 )
 .command(
+  `listReferenceImages <projectId> <location> <productId>`,
+  `List Reference Images`,
+  {},
+  opts =>
+    listReferenceImages(
+      opts.projectId,
+      opts.location,
+      opts.productId
+    )
+)
+.command(
   `getReferenceImage <projectId> <location> <productId> <referenceImageId>`,
   `Get Reference Image`,
   {},
   opts =>
-    createReferenceImage(
+    getReferenceImage(
+      opts.projectId,
+      opts.location,
+      opts.productId,
+      opts.referenceImageId
+    )
+)
+.command(
+  `deleteReferenceImage <projectId> <location> <productId> <referenceImageId>`,
+  `Delete Reference Image`,
+  {},
+  opts =>
+    deleteReferenceImage(
       opts.projectId,
       opts.location,
       opts.productId,
