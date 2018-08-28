@@ -20,7 +20,7 @@ set -xeo pipefail
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export GCLOUD_PROJECT=long-door-651
 
-cd github/nodejs-vision
+cd $(dirname $0)/..
 
 npm install
 

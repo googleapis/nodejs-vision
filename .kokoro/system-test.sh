@@ -19,7 +19,7 @@ set -xeo pipefail
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
-cd github/nodejs-vision
+cd $(dirname $0)/..
 
 npm install
 
