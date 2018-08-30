@@ -27,6 +27,14 @@ function addProductToProductSet(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const productSetId = 'Id of the product set';
+  
   var productSetPath = client.productSetPath(projectId, location, productSetId);
 
   var productPath = client.productPath(projectId, location, productId);
@@ -57,6 +65,13 @@ function listProductInProductSet(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productSetId = 'Id of the product set';
+
   var productSetPath = client.productSetPath(projectId, location, productSetId);
 
   var request = {
@@ -86,6 +101,14 @@ function listProductInProductSet(
   const vision = require('@google-cloud/vision').v1p3beta1;
 
   var client = new vision.ProductSearchClient();
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const productSetId = 'Id of the product set';  
 
   var productSetPath = client.productSetPath(projectId, location, productSetId);
 

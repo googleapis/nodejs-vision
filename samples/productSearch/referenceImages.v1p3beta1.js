@@ -28,6 +28,15 @@ function createReferenceImage(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const referenceImageId = 'Id of the reference image';
+  // const gcsUri = 'Google Cloud Storage path of the input image';
+
   var formattedParent = client.productPath(projectId, location, productId);
 
   var referenceImage = {
@@ -64,6 +73,13 @@ function createReferenceImage(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+
   var formattedParent = client.productPath(projectId, location, productId);
 
   var request = {
@@ -97,6 +113,14 @@ function createReferenceImage(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const referenceImageId = 'Id of the reference image';
+  
   var formattedName = client.referenceImagePath(projectId, location, productId, referenceImageId);
 
   var request = {
@@ -128,6 +152,14 @@ function createReferenceImage(
 
   var client = new vision.ProductSearchClient();
 
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const referenceImageId = 'Id of the reference image';
+  
   var formattedName = client.referenceImagePath(projectId, location, productId, referenceImageId);
 
   var request = {
