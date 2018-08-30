@@ -43,18 +43,100 @@ function addProductToProductSet(
     .catch(err => {
       console.error(err);
     });
-
     // [END vision_product_search_add_product_to_product_set]
+  }
+
+function listProductInProductSet(
+    projectId,
+    location,
+    productSetId
+  ) {
+    // [START vision_product_search_list_products_in_product_set]
+
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  var client = new vision.ProductSearchClient();
+
+  var productSetPath = client.productSetPath(projectId, location, productSetId);
+
+  var request = {
+    name: productSetPath,
+  };
+  
+  client.addProductToProductSet(request)
+    .then(responses => {
+      var response = responses[0];
+      console.log(`response.name: ${response[0].name}`);
+      console.log(`response.uri: ${response.uri}`);      
+    })
+    .catch(err => {
+      console.error(err);
+    });
+    // [END vision_product_search_list_products_in_product_set]
+  }
+
+  function removeProductFromProductSet(
+    projectId,
+    location,
+    productId,
+    productSetId
+  ) {
+    // [START vision_product_search_remove_product_from_product_set]
+
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  var client = new vision.ProductSearchClient();
+
+  var productSetPath = client.productSetPath(projectId, location, productSetId);
+
+  var productPath = client.productPath(projectId, location, productId);
+
+  var request = {
+    name: productSetPath,
+    product: productPath
+  };
+  
+  client.removeProductFromProductSet(request)
+    .then(responses => {
+      console.log(`Product removed from product set.`);      
+    })
+    .catch(err => {
+      console.error(err);
+    });
+    // [END vision_product_search_remove_product_from_product_set]
   }
 
 require(`yargs`) // eslint-disable-line
 .demand(1)
 .command(
   `addProductToProductSet <projectId> <location> <productId> <productSetId>`,
-  `Add a Product to Product Set`,
+  `Add a product to product set`,
   {},
   opts =>
   addProductToProductSet(
+      opts.projectId,
+      opts.location,
+      opts.productId,
+      opts.productSetId
+    )
+)
+.command(
+  `listProductInProductSet <projectId> <location> <productSetId>`,
+  `List all products in a product set`,
+  {},
+  opts =>
+  listProductInProductSet(
+      opts.projectId,
+      opts.location,
+      opts.productSetId
+    )
+)
+.command(
+  `removeProductFromProductSet <projectId> <location> <productId> <productSetId>`,
+  `Remove a products from a product set`,
+  {},
+  opts =>
+  removeProductFromProductSet(
       opts.projectId,
       opts.location,
       opts.productId,
