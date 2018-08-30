@@ -95,9 +95,20 @@ test(`should add product to product set`, async t => {
     cwd
   );
 
+  t.true(output.includes(`Product added to product set.`));
+});
+
+test(`remove a product from a product set`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} removeProductFromProductSet "${testProductSet.projectId}" "${
+      testProductSet.location}" "${testProductSet.productId}" "${
+        testProductSet.productSetId}"`,
+    cwd
+  );
+
   console.log('---------------');
   console.log(output);
   console.log('---------------');
 
-  t.true(output.includes(`Product added to product set.`));
+  t.true(output.includes(`Product removed from product set.`));
 });
