@@ -41,20 +41,6 @@ testProduct.productPath = productSearchClient.productPath(
 );
 testProduct.createdProductPaths = [];
 
-// Helper function: returns product if exists else false
-async function getProductOrFalse(productPath) {
-  try {
-    const response = await productSearchClient.getProduct({name: productPath});
-    return response[0];
-  } catch (err) {
-    if (err.message.includes('Not found')) {
-      return false;
-    } else {
-      throw err;
-    }
-  }
-}
-
 test.before(tools.checkCredentials);
 
 test.before(async () => {
@@ -91,6 +77,7 @@ test(`should create reference image`, async t => {
         testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
     cwd
   );
+  
   t.true(output.includes(`response.uri: gs://`));
 });
 
@@ -101,10 +88,6 @@ test(`should delete reference image`, async t => {
         testProduct.productReferenceImageId}"`,
     cwd
   );
-
-  console.log('------------------------');
-  console.log(output);
-  console.log('------------------------');
 
   t.true(output.includes(`Reference image deleted from product.`));
 });
