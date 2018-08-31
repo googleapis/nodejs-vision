@@ -165,6 +165,59 @@ function deleteProduct(projectId, location, productId) {
   // [END vision_product_search_delete_product]
 }
 
+function updateProductLabels(projectId, location, productId, key, value) {
+  // [START vision_product_search_update_product_labels]
+  // Imports the Google Cloud client library
+  const vision = require('@google-cloud/vision').v1p3beta1;
+
+  // Creates a client
+  const client = new vision.ProductSearchClient();
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const key = 'The key of the label';
+  // const value = 'The value of the label';
+
+  // Resource path that represents full path to the product.
+  const productPath = client.productPath(projectId, location, productId);
+
+  const product = {
+    name: productPath,
+    productLabels: [{
+      key: key,
+      value: value,
+    }]
+  };
+
+  const updateMask = {
+    paths: ['product_labels'],
+  };
+
+  const request = {
+    product: product,
+    updateMask: updateMask,
+  };  
+
+  client
+    .updateProduct(request)
+    .then(results => {
+      var product = results[0];
+      console.log(`Product name: ${product.name}`);
+      console.log(`Product display name: ${product.displayName}`);
+      console.log(`Product description: ${product.description}`);
+      console.log(`Product category: ${product.productCategory}`);
+      console.log(`Product Labels: ${product.productLabels[0].key}: ${product.productLabels[0].value}`);
+  })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  // [END vision_product_search_update_product_labels]
+}
+
 require(`yargs`) // eslint-disable-line
   .demand(1)
   .command(
@@ -194,6 +247,12 @@ require(`yargs`) // eslint-disable-line
     `Delete product`,
     {},
     opts => deleteProduct(opts.projectId, opts.location, opts.productId)
+  )
+  .command(
+    `updateProductLabels <projectId> <location> <productId> <key> <value>`,
+    `Update product label`,
+    {},
+    opts => updateProductLabels(opts.projectId, opts.location, opts.productId, opts.key, opts.value)
   )
   .example(`node $0 COMMAND ARG`)
   .wrap(120)
