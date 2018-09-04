@@ -16,7 +16,7 @@
 
 set -xeo pipefail
 
-cd github/nodejs-vision
+cd $(dirname $0)/..
 
 npm install
 
