@@ -41,7 +41,7 @@ function addProductToProductSet(projectId, location, productId, productSetId) {
 
   client
     .addProductToProductSet(request)
-    .then(responses => {
+    .then(() => {
       console.log(`Product added to product set.`);
     })
     .catch(err => {
@@ -121,7 +121,7 @@ function removeProductFromProductSet(
 
   client
     .removeProductFromProductSet(request)
-    .then(responses => {
+    .then(() => {
       console.log(`Product removed from product set.`);
     })
     .catch(err => {
