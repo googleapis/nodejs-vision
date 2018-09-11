@@ -172,7 +172,7 @@ function deleteReferenceImage(
 
   client
     .deleteReferenceImage(request)
-    .then(responses => {
+    .then(() => {
       console.log(`Reference image deleted from product.`);
     })
     .catch(err => {
