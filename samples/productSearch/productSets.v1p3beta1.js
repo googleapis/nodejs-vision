@@ -153,7 +153,7 @@ function deleteProductSet(projectId, location, productSetId) {
 
   client
     .deleteProductSet({name: productSetPath})
-    .then(results => {
+    .then(() => {
       console.log('Product set deleted.');
     })
     .catch(err => {
