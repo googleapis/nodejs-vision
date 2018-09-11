@@ -66,7 +66,9 @@ test.before(async () => {
         displayName: testProductSet.productSetDisplayName,
       },
     });
-    testProductSet.createdProductSetPaths.push(testProductSet.createdProductSetPaths);
+    testProductSet.createdProductSetPaths.push(
+      testProductSet.createdProductSetPaths
+    );
   } catch (err) {} // ignore error
 });
 test.after(async () => {
@@ -89,35 +91,47 @@ test(`should create product set`, async t => {
   testProductSet.createdProductSetPaths.push(newProductSetPath);
 
   const output = await tools.runAsync(
-    `${cmd} createProductSet "${testProductSet.projectId}" "${testProductSet.location}" "${newProductSetId}" "${testProductSet.productSetDisplayName}"`,
+    `${cmd} createProductSet "${testProductSet.projectId}" "${
+      testProductSet.location
+    }" "${newProductSetId}" "${testProductSet.productSetDisplayName}"`,
     cwd
   );
 
   t.true(output.includes(`Product Set name: ${newProductSetPath}`));
 
   const newProductSet = await getProductSetOrFalse(newProductSetPath);
-  t.true(newProductSet.displayName == testProductSet.productSetDisplayName);
+  t.true(newProductSet.displayName === testProductSet.productSetDisplayName);
 });
 
 test(`should get product set`, async t => {
   const output = await tools.runAsync(
-    `${cmd} getProductSet "${testProductSet.projectId}" "${testProductSet.location}" "${testProductSet.productSetId}"`,
-    cwd
-  );
-
-  t.true(output.includes(`Product Set name: ${testProductSet.productSetPath}`));
-  t.true(output.includes(`Product Set display name: ${testProductSet.productSetDisplayName}`));
-});
-
-test(`should list product sets`, async t => {
-  const output = await tools.runAsync(
-    `${cmd} listProductSets "${testProductSet.projectId}" "${testProductSet.location}"`,
+    `${cmd} getProductSet "${testProductSet.projectId}" "${
+      testProductSet.location
+    }" "${testProductSet.productSetId}"`,
     cwd
   );
 
   t.true(output.includes(`Product Set name: ${testProductSet.productSetPath}`));
   t.true(
-    output.includes(`Product Set display name: ${testProductSet.productSetDisplayName}`)
+    output.includes(
+      `Product Set display name: ${testProductSet.productSetDisplayName}`
+    )
+  );
+});
+
+test(`should list product sets`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} listProductSets "${testProductSet.projectId}" "${
+      testProductSet.location
+    }"`,
+    cwd
+  );
+
+  t.true(output.includes(`Product Set name: ${testProductSet.productSetPath}`));
+  t.true(
+    output.includes(
+      `Product Set display name: ${testProductSet.productSetDisplayName}`
+    )
   );
 });
 
@@ -136,7 +150,9 @@ test(`should delete product sets`, async t => {
 
   t.true(output.includes('deleted'));
   try {
-    await productSearch.getProductSet({name: `${testProductSet.productSetPath}`});
+    await productSearch.getProductSet({
+      name: `${testProductSet.productSetPath}`,
+    });
     t.fail('Product set was not deleted');
   } catch (err) {
     t.true(err.message.includes('Not found'));

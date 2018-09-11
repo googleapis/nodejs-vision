@@ -16,7 +16,6 @@
 'use strict';
 
 const path = require(`path`);
-const uuid = require(`uuid`);
 const vision = require('@google-cloud/vision').v1p3beta1;
 const productSearchClient = new vision.ProductSearchClient();
 const test = require(`ava`);
@@ -59,11 +58,11 @@ test.before(async () => {
         productCategory: testProductSet.productCategory,
       },
     });
-    testProductSet.createdProductPaths.push(testProduct.productPath);
+    testProductSet.createdProductPaths.push(testProductSet.productPath);
   } catch (err) {} // ignore error
 
-    try {
-      await productSearchClient.createProductSet({
+  try {
+    await productSearchClient.createProductSet({
       parent: productSearchClient.locationPath(
         testProductSet.projectId,
         testProductSet.location
@@ -73,7 +72,9 @@ test.before(async () => {
         displayName: testProductSet.productSetDisplayName,
       },
     });
-    testProductSet.createdProductSetPaths.push(testProductSet.createdProductSetPaths);
+    testProductSet.createdProductSetPaths.push(
+      testProductSet.createdProductSetPaths
+    );
   } catch (err) {} // ignore error
 });
 
@@ -90,8 +91,8 @@ test.after(async () => {
 test(`should add product to product set`, async t => {
   const output = await tools.runAsync(
     `${cmd} addProductToProductSet "${testProductSet.projectId}" "${
-      testProductSet.location}" "${testProductSet.productId}" "${
-        testProductSet.productSetId}"`,
+      testProductSet.location
+    }" "${testProductSet.productId}" "${testProductSet.productSetId}"`,
     cwd
   );
 
@@ -101,8 +102,8 @@ test(`should add product to product set`, async t => {
 test(`remove a product from a product set`, async t => {
   const output = await tools.runAsync(
     `${cmd} removeProductFromProductSet "${testProductSet.projectId}" "${
-      testProductSet.location}" "${testProductSet.productId}" "${
-        testProductSet.productSetId}"`,
+      testProductSet.location
+    }" "${testProductSet.productId}" "${testProductSet.productSetId}"`,
     cwd
   );
 
