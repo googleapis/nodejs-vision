@@ -6,13 +6,13 @@
   "author": "Google Inc.",
   "repository": "googleapis/nodejs-vision",
   "engines": {
-    "node": ">=8"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "test": "ava -T 1m --verbose system-test/*.test.js"
   },
   "dependencies": {
-    "@google-cloud/vision": "^0.21.1",
+    "@google-cloud/vision": "^0.21.0",
     "async": "^2.6.1",
     "natural": "^0.6.1",
     "redis": "^2.8.0",
