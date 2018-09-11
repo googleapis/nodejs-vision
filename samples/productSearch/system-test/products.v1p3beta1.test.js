@@ -152,6 +152,7 @@ test(`should delete product`, async t => {
     }" "${testProduct.productId}"`,
     cwd
   );
+  t.true(output.includes(`Product deleted.`));
 
   try {
     await productSearch.getProduct({name: `${testProduct.productPath}`});
