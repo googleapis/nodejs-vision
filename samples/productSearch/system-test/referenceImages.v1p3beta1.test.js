@@ -37,7 +37,7 @@ const testProduct = {
 testProduct.productPath = productSearchClient.productPath(
   testProduct.projectId,
   testProduct.location,
-  testProduct.productId,
+  testProduct.productId
 );
 testProduct.createdProductPaths = [];
 
@@ -47,7 +47,7 @@ test.before(async () => {
   // Create a test product for each test
   try {
     await productSearchClient.createProduct({
-      parent: productSearch.locationPath(
+      parent: productSearchClient.locationPath(
         testProduct.projectId,
         testProduct.location
       ),
@@ -73,19 +73,21 @@ test.after(async () => {
 test(`should create reference image`, async t => {
   const output = await tools.runAsync(
     `${cmd} createReferenceImage "${testProduct.projectId}" "${
-        testProduct.location}" "${testProduct.productId}" "${
-        testProduct.productReferenceImageId}" "${testProduct.productImageUri}"`,
+      testProduct.location
+    }" "${testProduct.productId}" "${testProduct.productReferenceImageId}" "${
+      testProduct.productImageUri
+    }"`,
     cwd
   );
-  
+
   t.true(output.includes(`response.uri: gs://`));
 });
 
 test(`should delete reference image`, async t => {
   const output = await tools.runAsync(
     `${cmd} deleteReferenceImage "${testProduct.projectId}" "${
-        testProduct.location}" "${testProduct.productId}" "${
-        testProduct.productReferenceImageId}"`,
+      testProduct.location
+    }" "${testProduct.productId}" "${testProduct.productReferenceImageId}"`,
     cwd
   );
 

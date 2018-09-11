@@ -104,8 +104,8 @@ test(`should create product`, async t => {
   t.true(output.includes(`Product name: ${newProductPath}`));
 
   const newProduct = await getProductOrFalse(newProductPath);
-  t.true(newProduct.displayName == testProduct.productDisplayName);
-  t.true(newProduct.productCategory == testProduct.productCategory);
+  t.true(newProduct.displayName === testProduct.productDisplayName);
+  t.true(newProduct.productCategory === testProduct.productCategory);
 });
 
 test(`should get product`, async t => {
@@ -132,7 +132,9 @@ test(`should list products`, async t => {
 
   t.true(output.includes(`Product name: ${testProduct.productPath}`));
   t.true(output.includes(`Product id: ${testProduct.productId}`));
-  t.true(output.includes(`Product display name: ${testProduct.productDisplayName}`));
+  t.true(
+    output.includes(`Product display name: ${testProduct.productDisplayName}`)
+  );
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
   t.true(output.includes(`Product labels:`));
@@ -161,13 +163,22 @@ test(`should delete product`, async t => {
 
 test(`should update product label`, async t => {
   const output = await tools.runAsync(
-    `${cmd} updateProductLabels "${testProduct.projectId}" "${testProduct.location}" "${
-      testProduct.productId}" "${testProduct.productKey}" "${testProduct.productValue}"`,
+    `${cmd} updateProductLabels "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${testProduct.productId}" "${testProduct.productKey}" "${
+      testProduct.productValue
+    }"`,
     cwd
   );
 
-  t.true(output.includes(`Product Labels: ${testProduct.productKey}: ${testProduct.productValue}`));
-  t.true(output.includes(`Product display name: ${testProduct.productDisplayName}`));
+  t.true(
+    output.includes(
+      `Product Labels: ${testProduct.productKey}: ${testProduct.productValue}`
+    )
+  );
+  t.true(
+    output.includes(`Product display name: ${testProduct.productDisplayName}`)
+  );
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
 });

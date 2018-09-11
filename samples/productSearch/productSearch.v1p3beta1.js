@@ -15,13 +15,8 @@
 
 'use strict';
 
-function addProductToProductSet(
-    projectId,
-    location,
-    productId,
-    productSetId
-  ) {
-    // [START vision_product_search_add_product_to_product_set]
+function addProductToProductSet(projectId, location, productId, productSetId) {
+  // [START vision_product_search_add_product_to_product_set]
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -34,32 +29,29 @@ function addProductToProductSet(
   // const location = 'A compute region name';
   // const productId = 'Id of the product';
   // const productSetId = 'Id of the product set';
-  
+
   var productSetPath = client.productSetPath(projectId, location, productSetId);
 
   var productPath = client.productPath(projectId, location, productId);
 
   var request = {
     name: productSetPath,
-    product: productPath
+    product: productPath,
   };
-  
-  client.addProductToProductSet(request)
+
+  client
+    .addProductToProductSet(request)
     .then(responses => {
       console.log(`Product added to product set.`);
     })
     .catch(err => {
       console.error(err);
     });
-    // [END vision_product_search_add_product_to_product_set]
-  }
+  // [END vision_product_search_add_product_to_product_set]
+}
 
-function listProductInProductSet(
-    projectId,
-    location,
-    productSetId
-  ) {
-    // [START vision_product_search_list_products_in_product_set]
+function listProductsInProductSet(projectId, location, productSetId) {
+  // [START vision_product_search_list_products_in_product_set]
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -77,26 +69,34 @@ function listProductInProductSet(
   var request = {
     name: productSetPath,
   };
-  
-  client.addProductToProductSet(request)
-    .then(responses => {
-      var response = responses[0];
-      console.log(`response.name: ${response[0].name}`);
-      console.log(`response.uri: ${response.uri}`);      
-    })
-    .catch(err => {
-      console.error(err);
-    });
-    // [END vision_product_search_list_products_in_product_set]
-  }
 
-  function removeProductFromProductSet(
-    projectId,
-    location,
-    productId,
-    productSetId
-  ) {
-    // [START vision_product_search_remove_product_from_product_set]
+  //client
+  // .addProductToProductSet(request)
+  // .then(responses => {
+  //   var response = responses[0];
+  //   console.log(`response.name: ${response[0].name}`);
+  //   console.log(`response.uri: ${response.uri}`);
+  // })
+  // .catch(err => {
+  //   console.error(err);
+  // });
+  client.listProductsInProductSet(request).then(results => {
+    const products = results[0];
+    products.forEach(product => {
+      console.log(`Product name: ${product.name}`);
+      console.log(`Product display name: ${product.displayName}`);
+    });
+  });
+  // [END vision_product_search_list_products_in_product_set]
+}
+
+function removeProductFromProductSet(
+  projectId,
+  location,
+  productId,
+  productSetId
+) {
+  // [START vision_product_search_remove_product_from_product_set]
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
@@ -108,7 +108,7 @@ function listProductInProductSet(
   // const projectId = 'Your Google Cloud project Id';
   // const location = 'A compute region name';
   // const productId = 'Id of the product';
-  // const productSetId = 'Id of the product set';  
+  // const productSetId = 'Id of the product set';
 
   var productSetPath = client.productSetPath(projectId, location, productSetId);
 
@@ -116,59 +116,56 @@ function listProductInProductSet(
 
   var request = {
     name: productSetPath,
-    product: productPath
+    product: productPath,
   };
-  
-  client.removeProductFromProductSet(request)
+
+  client
+    .removeProductFromProductSet(request)
     .then(responses => {
-      console.log(`Product removed from product set.`);      
+      console.log(`Product removed from product set.`);
     })
     .catch(err => {
       console.error(err);
     });
-    // [END vision_product_search_remove_product_from_product_set]
-  }
+  // [END vision_product_search_remove_product_from_product_set]
+}
 
 require(`yargs`) // eslint-disable-line
-.demand(1)
-.command(
-  `addProductToProductSet <projectId> <location> <productId> <productSetId>`,
-  `Add a product to product set`,
-  {},
-  opts =>
-  addProductToProductSet(
-      opts.projectId,
-      opts.location,
-      opts.productId,
-      opts.productSetId
-    )
-)
-.command(
-  `listProductInProductSet <projectId> <location> <productSetId>`,
-  `List all products in a product set`,
-  {},
-  opts =>
-  listProductInProductSet(
-      opts.projectId,
-      opts.location,
-      opts.productSetId
-    )
-)
-.command(
-  `removeProductFromProductSet <projectId> <location> <productId> <productSetId>`,
-  `Remove a products from a product set`,
-  {},
-  opts =>
-  removeProductFromProductSet(
-      opts.projectId,
-      opts.location,
-      opts.productId,
-      opts.productSetId
-    )
-)
-.example(`node $0 COMMAND ARG`)
-.wrap(120)
-.recommendCommands()
-.epilogue(`For more information, see https://cloud.google.com/vision/docs`)
-.help()
-.strict().argv;
+  .demand(1)
+  .command(
+    `addProductToProductSet <projectId> <location> <productId> <productSetId>`,
+    `Add a product to product set`,
+    {},
+    opts =>
+      addProductToProductSet(
+        opts.projectId,
+        opts.location,
+        opts.productId,
+        opts.productSetId
+      )
+  )
+  .command(
+    `listProductsInProductSet <projectId> <location> <productSetId>`,
+    `List all products in a product set`,
+    {},
+    opts =>
+      listProductsInProductSet(opts.projectId, opts.location, opts.productSetId)
+  )
+  .command(
+    `removeProductFromProductSet <projectId> <location> <productId> <productSetId>`,
+    `Remove a products from a product set`,
+    {},
+    opts =>
+      removeProductFromProductSet(
+        opts.projectId,
+        opts.location,
+        opts.productId,
+        opts.productSetId
+      )
+  )
+  .example(`node $0 COMMAND ARG`)
+  .wrap(120)
+  .recommendCommands()
+  .epilogue(`For more information, see https://cloud.google.com/vision/docs`)
+  .help()
+  .strict().argv;

@@ -127,7 +127,12 @@ function listProducts(projectId, location) {
         console.log(`Product display name: ${product.displayName}`);
         console.log(`Product description: ${product.description}`);
         console.log(`Product category: ${product.productCategory}`);
-        console.log(`Product labels: ${product.productLabels}`);
+        if (product.productLabels.length) {
+          console.log(`Product labels:`);
+          product.productLabels.forEach(productLabel => {
+            console.log(`${productLabel.key}: ${productLabel.value}`);
+          });
+        }
       });
     })
     .catch(err => {
@@ -187,10 +192,12 @@ function updateProductLabels(projectId, location, productId, key, value) {
 
   const product = {
     name: productPath,
-    productLabels: [{
-      key: key,
-      value: value,
-    }]
+    productLabels: [
+      {
+        key: key,
+        value: value,
+      },
+    ],
   };
 
   const updateMask = {
@@ -200,7 +207,7 @@ function updateProductLabels(projectId, location, productId, key, value) {
   const request = {
     product: product,
     updateMask: updateMask,
-  };  
+  };
 
   client
     .updateProduct(request)
@@ -210,8 +217,12 @@ function updateProductLabels(projectId, location, productId, key, value) {
       console.log(`Product display name: ${product.displayName}`);
       console.log(`Product description: ${product.description}`);
       console.log(`Product category: ${product.productCategory}`);
-      console.log(`Product Labels: ${product.productLabels[0].key}: ${product.productLabels[0].value}`);
-  })
+      console.log(
+        `Product Labels: ${product.productLabels[0].key}: ${
+          product.productLabels[0].value
+        }`
+      );
+    })
     .catch(err => {
       console.error('ERROR:', err);
     });
@@ -252,7 +263,14 @@ require(`yargs`) // eslint-disable-line
     `updateProductLabels <projectId> <location> <productId> <key> <value>`,
     `Update product label`,
     {},
-    opts => updateProductLabels(opts.projectId, opts.location, opts.productId, opts.key, opts.value)
+    opts =>
+      updateProductLabels(
+        opts.projectId,
+        opts.location,
+        opts.productId,
+        opts.key,
+        opts.value
+      )
   )
   .example(`node $0 COMMAND ARG`)
   .wrap(120)
