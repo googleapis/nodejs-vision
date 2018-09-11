@@ -161,7 +161,7 @@ function deleteProduct(projectId, location, productId) {
 
   client
     .deleteProduct({name: productPath})
-    .then(results => {
+    .then(() => {
       console.log('Product deleted.');
     })
     .catch(err => {
