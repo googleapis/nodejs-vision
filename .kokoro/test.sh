@@ -16,7 +16,10 @@
 
 set -xeo pipefail
 
-cd github/nodejs-vision
+export NPM_CONFIG_PREFIX=/home/node/.npm-global
+
+cd $(dirname $0)/..
+
 npm install
 npm test
 node_modules/.bin/codecov
