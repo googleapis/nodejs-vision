@@ -24,7 +24,7 @@ const cmd = `node productSearch.v1p3beta1.js`;
 const cwd = path.join(__dirname, `..`);
 
 // Shared fixture data for product tests
-var testProductSet = {
+const testProductSet = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
   productCategory: 'homegoods',

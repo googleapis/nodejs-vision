@@ -26,24 +26,18 @@ function createReferenceImage(
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
-  // const referenceImageId = 'Id of the reference image';
-  // const gcsUri = 'Google Cloud Storage path of the input image';
+  const formattedParent = client.productPath(projectId, location, productId);
 
-  var formattedParent = client.productPath(projectId, location, productId);
-
-  var referenceImage = {
+  const referenceImage = {
     uri: gcsUri,
   };
 
-  var request = {
+  const request = {
     parent: formattedParent,
     referenceImage: referenceImage,
     referenceImageId: referenceImageId,
@@ -52,7 +46,7 @@ function createReferenceImage(
   client
     .createReferenceImage(request)
     .then(responses => {
-      var response = responses[0];
+      const response = responses[0];
       console.log(`response.name: ${response.name}`);
       console.log(`response.uri: ${response.uri}`);
     })
@@ -68,25 +62,21 @@ function listReferenceImage(projectId, location, productId) {
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
+  const formattedParent = client.productPath(projectId, location, productId);
 
-  var formattedParent = client.productPath(projectId, location, productId);
-
-  var request = {
+  const request = {
     parent: formattedParent,
   };
 
   client
     .listReferenceImages(request)
     .then(responses => {
-      var response = responses[0];
+      const response = responses[0];
       response.forEach(image => {
         console.log(`image.name: ${image.name}`);
         console.log(`image.uri: ${image.uri}`);
@@ -104,7 +94,7 @@ function getReferenceImage(projectId, location, productId, referenceImageId) {
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -114,21 +104,21 @@ function getReferenceImage(projectId, location, productId, referenceImageId) {
   // const productId = 'Id of the product';
   // const referenceImageId = 'Id of the reference image';
 
-  var formattedName = client.referenceImagePath(
+  const formattedName = client.referenceImagePath(
     projectId,
     location,
     productId,
     referenceImageId
   );
 
-  var request = {
+  const request = {
     name: formattedName,
   };
 
   client
     .getReferenceImage(request)
     .then(responses => {
-      var response = responses[0];
+      const response = responses[0];
       console.log(`response.name: ${response.name}`);
       console.log(`response.uri: ${response.uri}`);
     })
@@ -149,7 +139,7 @@ function deleteReferenceImage(
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -159,14 +149,14 @@ function deleteReferenceImage(
   // const productId = 'Id of the product';
   // const referenceImageId = 'Id of the reference image';
 
-  var formattedName = client.referenceImagePath(
+  const formattedName = client.referenceImagePath(
     projectId,
     location,
     productId,
     referenceImageId
   );
 
-  var request = {
+  const request = {
     name: formattedName,
   };
 

@@ -42,8 +42,8 @@ function importProductSets(projectId, location, gcsUri) {
   client
     .importProductSets({parent: projectLocation, inputConfig: inputConfig})
     .then(responses => {
-      var response = responses[0];
-      var operation = responses[1];
+      const response = responses[0];
+      const operation = responses[1];
       console.log('Processing operation name: ', operation.name);
 
       // synchronous check of operation status
@@ -53,7 +53,7 @@ function importProductSets(projectId, location, gcsUri) {
       console.log('Processing done.');
       console.log('Results of the processing:');
 
-      for (var i in responses[0].statuses) {
+      for (let i in responses[0].statuses) {
         console.log(
           'Status of processing ',
           i,

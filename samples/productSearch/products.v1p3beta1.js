@@ -212,7 +212,7 @@ function updateProductLabels(projectId, location, productId, key, value) {
   client
     .updateProduct(request)
     .then(results => {
-      var product = results[0];
+      const product = results[0];
       console.log(`Product name: ${product.name}`);
       console.log(`Product display name: ${product.displayName}`);
       console.log(`Product description: ${product.description}`);

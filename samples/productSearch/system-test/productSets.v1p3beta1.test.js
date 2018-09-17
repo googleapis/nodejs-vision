@@ -81,8 +81,8 @@ test.after(async () => {
 });
 
 test(`should create product set`, async t => {
-  var newProductSetId = `ProductSetId${uuid.v4()}`;
-  var newProductSetPath = productSearch.productSetPath(
+  const newProductSetId = `ProductSetId${uuid.v4()}`;
+  const newProductSetPath = productSearch.productSetPath(
     testProductSet.projectId,
     testProductSet.location,
     newProductSetId

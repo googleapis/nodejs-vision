@@ -20,7 +20,7 @@ function addProductToProductSet(projectId, location, productId, productSetId) {
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -30,11 +30,14 @@ function addProductToProductSet(projectId, location, productId, productSetId) {
   // const productId = 'Id of the product';
   // const productSetId = 'Id of the product set';
 
-  var productSetPath = client.productSetPath(projectId, location, productSetId);
+  const productPath = client.productPath(projectId, location, productId);
+  const productSetPath = client.productSetPath(
+    projectId,
+    location,
+    productSetId
+  );
 
-  var productPath = client.productPath(projectId, location, productId);
-
-  var request = {
+  const request = {
     name: productSetPath,
     product: productPath,
   };
@@ -55,7 +58,7 @@ function listProductsInProductSet(projectId, location, productSetId) {
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -63,10 +66,12 @@ function listProductsInProductSet(projectId, location, productSetId) {
   // const projectId = 'Your Google Cloud project Id';
   // const location = 'A compute region name';
   // const productSetId = 'Id of the product set';
-
-  var productSetPath = client.productSetPath(projectId, location, productSetId);
-
-  var request = {
+  const productSetPath = client.productSetPath(
+    projectId,
+    location,
+    productSetId
+  );
+  const request = {
     name: productSetPath,
   };
 
@@ -90,21 +95,20 @@ function removeProductFromProductSet(
 
   const vision = require('@google-cloud/vision').v1p3beta1;
 
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
-  // const productSetId = 'Id of the product set';
+  const productSetPath = client.productSetPath(
+    projectId,
+    location,
+    productSetId
+  );
 
-  var productSetPath = client.productSetPath(projectId, location, productSetId);
+  const productPath = client.productPath(projectId, location, productId);
 
-  var productPath = client.productPath(projectId, location, productId);
-
-  var request = {
+  const request = {
     name: productSetPath,
     product: productPath,
   };
