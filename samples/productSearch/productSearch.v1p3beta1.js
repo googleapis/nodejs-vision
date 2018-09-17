@@ -70,16 +70,6 @@ function listProductsInProductSet(projectId, location, productSetId) {
     name: productSetPath,
   };
 
-  //client
-  // .addProductToProductSet(request)
-  // .then(responses => {
-  //   var response = responses[0];
-  //   console.log(`response.name: ${response[0].name}`);
-  //   console.log(`response.uri: ${response.uri}`);
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
   client.listProductsInProductSet(request).then(results => {
     const products = results[0];
     products.forEach(product => {

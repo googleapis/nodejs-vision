@@ -14,7 +14,7 @@
  */
 
 'use strict';
-
+// [START vision_product_search_get_similar_products]
 function getSimilarProductsFile(
   projectId,
   location,
@@ -83,6 +83,9 @@ function getSimilarProductsFile(
       console.error(err);
     });
 }
+// [END vision_product_search_get_similar_products]
+
+// [START vision_product_search_get_similar_products_gcs]
 function getSimilarProductsGcs(
   projectId,
   location,
@@ -149,6 +152,7 @@ function getSimilarProductsGcs(
       console.error(err);
     });
 }
+// [END vision_product_search_get_similar_products_gcs]
 require(`yargs`) // eslint-disable-line
   .demand(1)
   .command(
