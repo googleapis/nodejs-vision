@@ -19,7 +19,7 @@ function importProductSets(projectId, location, gcsUri) {
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision').v1p3beta1;
   // Creates a client
-  var client = new vision.ProductSearchClient();
+  const client = new vision.ProductSearchClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
