@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, LLC.
+ * Copyright 2018, Google, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -288,7 +288,7 @@ function deleteDataset(projectId, computeRegion, datasetId) {
   // [END automl_vision_delete_dataset]
 }
 
-require(`yargs`)
+require(`yargs`)  // eslint-disable-line
   .demand(1)
   .options({
     computeRegion: {

@@ -481,7 +481,7 @@ function deleteModel(projectId, computeRegion, modelId) {
   // [END automl_vision_delete_model]
 }
 
-require(`yargs`)
+require(`yargs`)  // eslint-disable-line
   .demand(1)
   .options({
     computeRegion: {
