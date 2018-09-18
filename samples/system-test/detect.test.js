@@ -37,6 +37,7 @@ const files = [
   `faulkner.jpg`,
   `city.jpg`,
   'pdf-ocr.pdf',
+  'duck_and_truck.jpg',
 ].map(name => {
   return {
     name,
@@ -296,4 +297,28 @@ test(`should extract text from pdf file`, async t => {
     cwd
   );
   t.true(output.includes('pdf-ocr.pdf.json'));
+});
+
+test(`should detect 'Duck', 'Bird' and 'Toy' in duck_and_truck.jpg`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} localize-objects ${files[8]}`,
+    cwd
+  );
+  t.true(
+    output.includes(`Name: Bird`) &&
+      output.includes(`Name: Duck`) &&
+      output.includes(`Name: Toy`)
+  );
+});
+
+test(`should detect 'Bird'in duck_and_truck.jpg in GCS bucket`, async t => {
+  const output = await tools.runAsync(
+    `${cmd} localize-objects-gcs gs://${bucketName}/${files[8].name}`,
+    cwd
+  );
+  t.true(
+    output.includes(`Name: Bird`) &&
+      output.includes(`Name: Duck`) &&
+      output.includes(`Name: Toy`)
+  );
 });
