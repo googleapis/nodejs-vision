@@ -876,7 +876,7 @@ function localizeObjectsGCS(gcsUri) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const uri = `gs://bucket/bucketImage.png`;
+  // const gcsUri = `gs://bucket/bucketImage.png`;
 
   client
     .objectLocalization(gcsUri)

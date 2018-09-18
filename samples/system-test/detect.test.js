@@ -299,7 +299,7 @@ test(`should extract text from pdf file`, async t => {
   t.true(output.includes('pdf-ocr.pdf.json'));
 });
 
-test(`should detect 'Duck', 'Bird' and 'Toy' in duck_and_truck.jpg`, async t => {
+test(`should detect objects in a local file`, async t => {
   const output = await tools.runAsync(
     `${cmd} localize-objects ${files[8]}`,
     cwd
@@ -311,7 +311,7 @@ test(`should detect 'Duck', 'Bird' and 'Toy' in duck_and_truck.jpg`, async t => 
   );
 });
 
-test(`should detect 'Bird'in duck_and_truck.jpg in GCS bucket`, async t => {
+test(`should detect objects in a remote file`, async t => {
   const output = await tools.runAsync(
     `${cmd} localize-objects-gcs gs://${bucketName}/${files[8].name}`,
     cwd
