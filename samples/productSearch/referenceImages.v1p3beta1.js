@@ -31,6 +31,12 @@ function createReferenceImage(
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
+  // const projectId = 'Your Google Cloud project Id';
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  // const referenceImageId = 'Id of the reference image';
+  // const gcsUri = 'Google Cloud Storage path of the input image';
+
   const formattedParent = client.productPath(projectId, location, productId);
 
   const referenceImage = {
@@ -67,8 +73,12 @@ function listReferenceImage(projectId, location, productId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  const formattedParent = client.productPath(projectId, location, productId);
+  // const projectId = 'Your Google Cloud project Id';
 
+  // const formattedParent = client.productPath(projectId, location, productId);
+  // const location = 'A compute region name';
+  // const productId = 'Id of the product';
+  const formattedParent = client.productPath(projectId, location, productId);
   const request = {
     parent: formattedParent,
   };
