@@ -16,6 +16,8 @@
 
 set -xeo pipefail
 
+export
+
 export NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 cd $(dirname $0)/..
