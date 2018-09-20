@@ -102,7 +102,7 @@ function detectLabels(fileName) {
     .then(results => {
       const labels = results[0].labelAnnotations;
       console.log('Labels:');
-      labels.forEach(label => console.log(label));
+      labels.forEach(label => console.log(label.description));
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -130,7 +130,7 @@ function detectLabelsGCS(bucketName, fileName) {
     .then(results => {
       const labels = results[0].labelAnnotations;
       console.log('Labels:');
-      labels.forEach(label => console.log(label));
+      labels.forEach(label => console.log(label.description));
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -821,7 +821,7 @@ function detectPdfText(bucketName, fileName) {
       return operation.promise();
     })
     .then(filesResponse => {
-      let destinationUri =
+      const destinationUri =
         filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
       console.log('Json saved to: ' + destinationUri);
     })
