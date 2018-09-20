@@ -301,7 +301,7 @@ test(`should extract text from pdf file`, async t => {
 
 test(`should detect objects in a local file`, async t => {
   const output = await tools.runAsync(
-    `${cmd} localize-objects ${files[8]}`,
+    `${cmd} localize-objects ${files[8].localPath}`,
     cwd
   );
   t.true(
