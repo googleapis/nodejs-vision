@@ -163,7 +163,7 @@ class ImageAnnotatorClient {
       'batchAnnotateImages',
       'asyncBatchAnnotateFiles',
     ];
-    for (const methodName of imageAnnotatorStubMethods) {
+    for (let methodName of imageAnnotatorStubMethods) {
       this._innerApiCalls[methodName] = gax.createApiCall(
         imageAnnotatorStub.then(
           stub =>
