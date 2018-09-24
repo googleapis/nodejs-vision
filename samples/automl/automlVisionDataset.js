@@ -25,9 +25,9 @@
 
 function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   // [START automl_vision_create_dataset]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
+  const client = new automl.AutoMlClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -35,7 +35,7 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const datasetName = `name of the dataset to create, e.g. “myDataset”`;
-  // const multiLabel = `type of classification problem, e.g. "false"`;
+  // const multiLabel = `type of classification problem, true for multilabel and false for multiclass e.g. "false"`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
@@ -82,25 +82,24 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   // [END automl_vision_create_dataset]
 }
 
-function listDatasets(projectId, computeRegion, filter_) {
+function listDatasets(projectId, computeRegion, filter) {
   // [START automl_vision_list_datasets]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
-
+  const client = new automl.AutoMlClient();
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const filter_ = `filter expressions, must specify field e.g. “imageClassificationModelMetadata:*”`;
+  // const filter = `filter expressions, must specify field e.g. “imageClassificationModelMetadata:*”`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
 
   // List all the datasets available in the region by applying filter.
   client
-    .listDatasets({parent: projectLocation, filter: filter_})
+    .listDatasets({parent: projectLocation, filter: filter})
     .then(responses => {
       const datasets = responses[0];
 
@@ -130,9 +129,9 @@ function listDatasets(projectId, computeRegion, filter_) {
 
 function getDataset(projectId, computeRegion, datasetId) {
   // [START automl_vision_get_dataset]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
+  const client = new automl.AutoMlClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -172,9 +171,9 @@ function getDataset(projectId, computeRegion, datasetId) {
 
 function importData(projectId, computeRegion, datasetId, path) {
   // [START automl_vision_import_data]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
+  const client = new automl.AutoMlClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -205,7 +204,9 @@ function importData(projectId, computeRegion, datasetId, path) {
     })
     .then(responses => {
       // The final result of the operation.
-      if (responses[2].done === true) console.log(`Data imported.`);
+      if (responses[2].done) {
+        console.log(`Data imported.`);
+      }
     })
     .catch(err => {
       console.error(err);
@@ -215,9 +216,9 @@ function importData(projectId, computeRegion, datasetId, path) {
 
 function exportData(projectId, computeRegion, datasetId, outputUri) {
   // [START automl_vision_export_data]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
+  const client = new automl.AutoMlClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -247,7 +248,9 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
     })
     .then(responses => {
       // The final result of the operation.
-      if (responses[2].done === true) console.log(`Data exported.`);
+      if (responses[2].done) {
+        console.log(`Data exported.`);
+      }
     })
     .catch(err => {
       console.error(err);
@@ -257,9 +260,9 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
 
 function deleteDataset(projectId, computeRegion, datasetId) {
   // [START automl_vision_delete_dataset]
-  const automl = require(`@google-cloud/automl`);
+  const automl = require(`@google-cloud/automl`).v1beta1;
 
-  const client = new automl.v1beta1.AutoMlClient();
+  const client = new automl.AutoMlClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -280,7 +283,9 @@ function deleteDataset(projectId, computeRegion, datasetId) {
     })
     .then(responses => {
       // The final result of the operation.
-      if (responses[2].done === true) console.log(`Dataset deleted.`);
+      if (responses[2].done) {
+        console.log(`Dataset deleted.`);
+      }
     })
     .catch(err => {
       console.error(err);
@@ -294,7 +299,8 @@ require(`yargs`)  // eslint-disable-line
     computeRegion: {
       alias: `c`,
       type: `string`,
-      default: process.env.REGION_NAME,
+      //default: process.env.REGION_NAME,
+      default: 'us-central1',
       requiresArg: true,
       description: `region name e.g. "us-central1"`,
     },
@@ -311,11 +317,11 @@ require(`yargs`)  // eslint-disable-line
       requiresArg: true,
       description: `Id of the dataset`,
     },
-    filter_: {
+    filter: {
       alias: `f`,
       default: `image_classification_dataset_metadata:*`,
       type: `string`,
-      requiresArg: true,
+      requiresArg: false,
       description: `Name of the Dataset to search for`,
     },
     multilabel: {
@@ -344,12 +350,13 @@ require(`yargs`)  // eslint-disable-line
     projectId: {
       alias: `z`,
       type: `number`,
-      default: process.env.GCLOUD_PROJECT,
+      //default: process.env.GCLOUD_PROJECT,
+      default: 'nodejs-docs-samples',
       requiresArg: true,
       description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
     },
   })
-  .command(`createDataset`, `creates a new Dataset`, {}, opts =>
+  .command(`create-dataset`, `creates a new Dataset`, {}, opts =>
     createDataset(
       opts.projectId,
       opts.computeRegion,
@@ -357,20 +364,20 @@ require(`yargs`)  // eslint-disable-line
       opts.multilabel
     )
   )
-  .command(`listDatasets`, `list all Datasets`, {}, opts =>
-    listDatasets(opts.projectId, opts.computeRegion, opts.filter_)
+  .command(`list-datasets`, `list all Datasets`, {}, opts =>
+    listDatasets(opts.projectId, opts.computeRegion, opts.filter)
   )
-  .command(`getDataset`, `Get a Dataset`, {}, opts =>
+  .command(`get-dataset`, `Get a Dataset`, {}, opts =>
     getDataset(opts.projectId, opts.computeRegion, opts.datasetId)
   )
-  .command(`deleteDataset`, `Delete a dataset`, {}, opts =>
+  .command(`delete-dataset`, `Delete a dataset`, {}, opts =>
     deleteDataset(opts.projectId, opts.computeRegion, opts.datasetId)
   )
-  .command(`importData`, `Import labeled items into dataset`, {}, opts =>
+  .command(`import-data`, `Import labeled items into dataset`, {}, opts =>
     importData(opts.projectId, opts.computeRegion, opts.datasetId, opts.path)
   )
   .command(
-    `exportData`,
+    `export-data`,
     `Export a dataset to a Google Cloud Storage Bucket`,
     {},
     opts =>
@@ -381,15 +388,15 @@ require(`yargs`)  // eslint-disable-line
         opts.outputUri
       )
   )
-  .example(`node $0 createDataset -n "newDataSet"`)
-  .example(`node $0 listDatasets -f "image_classification_dataset_metadata:*"`)
-  .example(`node $0 getDataset -i "DATASETID"`)
-  .example(`node $0 deleteDataset -i "DATASETID"`)
+  .example(`node $0 create-dataset -n "newDataSet"`)
+  .example(`node $0 list-datasets -f "image_classification_dataset_metadata:*"`)
+  .example(`node $0 get-dataset -i "DATASETID"`)
+  .example(`node $0 delete-dataset -i "DATASETID"`)
   .example(
-    `node $0 importData -i "dataSetId" -p "gs://myproject/mytraindata.csv"`
+    `node $0 import-data -i "dataSetId" -p "gs://myproject/mytraindata.csv"`
   )
   .example(
-    `node $0 exportData -i "dataSetId" -o "gs://myproject/outputdestination.csv"`
+    `node $0 export-data -i "dataSetId" -o "gs://myproject/outputdestination.csv"`
   )
   .wrap(120)
   .recommendCommands()

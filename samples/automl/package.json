@@ -4,7 +4,10 @@
   "description": "",
   "main": "automlVisionDataset.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava -T 1m --verbose system-test/*.test.js"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "author": "",
   "license": "ISC",

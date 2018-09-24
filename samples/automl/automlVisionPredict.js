@@ -25,11 +25,11 @@
 
 function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // [START automl_vision_predict]
-  const automl = require('@google-cloud/automl');
+  const automl = require('@google-cloud/automl').v1beta1;
   const fs = require('fs');
 
   // Create client for prediction service.
-  const client = new automl.v1beta1.PredictionServiceClient();
+  const client = new automl.PredictionServiceClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
