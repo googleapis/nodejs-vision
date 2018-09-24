@@ -46,7 +46,7 @@ function predict(projectId, computeRegion, modelId, filePath, scoreThreshold) {
   // Read the file content for prediction.
   const content = fs.readFileSync(filePath, 'base64');
 
-  let params = {};
+  const params = {};
 
   if (scoreThreshold) {
     params.scoreThreshold = scoreThreshold;
