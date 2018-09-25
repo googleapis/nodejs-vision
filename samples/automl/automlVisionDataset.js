@@ -1,5 +1,5 @@
 /**
- * Copyright 2018, Google, Inc.
+ * Copyright 2018, Google, LLC
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -299,8 +299,7 @@ require(`yargs`)  // eslint-disable-line
     computeRegion: {
       alias: `c`,
       type: `string`,
-      //default: process.env.REGION_NAME,
-      default: 'us-central1',
+      default: process.env.REGION_NAME,
       requiresArg: true,
       description: `region name e.g. "us-central1"`,
     },
@@ -350,8 +349,7 @@ require(`yargs`)  // eslint-disable-line
     projectId: {
       alias: `z`,
       type: `number`,
-      //default: process.env.GCLOUD_PROJECT,
-      default: 'nodejs-docs-samples',
+      default: process.env.GCLOUD_PROJECT,
       requiresArg: true,
       description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
     },
