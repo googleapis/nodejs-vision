@@ -118,7 +118,7 @@ function getOperationStatus(operationFullId) {
   // [END automl_vision_get_operation_status]
 }
 
-function listModels(projectId, computeRegion, filter_) {
+function listModels(projectId, computeRegion, filter) {
   // [START automl_vision_list_models]
   const automl = require(`@google-cloud/automl`);
 
@@ -129,14 +129,14 @@ function listModels(projectId, computeRegion, filter_) {
    */
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
+  // const filter = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
 
   // List all the models available in the region by applying filter.
   client
-    .listModels({parent: projectLocation, filter: filter_})
+    .listModels({parent: projectLocation, filter: filter})
     .then(responses => {
       const models = responses[0];
 
@@ -286,7 +286,7 @@ function getModel(projectId, computeRegion, modelId) {
   // [END automl_vision_get_model]
 }
 
-function listModelEvaluations(projectId, computeRegion, modelId, filter_) {
+function listModelEvaluations(projectId, computeRegion, modelId, filter) {
   // [START automl_vision_list_model_evaluations]
   const automl = require(`@google-cloud/automl`).v1beta1;
   const util = require(`util`);
@@ -298,14 +298,14 @@ function listModelEvaluations(projectId, computeRegion, modelId, filter_) {
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
-  // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
+  // const filter = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
 
   // Get the full path of the model.
   const modelFullId = client.modelPath(projectId, computeRegion, modelId);
 
   // List all the model evaluations in the model by applying filter.
   client
-    .listModelEvaluations({parent: modelFullId, filter: filter_})
+    .listModelEvaluations({parent: modelFullId, filter: filter})
     .then(responses => {
       const elements = responses[0];
       elements.forEach(element => {
@@ -359,7 +359,7 @@ function getModelEvaluation(
   // [END automl_vision_get_model_evaluation]
 }
 
-function displayEvaluation(projectId, computeRegion, modelId, filter_) {
+function displayEvaluation(projectId, computeRegion, modelId, filter) {
   // [START automl_vision_display_evaluation]
   const automl = require(`@google-cloud/automl`).v1beta1;
   const math = require(`mathjs`);
@@ -372,14 +372,14 @@ function displayEvaluation(projectId, computeRegion, modelId, filter_) {
   // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
   // const computeRegion = `region-name, e.g. "us-central1"`;
   // const modelId = `id of the model, e.g. “ICN12345”`;
-  // const filter_ = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
+  // const filter = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
 
   // Get the full path of the model.
   const modelFullId = client.modelPath(projectId, computeRegion, modelId);
 
   // List all the model evaluations in the model by applying filter.
   client
-    .listModelEvaluations({parent: modelFullId, filter: filter_})
+    .listModelEvaluations({parent: modelFullId, filter: filter})
     .then(respond => {
       const response = respond[0];
       response.forEach(element => {
@@ -504,7 +504,7 @@ require(`yargs`)  // eslint-disable-line
       requiresArg: true,
       description: `Id of the dataset`,
     },
-    filter_: {
+    filter: {
       alias: `f`,
       default: ``,
       type: `string`,
@@ -570,7 +570,7 @@ require(`yargs`)  // eslint-disable-line
     opts => getOperationStatus(opts.operationFullId)
   )
   .command(`list-models`, `list all Models`, {}, opts =>
-    listModels(opts.projectId, opts.computeRegion, opts.filter_)
+    listModels(opts.projectId, opts.computeRegion, opts.filter)
   )
   .command(`get-model`, `Get a Model`, {}, opts =>
     getModel(opts.projectId, opts.computeRegion, opts.modelId)
@@ -580,7 +580,7 @@ require(`yargs`)  // eslint-disable-line
       opts.projectId,
       opts.computeRegion,
       opts.modelId,
-      opts.filter_
+      opts.filter
     )
   )
   .command(`get-model-evaluation`, `Get model evaluation`, {}, opts =>
@@ -596,7 +596,7 @@ require(`yargs`)  // eslint-disable-line
       opts.projectId,
       opts.computeRegion,
       opts.modelId,
-      opts.filter_
+      opts.filter
     )
   )
   .command(`delete-model`, `Delete a Model`, {}, opts =>
