@@ -127,9 +127,9 @@ function listModels(projectId, computeRegion, filter) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const filter = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // filter = `filter expressions, must specify field, e.g. “imageClassificationModelMetadata:*”`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
