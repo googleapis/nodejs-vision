@@ -32,10 +32,10 @@ function createDataset(projectId, computeRegion, datasetName, multiLabel) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetName = `name of the dataset to create, e.g. “myDataset”`;
-  // const multiLabel = `type of classification problem, true for multilabel and false for multiclass e.g. "false"`;
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // datasetName = `name of the dataset to create, e.g. “myDataset”`;
+  // multiLabel = `type of classification problem, true for multilabel and false for multiclass e.g. "false"`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
@@ -90,9 +90,9 @@ function listDatasets(projectId, computeRegion, filter) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const filter = `filter expressions, must specify field e.g. “imageClassificationModelMetadata:*”`;
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // filter = `filter expressions, must specify field e.g. “imageClassificationModelMetadata:*”`;
 
   // A resource that represents Google Cloud Platform location.
   const projectLocation = client.locationPath(projectId, computeRegion);
@@ -136,9 +136,9 @@ function getDataset(projectId, computeRegion, datasetId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset`;
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // datasetId = `Id of the dataset`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -178,10 +178,10 @@ function importData(projectId, computeRegion, datasetId, path) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset`;
-  // const path = `string or array of .csv paths in AutoML Vision CSV format, e.g. “gs://myproject/traindata.csv”;`
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // datasetId = `Id of the dataset`;
+  // path = `string or array of .csv paths in AutoML Vision CSV format, e.g. “gs://myproject/traindata.csv”`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -223,10 +223,10 @@ function exportData(projectId, computeRegion, datasetId, outputUri) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset`;
-  // const outputUri = `Google Cloud Storage URI for the export directory, e.g. “gs://myproject/output”;`
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // datasetId = `Id of the dataset`;
+  // outputUri = `Google Cloud Storage URI for the export directory, e.g. “gs://myproject/output”`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
@@ -267,9 +267,9 @@ function deleteDataset(projectId, computeRegion, datasetId) {
   /**
    * TODO(developer): Uncomment the following line before running the sample.
    */
-  // const projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
-  // const computeRegion = `region-name, e.g. "us-central1"`;
-  // const datasetId = `Id of the dataset`;
+  // projectId = `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`;
+  // computeRegion = `region-name, e.g. "us-central1"`;
+  // datasetId = `Id of the dataset`;
 
   // Get the full path of the dataset.
   const datasetFullId = client.datasetPath(projectId, computeRegion, datasetId);
