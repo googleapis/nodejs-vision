@@ -33,21 +33,15 @@ const fs = require('fs');
  * Uses the Vision API to detect faces in the given file.
  */
 // [START vision_face_detection_tutorial_send_request]
-function detectFaces(inputFile, callback) {
+async function detectFaces(inputFile) {
   // Make a call to the Vision API to detect the faces
   const request = {image: {source: {filename: inputFile}}};
-  client
-    .faceDetection(request)
-    .then(results => {
-      const faces = results[0].faceAnnotations;
-      const numFaces = faces.length;
-      console.log('Found ' + numFaces + (numFaces === 1 ? ' face' : ' faces'));
-      callback(null, faces);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-      callback(err);
-    });
+
+  const [{faceAnnotations: faces}] = await client.faceDetection(request);
+  const {length: numFaces} = faces;
+
+  console.log('Found ' + numFaces + (numFaces === 1 ? ' face' : ' faces'));
+  return faces;
 }
 // [END vision_face_detection_tutorial_send_request]
 
@@ -55,71 +49,66 @@ function detectFaces(inputFile, callback) {
  * Draws a polygon around the faces, then saves to outputFile.
  */
 // [START vision_face_detection_tutorial_process_response]
-function highlightFaces(inputFile, faces, outputFile, Canvas, callback) {
-  fs.readFile(inputFile, (err, image) => {
-    if (err) {
-      return callback(err);
-    }
+async function highlightFaces(inputFile, faces, outputFile, Canvas) {
+  const image = fs.readFileSync(inputFile);
 
-    const Image = Canvas.Image;
-    // Open the original image into a canvas
-    const img = new Image();
-    img.src = image;
-    const canvas = new Canvas(img.width, img.height);
-    const context = canvas.getContext('2d');
-    context.drawImage(img, 0, 0, img.width, img.height);
+  const Image = Canvas.Image;
 
-    // Now draw boxes around all the faces
-    context.strokeStyle = 'rgba(0,255,0,0.8)';
-    context.lineWidth = '5';
+  // Open the original image into a canvas
+  const img = new Image();
+  img.src = image;
+  const canvas = new Canvas(img.width, img.height);
+  const context = canvas.getContext('2d');
+  context.drawImage(img, 0, 0, img.width, img.height);
 
-    faces.forEach(face => {
-      context.beginPath();
-      let origX = 0;
-      let origY = 0;
-      face.boundingPoly.vertices.forEach((bounds, i) => {
-        if (i === 0) {
-          origX = bounds.x;
-          origY = bounds.y;
-        }
-        context.lineTo(bounds.x, bounds.y);
-      });
-      context.lineTo(origX, origY);
-      context.stroke();
+  // Now draw boxes around all the faces
+  context.strokeStyle = 'rgba(0,255,0,0.8)';
+  context.lineWidth = '5';
+
+  faces.forEach(face => {
+    context.beginPath();
+    let origX = 0;
+    let origY = 0;
+    face.boundingPoly.vertices.forEach((bounds, i) => {
+      if (i === 0) {
+        origX = bounds.x;
+        origY = bounds.y;
+      }
+      context.lineTo(bounds.x, bounds.y);
     });
+    context.lineTo(origX, origY);
+    context.stroke();
+  });
 
-    // Write the result to a file
-    console.log('Writing to file ' + outputFile);
-    const writeStream = fs.createWriteStream(outputFile);
-    const pngStream = canvas.pngStream();
+  // Write the result to a file
+  console.log('Writing to file ' + outputFile);
+  const writeStream = fs.createWriteStream(outputFile);
+  const pngStream = canvas.pngStream();
 
-    pngStream.on('data', chunk => {
-      writeStream.write(chunk);
-    });
-    pngStream.on('error', console.log);
-    pngStream.on('end', callback);
+  pngStream.on('data', chunk => {
+    writeStream.write(chunk);
+  });
+  pngStream.on('error', console.log);
+  pngStream.on('end', () => {
+    return;
   });
 }
 // [END vision_face_detection_tutorial_process_response]
 
 // Run the example
 // [START vision_face_detection_tutorial_run_application]
-function main(inputFile, outputFile, Canvas, callback) {
+async function main(inputFile, outputFile, Canvas, callback) {
   outputFile = outputFile || 'out.png';
-  detectFaces(inputFile, (err, faces) => {
-    if (err) {
-      return callback(err);
-    }
 
+  try {
+    const faces = await detectFaces(inputFile);
     console.log('Highlighting...');
-    highlightFaces(inputFile, faces, outputFile, Canvas, err => {
-      if (err) {
-        return callback(err);
-      }
-      console.log('Finished!');
-      callback(null, faces);
-    });
-  });
+
+    await highlightFaces(inputFile, faces, outputFile, Canvas);
+    console.log('Finished!');
+  } catch (err) {
+    callback(err);
+  }
 }
 // [END vision_face_detection_tutorial_run_application]
 

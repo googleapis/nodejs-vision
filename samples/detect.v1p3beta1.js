@@ -17,7 +17,7 @@
 
 'use strict';
 
-function detectHandwritingOCR(fileName) {
+async function detectHandwritingOCR(fileName) {
   // [START vision_handwritten_ocr_beta]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
@@ -39,19 +39,13 @@ function detectHandwritingOCR(fileName) {
       languageHints: ['en-t-i0-handwrit'],
     },
   };
-  client
-    .documentTextDetection(request)
-    .then(results => {
-      const fullTextAnnotation = results[0].fullTextAnnotation;
-      console.log(`Full text: ${fullTextAnnotation.text}`);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
+
+  const [{fullTextAnnotation}] = await client.documentTextDetection(request);
+  console.log(`Full text: ${fullTextAnnotation.text}`);
   // [END vision_handwritten_ocr_beta]
 }
 
-function detectHandwritingGCS(uri) {
+async function detectHandwritingGCS(uri) {
   // [START vision_handwritten_ocr_gcs_beta]
   // Imports the Google Cloud client libraries
   const vision = require('@google-cloud/vision').v1p3beta1;
@@ -74,15 +68,8 @@ function detectHandwritingGCS(uri) {
     },
   };
 
-  client
-    .documentTextDetection(request)
-    .then(results => {
-      const fullTextAnnotation = results[0].fullTextAnnotation;
-      console.log(`Full text: ${fullTextAnnotation.text}`);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
+  const [{fullTextAnnotation}] = await client.documentTextDetection(request);
+  console.log(`Full text: ${fullTextAnnotation.text}`);
   // [END vision_handwritten_ocr_gcs_beta]
 }
 

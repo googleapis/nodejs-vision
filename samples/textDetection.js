@@ -113,18 +113,18 @@ Index.prototype.setContainsNoText = function(filename, callback) {
   this.docsClient.set(filename, '', callback);
 };
 
-function lookup(words, callback) {
+async function lookup(words) {
   const index = new Index();
-  index.lookup(words, function(err, hits) {
+  try {
+    const hits = await index.lookup(words);
     index.quit();
-    if (err) {
-      return callback(err);
-    }
     words.forEach(function(word, i) {
       console.log('hits for "' + word + '":', hits[i].join(', '));
     });
-    callback(null, hits);
-  });
+    return hits;
+  } catch (err) {
+    return err;
+  }
 }
 
 function extractDescription(texts) {
@@ -279,7 +279,7 @@ if (module === require.main) {
       // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
-    lookup(args, console.log);
+    console.log(lookup(args));
   } else {
     console.log(generalError);
     // eslint-disable-next-line no-process-exit
