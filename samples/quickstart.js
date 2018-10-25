@@ -23,10 +23,11 @@ const vision = require('@google-cloud/vision');
 const client = new vision.ImageAnnotatorClient();
 
 // Performs label detection on the image file
-(async () => {
+async function main() {
   const [{labelAnnotations: labels}] = await client.labelDetection(
     './resources/wakeupcat.jpg'
   );
   labels.forEach(label => console.log(label.description));
-})();
+}
+main().catch(console.error);
 // [END vision_quickstart]

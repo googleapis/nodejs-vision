@@ -29,12 +29,8 @@ async function detectFulltext(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs label detection on the local file
-  const [
-    {
-      fullTextAnnotation: {pages},
-    },
-  ] = await client.textDetection(fileName);
-
+  const [result] = await client.textDetection(fileName);
+  const pages = result.fullTextAnnotation.pages;
   pages.forEach(page => {
     page.blocks.forEach(block => {
       const blockWords = [];
@@ -79,10 +75,8 @@ async function detectSafeSearch(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs safe search detection on the local file
-  const [{safeSearchAnnotation: detections}] = await client.safeSearchDetection(
-    fileName
-  );
-
+  const [result] = await client.safeSearchDetection(fileName);
+  const detections = result.safeSearchAnnotation;
   console.log('Safe search:');
   console.log(`Adult: ${detections.adult}`);
   console.log(`Medical: ${detections.medical}`);
@@ -106,9 +100,8 @@ async function detectWeb(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Detect similar images on the web to a local file
-  // const [{webDetection}] = await client.webDetection(fileName);
-  const [{webDetection}] = await client.webDetection(fileName);
-
+  const [result] = await client.webDetection(fileName);
+  const webDetection = result.webDetection;
   if (webDetection.bestGuessLabels.length) {
     webDetection.bestGuessLabels.forEach(label => {
       console.log(`Best guess label: ${label.label}`);
@@ -205,7 +198,8 @@ async function detectWebEntitiesIncludingGeoResults(fileName) {
   };
 
   // Performs safe search detection on the local file
-  const [{webDetection}] = await client.webDetection(request);
+  const [result] = await client.webDetection(request);
+  const webDetection = result.webDetection;
   webDetection.webEntities.forEach(entity => {
     console.log(`Score: ${entity.score}`);
     console.log(`Description: ${entity.description}`);

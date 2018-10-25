@@ -115,16 +115,12 @@ Index.prototype.setContainsNoText = function(filename, callback) {
 
 async function lookup(words) {
   const index = new Index();
-  try {
-    const hits = await index.lookup(words);
-    index.quit();
-    words.forEach(function(word, i) {
-      console.log('hits for "' + word + '":', hits[i].join(', '));
-    });
-    return hits;
-  } catch (err) {
-    return err;
-  }
+  const hits = await index.lookup(words);
+  index.quit();
+  words.forEach(function(word, i) {
+    console.log('hits for "' + word + '":', hits[i].join(', '));
+  });
+  return hits;
 }
 
 function extractDescription(texts) {

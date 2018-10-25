@@ -40,7 +40,8 @@ async function detectHandwritingOCR(fileName) {
     },
   };
 
-  const [{fullTextAnnotation}] = await client.documentTextDetection(request);
+  const [result] = await client.documentTextDetection(request);
+  const fullTextAnnotation = result.fullTextAnnotation;
   console.log(`Full text: ${fullTextAnnotation.text}`);
   // [END vision_handwritten_ocr_beta]
 }
@@ -68,7 +69,8 @@ async function detectHandwritingGCS(uri) {
     },
   };
 
-  const [{fullTextAnnotation}] = await client.documentTextDetection(request);
+  const [result] = await client.documentTextDetection(request);
+  const fullTextAnnotation = result.fullTextAnnotation;
   console.log(`Full text: ${fullTextAnnotation.text}`);
   // [END vision_handwritten_ocr_gcs_beta]
 }

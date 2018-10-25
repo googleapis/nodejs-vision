@@ -28,8 +28,8 @@ async function detectFaces(fileName) {
    */
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
-  const [{faceAnnotations: faces}] = await client.faceDetection(fileName);
-
+  const [result] = await client.faceDetection(fileName);
+  const faces = result.faceAnnotations;
   console.log('Faces:');
   faces.forEach((face, i) => {
     console.log(`  Face #${i + 1}:`);
@@ -56,9 +56,8 @@ async function detectFacesGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs face detection on the gcs file
-  const [{faceAnnotations: faces}] = await client.faceDetection(
-    `gs://${bucketName}/${fileName}`
-  );
+  const [result] = await client.faceDetection(`gs://${bucketName}/${fileName}`);
+  const faces = result.faceAnnotations;
   console.log('Faces:');
   faces.forEach((face, i) => {
     console.log(`  Face #${i + 1}:`);
@@ -84,7 +83,8 @@ async function detectLabels(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs label detection on the local file
-  const [{labelAnnotations: labels}] = await client.labelDetection(fileName);
+  const [result] = await client.labelDetection(fileName);
+  const labels = result.labelAnnotations;
   console.log('Labels:');
   labels.forEach(label => console.log(label.description));
   // [END vision_label_detection]
@@ -105,9 +105,10 @@ async function detectLabelsGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs label detection on the gcs file
-  const [{labelAnnotations: labels}] = await client.labelDetection(
+  const [result] = await client.labelDetection(
     `gs://${bucketName}/${fileName}`
   );
+  const labels = result.labelAnnotations;
   console.log('Labels:');
   labels.forEach(label => console.log(label.description));
   // [END vision_label_detection_gcs]
@@ -126,9 +127,8 @@ async function detectLandmarks(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs landmark detection on the local file
-  const [{landmarkAnnotations: landmarks}] = await client.landmarkDetection(
-    fileName
-  );
+  const [result] = await client.landmarkDetection(fileName);
+  const landmarks = result.landmarkAnnotations;
   console.log('Landmarks:');
   landmarks.forEach(landmark => console.log(landmark));
   // [END vision_landmark_detection]
@@ -149,9 +149,10 @@ async function detectLandmarksGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs landmark detection on the gcs file
-  const [{landmarkAnnotations: landmarks}] = await client.landmarkDetection(
+  const [result] = await client.landmarkDetection(
     `gs://${bucketName}/${fileName}`
   );
+  const landmarks = result.landmarkAnnotations;
   console.log('Landmarks:');
   landmarks.forEach(landmark => console.log(landmark));
   // [END vision_landmark_detection_gcs]
@@ -170,7 +171,8 @@ async function detectText(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs text detection on the local file
-  const [{textAnnotations: detections}] = await client.textDetection(fileName);
+  const [result] = await client.textDetection(fileName);
+  const detections = result.textAnnotations;
   console.log('Text:');
   detections.forEach(text => console.log(text));
   // [END vision_text_detection]
@@ -191,9 +193,8 @@ async function detectTextGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs text detection on the gcs file
-  const [{textAnnotations: detections}] = await client.textDetection(
-    `gs://${bucketName}/${fileName}`
-  );
+  const [result] = await client.textDetection(`gs://${bucketName}/${fileName}`);
+  const detections = result.textAnnotations;
   console.log('Text:');
   detections.forEach(text => console.log(text));
   // [END vision_text_detection_gcs]
@@ -212,7 +213,8 @@ async function detectLogos(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs logo detection on the local file
-  const [{logoAnnotations: logos}] = await client.logoDetection(fileName);
+  const [result] = await client.logoDetection(fileName);
+  const logos = result.logoAnnotations;
   console.log('Logos:');
   logos.forEach(logo => console.log(logo));
   // [END vision_logo_detection]
@@ -233,9 +235,8 @@ async function detectLogosGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs logo detection on the gcs file
-  const [{logoAnnotations: logos}] = await client.logoDetection(
-    `gs://${bucketName}/${fileName}`
-  );
+  const [result] = await client.logoDetection(`gs://${bucketName}/${fileName}`);
+  const logos = result.logoAnnotations;
   console.log('Logos:');
   logos.forEach(logo => console.log(logo));
   // [END vision_logo_detection_gcs]
@@ -254,13 +255,8 @@ async function detectProperties(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs property detection on the local file
-  const [
-    {
-      imagePropertiesAnnotation: {
-        dominantColors: {colors},
-      },
-    },
-  ] = await client.imageProperties(fileName);
+  const [result] = await client.imageProperties(fileName);
+  const colors = result.imagePropertiesAnnotation.dominantColors.colors;
   colors.forEach(color => console.log(color));
   // [END vision_image_property_detection]
 }
@@ -280,18 +276,10 @@ async function detectPropertiesGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs property detection on the gcs file
-  const [
-    {
-      imagePropertiesAnnotation: {
-        dominantColors: {colors},
-      },
-    },
-  ] = await client.imageProperties(`gs://${bucketName}/${fileName}`);
-
-  // const [
-  //   {imagePropertiesAnnotation: properties},
-  // ] = await client.imageProperties(fileName);
-  // const colors = properties.dominantColors.colors;
+  const [result] = await client.imageProperties(
+    `gs://${bucketName}/${fileName}`
+  );
+  const colors = result.imagePropertiesAnnotation.dominantColors;
   colors.forEach(color => console.log(color));
   // [END vision_image_property_detection_gcs]
 }
@@ -309,9 +297,8 @@ async function detectSafeSearch(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Performs safe search detection on the local file
-  const [{safeSearchAnnotation: detections}] = await client.safeSearchDetection(
-    fileName
-  );
+  const [result] = await client.safeSearchDetection(fileName);
+  const detections = result.safeSearchAnnotation;
   console.log('Safe search:');
   console.log(`Adult: ${detections.adult}`);
   console.log(`Medical: ${detections.medical}`);
@@ -336,9 +323,10 @@ async function detectSafeSearchGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Performs safe search property detection on the remote file
-  const [{safeSearchAnnotation: detections}] = await client.safeSearchDetection(
+  const [result] = await client.safeSearchDetection(
     `gs://${bucketName}/${fileName}`
   );
+  const detections = result.safeSearchAnnotation;
   console.log(`Adult: ${detections.adult}`);
   console.log(`Spoof: ${detections.spoof}`);
   console.log(`Medical: ${detections.medical}`);
@@ -361,7 +349,8 @@ async function detectCropHints(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Find crop hints for the local file
-  const [{cropHintsAnnotation: cropHints}] = await client.cropHints(fileName);
+  const [result] = await client.cropHints(fileName);
+  const cropHints = result.cropHintsAnnotation;
   cropHints.cropHints.forEach((hintBounds, hintIdx) => {
     console.log(`Crop Hint ${hintIdx}:`);
     hintBounds.boundingPoly.vertices.forEach((bound, boundIdx) => {
@@ -387,9 +376,8 @@ async function detectCropHintsGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Find crop hints for the remote file
-  const [{cropHintsAnnotation: cropHints}] = await client.cropHints(
-    `gs://${bucketName}/${fileName}`
-  );
+  const [result] = await client.cropHints(`gs://${bucketName}/${fileName}`);
+  const cropHints = result.cropHintsAnnotation;
   cropHints.cropHints.forEach((hintBounds, hintIdx) => {
     console.log(`Crop Hint ${hintIdx}:`);
     hintBounds.boundingPoly.vertices.forEach((bound, boundIdx) => {
@@ -414,7 +402,8 @@ async function detectWeb(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Detect similar images on the web to a local file
-  const [{webDetection}] = await client.webDetection(fileName);
+  const [result] = await client.webDetection(fileName);
+  const webDetection = result.webDetection;
   if (webDetection.fullMatchingImages.length) {
     console.log(
       `Full matches found: ${webDetection.fullMatchingImages.length}`
@@ -470,9 +459,8 @@ async function detectWebGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Detect similar images on the web to a remote file
-  const [{webDetection}] = await client.webDetection(
-    `gs://${bucketName}/${fileName}`
-  );
+  const [result] = await client.webDetection(`gs://${bucketName}/${fileName}`);
+  const webDetection = result.webDetection;
   if (webDetection.fullMatchingImages.length) {
     console.log(
       `Full matches found: ${webDetection.fullMatchingImages.length}`
@@ -539,7 +527,8 @@ async function detectWebGeo(fileName) {
   };
 
   // Detect similar images on the web to a local file
-  const [{webDetection}] = await client.webDetection(request);
+  const [result] = await client.webDetection(request);
+  const webDetection = result.webDetection;
   webDetection.webEntities.forEach(entity => {
     console.log(`Score: ${entity.score}`);
     console.log(`Description: ${entity.description}`);
@@ -575,7 +564,8 @@ async function detectWebGeoGCS(bucketName, fileName) {
   };
 
   // Detect similar images on the web to a remote file
-  const [{webDetection}] = await client.webDetection(request);
+  const [result] = await client.webDetection(request);
+  const webDetection = result.webDetection;
   webDetection.webEntities.forEach(entity => {
     console.log(`Score: ${entity.score}`);
     console.log(`Description: ${entity.description}`);
@@ -598,7 +588,8 @@ async function detectFulltext(fileName) {
   // const fileName = 'Local image file, e.g. /path/to/image.png';
 
   // Read a local image as a text document
-  const [{fullTextAnnotation}] = await client.documentTextDetection(fileName);
+  const [result] = await client.documentTextDetection(fileName);
+  const fullTextAnnotation = result.fullTextAnnotation;
   console.log(`Full text: ${fullTextAnnotation.text}`);
   fullTextAnnotation.pages.forEach(page => {
     page.blocks.forEach(block => {
@@ -636,9 +627,10 @@ async function detectFulltextGCS(bucketName, fileName) {
   // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
 
   // Read a remote image as a text document
-  const [{fullTextAnnotation}] = await client.documentTextDetection(
+  const [result] = await client.documentTextDetection(
     `gs://${bucketName}/${fileName}`
   );
+  const fullTextAnnotation = result.fullTextAnnotation;
   console.log(fullTextAnnotation.text);
   // [END vision_fulltext_detection_gcs]
 }
@@ -687,10 +679,9 @@ async function detectPdfText(bucketName, fileName) {
   };
 
   const [operation] = await client.asyncBatchAnnotateFiles(request);
-  const filesResponse = await operation.promise();
-
+  const [filesResponse] = await operation.promise();
   const destinationUri =
-    filesResponse[0].responses[0].outputConfig.gcsDestination.uri;
+    filesResponse.responses[0].outputConfig.gcsDestination.uri;
   console.log('Json saved to: ' + destinationUri);
   // [END vision_text_detection_pdf_gcs]
 }
@@ -712,10 +703,8 @@ async function localizeObjects(fileName) {
     image: {content: fs.readFileSync(fileName)},
   };
 
-  const [
-    {localizedObjectAnnotations: objects},
-  ] = await client.objectLocalization(request);
-
+  const [result] = await client.objectLocalization(request);
+  const objects = result.localizedObjectAnnotations;
   objects.forEach(object => {
     console.log(`Name: ${object.name}`);
     console.log(`Confidence: ${object.score}`);
@@ -738,10 +727,8 @@ async function localizeObjectsGCS(gcsUri) {
    */
   // const gcsUri = `gs://bucket/bucketImage.png`;
 
-  const [
-    {localizedObjectAnnotations: objects},
-  ] = await client.objectLocalization(gcsUri);
-
+  const [result] = await client.objectLocalization(gcsUri);
+  const objects = result.localizedObjectAnnotations;
   objects.forEach(object => {
     console.log(`Name: ${object.name}`);
     console.log(`Confidence: ${object.score}`);
