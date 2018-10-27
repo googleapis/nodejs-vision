@@ -279,7 +279,7 @@ async function detectPropertiesGCS(bucketName, fileName) {
   const [result] = await client.imageProperties(
     `gs://${bucketName}/${fileName}`
   );
-  const colors = result.imagePropertiesAnnotation.dominantColors;
+  const colors = result.imagePropertiesAnnotation.dominantColors.colors;
   colors.forEach(color => console.log(color));
   // [END vision_image_property_detection_gcs]
 }
