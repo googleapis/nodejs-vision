@@ -26,7 +26,10 @@ const client = new vision.ImageAnnotatorClient();
 async function main() {
   const [result] = await client.labelDetection('./resources/wakeupcat.jpg');
   const labels = result.labelAnnotations;
+  console.log('Labels:');
   labels.forEach(label => console.log(label.description));
 }
-main().catch(console.error);
+main().catch(err => {
+  console.error('ERROR:', err);
+});
 // [END vision_quickstart]

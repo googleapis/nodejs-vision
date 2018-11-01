@@ -19,12 +19,12 @@ const path = require(`path`);
 const assert = require('assert');
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 
-describe(`text detection`, () => {
+describe(`Text Detection`, () => {
   before(async () => {
     tools.checkCredentials;
   });
 
-  it(`should detect texts`, async () => {
+  it(`should detect texts`, done => {
     const redis = require('redis');
     const client = redis.createClient();
 
@@ -34,23 +34,29 @@ describe(`text detection`, () => {
           console.error(
             'Redis is unavailable. Skipping vision textDetection test.'
           );
-          assert.ifError(err);
+          client.end(true);
+          done();
         } else {
-          assert.ifError(err);
+          client.end(true);
+          done(err);
         }
       })
       .on('ready', async () => {
         const inputDir = path.join(__dirname, `../resources`);
         const textDetectionSample = require(`../textDetection`);
 
-        const textResponse = await textDetectionSample.main(inputDir);
+        const textResponse = await textDetectionSample
+          .main(inputDir)
+          .catch(err => {
+            console.log(`Error at 46: ${err}`);
+          });
         assert.ok(Object.keys(textResponse).length > 0);
 
-        const hits = await textDetectionSample.lookup([
-          'the',
-          'sunbeams',
-          'in',
-        ]);
+        const hits = await textDetectionSample
+          .lookup(['the', 'sunbeams', 'in'])
+          .catch(err => {
+            console.log(`Error at 51: ${err}`);
+          });
         assert.ok(hits.length > 0);
         assert.ok(hits.length > 0);
         assert.ok(hits[0].length > 0);

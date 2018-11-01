@@ -23,16 +23,12 @@ const cmd = `node quickstart.js`;
 const cwd = path.join(__dirname, `..`);
 
 describe(`quickstart`, () => {
-  before(async () => {
-    tools.stubConsole;
-  });
-
-  after(async () => {
-    tools.restoreConsole;
-  });
+  before(tools.stubConsole);
+  after(tools.restoreConsole);
 
   it(`should detect labels in a remote file`, async () => {
     const output = await tools.runAsync(`${cmd}`, cwd);
+    assert.ok(output.includes(`Labels:`));
     assert.ok(output.includes(`cat`));
   });
 });
