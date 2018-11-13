@@ -21,7 +21,7 @@ const productSearch = new vision.ProductSearchClient();
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 const cmd = `node similarProducts.v1p3beta1.js`;
-const cwd = path.join(__dirname, `..`);
+const cwd = path.join(__dirname, `..`, `productSearch`);
 const filter = ['', 'style=womens'];
 const localPath = './resources/shoes_1.jpg';
 const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
