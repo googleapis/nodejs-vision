@@ -28,7 +28,7 @@ const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
 
 // Shared fixture data for product tests
 const testSimilarProducts = {
-  projectId: process.env.GCLOUD_PROJECT,
+  projectId: 'nodejs-docs-samples',
   location: 'us-west1',
   productSetId: 'indexed_product_set_id_for_testing',
   productCategory: 'apparel',
@@ -48,7 +48,7 @@ test(`should check if similar product exists to one provided in local file with 
     cwd
   );
 
-  t.true(output.includes(`Search Image:`));
+  t.true(output.includes(`Similar product information:`));
   t.true(
     output.includes(`Product category: ${testSimilarProducts.productCategory}`)
   );
