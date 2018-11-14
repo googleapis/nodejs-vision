@@ -127,7 +127,6 @@ test(`should list product sets`, async t => {
     cwd
   );
 
-  t.true(output.includes(`Product Set name: ${testProductSet.productSetPath}`));
   t.true(
     output.includes(
       `Product Set display name: ${testProductSet.productSetDisplayName}`
