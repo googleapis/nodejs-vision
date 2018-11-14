@@ -23,4 +23,7 @@ cd $(dirname $0)/..
 npm install
 npm test
 
+echo $KOKORO_GITHUB_PULL_REQUEST_COMMIT
+echo $KOKORO_GIT_COMMIT
+
 bash $KOKORO_GFILE_DIR/codecov.sh
