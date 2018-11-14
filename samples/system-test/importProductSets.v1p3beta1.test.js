@@ -23,7 +23,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 
 //Shared fixture data for product tests
 const testImportProductSets = {
-  projectId: 'nodejs-docs-samples',
+  projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
   gcsUri: 'gs://nodejs-docs-samples/product-search/product_sets.csv',
 };

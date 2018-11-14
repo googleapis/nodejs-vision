@@ -25,8 +25,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 
 // Shared fixture data for product tests
 const testProductSet = {
-  //projectId: process.env.GCLOUD_PROJECT,
-  projectId: 'nodejs-docs-samples',
+  projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
   productCategory: 'homegoods',
   productId: 'test_product_id_1',
