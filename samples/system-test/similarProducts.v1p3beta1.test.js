@@ -48,7 +48,7 @@ test(`should check if similar product exists to one provided in local file with 
     cwd
   );
 
-  t.true(output.includes(`Similar product information:`));
+  t.true(output.includes(`Search Image:`));
   t.true(
     output.includes(`Product category: ${testSimilarProducts.productCategory}`)
   );

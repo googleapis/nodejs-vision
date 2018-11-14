@@ -67,7 +67,7 @@ function getSimilarProductsFile(
     .then(responses => {
       const response = responses[0];
 
-      console.log('Search Image:', filePath);
+      //console.log('Search Image:', filePath);
 
       const results =
         response['responses'][0]['productSearchResults']['results'];
@@ -132,12 +132,12 @@ function getSimilarProductsGcs(
       },
     },
   };
-  console.log(request.image);
+  // console.log(request.image);
   imageAnnotatorClient
     .batchAnnotateImages({requests: [request]})
     .then(responses => {
       const response = responses[0];
-      console.log('Search Image:', filePath);
+      //console.log('Search Image:', filePath);
       console.log('\nSimilar product information:');
       const results =
         response['responses'][0]['productSearchResults']['results'];
