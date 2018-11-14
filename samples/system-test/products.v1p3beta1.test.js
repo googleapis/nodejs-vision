@@ -137,7 +137,6 @@ test(`should list products`, async t => {
   );
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
-  t.true(output.includes(`Product labels:`));
 });
 
 test(`should delete product`, async t => {
