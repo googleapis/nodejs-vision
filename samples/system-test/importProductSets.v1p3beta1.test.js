@@ -27,7 +27,7 @@ const testImportProductSets = {
   location: 'us-west1',
   gcsUri: 'gs://nodejs-docs-samples/product-search/product_sets.csv',
 };
-test(`Should import a Product Set`, async t => {
+test.skip(`Should import a Product Set`, async t => {
   const output = await tools.runAsync(
     `${cmd} importProductSets "${testImportProductSets.projectId}" "${
       testImportProductSets.location

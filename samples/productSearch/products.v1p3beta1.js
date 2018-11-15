@@ -36,7 +36,7 @@ function createProduct(
   // const location = 'A compute region name';
   // const productId = 'Id of the product';
   // const productDisplayName = 'Display name of the product';
-  // const productCategory = 'Catoegory of the product';
+  // const productCategory = 'Category of the product';
 
   // Resource path that represents Google Cloud Platform location.
   const locationPath = client.locationPath(projectId, location);
