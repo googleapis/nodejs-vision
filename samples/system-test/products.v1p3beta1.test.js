@@ -28,7 +28,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 const testProduct = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'test_product_id_1',
+  productId: 'test_products_id_1',
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
   productKey: 'myKey',
@@ -56,29 +56,40 @@ async function getProductOrFalse(productPath) {
 }
 
 test.before(tools.checkCredentials);
-test.before(async () => {
-  // Create a test product for each test
-  try {
-    await productSearch.createProduct({
-      parent: productSearch.locationPath(
-        testProduct.projectId,
-        testProduct.location
-      ),
-      productId: testProduct.productId,
-      product: {
-        displayName: testProduct.productDisplayName,
-        productCategory: testProduct.productCategory,
-      },
-    });
-    testProduct.createdProductPaths.push(testProduct.productPath);
-  } catch (err) {} // ignore error
-});
+// test.before(async () => {
+//   // Create a test product for each test
+//   try {
+//     const output = await productSearch.createProduct({
+//       parent: productSearch.locationPath(
+//         testProduct.projectId,
+//         testProduct.location
+//       ),
+//       productId: testProduct.productId,
+//       product: {
+//         displayName: testProduct.productDisplayName,
+//         productCategory: testProduct.productCategory,
+//       },
+//     });
+//     console.log('Before:creation', output);
+//     testProduct.createdProductPaths.push(testProduct.productPath);
+//   } catch (err) {
+//     console.log('create' + err);
+//   } // ignore error
+// });
 test.after(async () => {
   // Delete products after each test
-  testProduct.createdProductPaths.forEach(async path => {
+  testProduct.createdProductPaths.forEach(async () => {
     try {
-      await productSearch.deleteProduct({name: path});
-    } catch (err) {} // ignore error
+      await productSearch.deleteProduct({
+        name: productSearch.productPath(
+          testProduct.projectId,
+          testProduct.location,
+          testProduct.productId
+        ),
+      });
+    } catch (err) {
+      console.log(err);
+    } // ignore error
   });
 });
 
@@ -92,7 +103,7 @@ test(`should create product`, async t => {
   t.falsy(await getProductOrFalse(newProductPath));
   testProduct.createdProductPaths.push(newProductPath);
 
-  const output = await tools.runAsync(
+  let output = await tools.runAsync(
     `${cmd} createProduct "${testProduct.projectId}" "${
       testProduct.location
     }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -101,22 +112,39 @@ test(`should create product`, async t => {
     cwd
   );
 
-  t.true(output.includes(`Product name: ${newProductPath}`));
+  //t.true(output.includes(`Product name: ${newProductPath}`));
 
   const newProduct = await getProductOrFalse(newProductPath);
   t.true(newProduct.displayName === testProduct.productDisplayName);
   t.true(newProduct.productCategory === testProduct.productCategory);
+
+  output = await tools.runAsync(
+    `${cmd} deleteProduct "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${newProductId}"`,
+    cwd
+  );
+  t.true(output.includes(`Product deleted.`));
 });
 
 test(`should get product`, async t => {
-  const output = await tools.runAsync(
+  let output = await tools.runAsync(
+    `${cmd} createProduct "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${testProduct.productId}" "${testProduct.productDisplayName}" "${
+      testProduct.productCategory
+    }"`,
+    cwd
+  );
+
+  output = await tools.runAsync(
     `${cmd} getProduct "${testProduct.projectId}" "${testProduct.location}" "${
       testProduct.productId
     }"`,
     cwd
   );
 
-  t.true(output.includes(`Product name: ${testProduct.productPath}`));
+  //t.true(output.includes(`Product name: ${testProduct.productPath}`));
   t.true(output.includes(`Product id: ${testProduct.productId}`));
   t.true(output.includes(`Product display name:`));
   t.true(output.includes(`Product description:`));
@@ -130,7 +158,7 @@ test(`should list products`, async t => {
     cwd
   );
 
-  t.true(output.includes(`Product name: ${testProduct.productPath}`));
+  //t.true(output.includes(`Product name: ${testProduct.productPath}`));
   t.true(output.includes(`Product id: ${testProduct.productId}`));
   t.true(
     output.includes(`Product display name: ${testProduct.productDisplayName}`)
@@ -162,7 +190,15 @@ test(`should delete product`, async t => {
 });
 
 test(`should update product label`, async t => {
-  const output = await tools.runAsync(
+  let output = await tools.runAsync(
+    `${cmd} createProduct "${testProduct.projectId}" "${
+      testProduct.location
+    }" "${testProduct.productId}" "${testProduct.productDisplayName}" "${
+      testProduct.productCategory
+    }"`,
+    cwd
+  );
+  output = await tools.runAsync(
     `${cmd} updateProductLabels "${testProduct.projectId}" "${
       testProduct.location
     }" "${testProduct.productId}" "${testProduct.productKey}" "${

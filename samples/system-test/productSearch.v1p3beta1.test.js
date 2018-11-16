@@ -29,6 +29,7 @@ const testProductSet = {
   location: 'us-west1',
   productCategory: 'homegoods',
   productId: 'test_product_id_1',
+  productDisplayName: 'test_product_display_name_1',
   productSetId: 'test_product_set_id_1',
   productSetDisplayName: 'test_product_set_display_name_1',
 };
@@ -59,7 +60,9 @@ test.before(async () => {
       },
     });
     testProductSet.createdProductPaths.push(testProductSet.productPath);
-  } catch (err) {} // ignore error
+  } catch (err) {
+    //  console.log('Before create:', err);
+  } // ignore error
 
   try {
     await productSearchClient.createProductSet({
@@ -75,43 +78,52 @@ test.before(async () => {
     testProductSet.createdProductSetPaths.push(
       testProductSet.createdProductSetPaths
     );
-  } catch (err) {} // ignore error
+  } catch (err) {
+    console.log('Create productset:', err);
+  } // ignore error
 });
 
 test.after(async () => {
   // Delete products sets after each test
-  testProductSet.createdProductSetPaths.forEach(async path => {
+  testProductSet.createdProductSetPaths.forEach(async () => {
     try {
-      await productSearchClient.deleteProductSet({name: path});
-      await productSearchClient.deleteProduct({name: path});
+      await productSearchClient.deleteProductSet({
+        name: productSearchClient.productSetPath(
+          testProductSet.projectId,
+          testProductSet.location,
+          testProductSet.productSetId
+        ),
+      });
+      await productSearchClient.deleteProduct({
+        name: productSearchClient.productPath(
+          testProductSet.projectId,
+          testProductSet.location,
+          testProductSet.productId
+        ),
+      });
     } catch (err) {} // ignore error
   });
 });
 
 test(`should add product to product set`, async t => {
-  const output = await tools.runAsync(
+  let output = await tools.runAsync(
     `${cmd} addProductToProductSet "${testProductSet.projectId}" "${
       testProductSet.location
     }" "${testProductSet.productId}" "${testProductSet.productSetId}"`,
     cwd
   );
-  console.log('---------------');
-  console.log(output);
-  console.log('---------------');
   t.true(output.includes(`Product added to product set.`));
-});
 
-test(`remove a product from a product set`, async t => {
-  const output = await tools.runAsync(
+  output = await tools.runAsync(
     `${cmd} removeProductFromProductSet "${testProductSet.projectId}" "${
       testProductSet.location
     }" "${testProductSet.productId}" "${testProductSet.productSetId}"`,
     cwd
   );
 
-  console.log('---------------');
-  console.log(output);
-  console.log('---------------');
+  // console.log('---------------');
+  // console.log(output);
+  // console.log('---------------');
 
   t.true(output.includes(`Product removed from product set.`));
 });

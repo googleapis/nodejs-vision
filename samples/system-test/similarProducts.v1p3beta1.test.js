@@ -16,8 +16,8 @@
 'use strict';
 
 const path = require(`path`);
-const vision = require('@google-cloud/vision').v1p3beta1;
-const productSearch = new vision.ProductSearchClient();
+//const vision = require('@google-cloud/vision').v1p3beta1;
+//const productSearch = new vision.ProductSearchClient();
 const test = require(`ava`);
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 const cmd = `node similarProducts.v1p3beta1.js`;
@@ -33,11 +33,11 @@ const testSimilarProducts = {
   productSetId: 'indexed_product_set_id_for_testing',
   productCategory: 'apparel',
 };
-testSimilarProducts.productPath = productSearch.productSetPath(
-  testSimilarProducts.projectId,
-  testSimilarProducts.location,
-  testSimilarProducts.productSetId
-);
+// testSimilarProducts.productPath = productSearch.productSetPath(
+//   testSimilarProducts.projectId,
+//   testSimilarProducts.location,
+//   testSimilarProducts.productSetId
+// );
 test(`should check if similar product exists to one provided in local file with no filter`, async t => {
   const output = await tools.runAsync(
     `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
