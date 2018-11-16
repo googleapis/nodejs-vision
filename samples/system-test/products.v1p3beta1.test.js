@@ -149,7 +149,6 @@ test(`should get product`, async t => {
   t.true(output.includes(`Product display name:`));
   t.true(output.includes(`Product description:`));
   t.true(output.includes(`Product category: ${testProduct.productCategory}`));
-  t.true(output.includes(`Product labels:`));
 });
 
 test(`should list products`, async t => {

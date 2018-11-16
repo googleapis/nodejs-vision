@@ -29,7 +29,7 @@ const testProduct = {
   //projectId: process.env.GCLOUD_PROJECT,
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'test_product_id_1',
+  productId: 'test_product_ref_image_id_1',
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
   productReferenceImageId: `ReferenceImage${uuid.v4()}`,
