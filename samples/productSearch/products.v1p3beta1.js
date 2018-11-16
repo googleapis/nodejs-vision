@@ -92,7 +92,11 @@ function getProduct(projectId, location, productId) {
       console.log(`Product display name: ${product.displayName}`);
       console.log(`Product description: ${product.description}`);
       console.log(`Product category: ${product.productCategory}`);
-      console.log(`Product labels: ${product.productLabels}`);
+      console.log(
+        `Product labels: ${product.productLabels[0].key}=${
+          product.productLabels[0].value
+        }`
+      );
     })
     .catch(err => {
       console.error('ERROR:', err);
