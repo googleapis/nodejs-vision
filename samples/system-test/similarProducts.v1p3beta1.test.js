@@ -42,7 +42,12 @@ const testSimilarProducts = {
 // );
 test(`should check if similar product exists to one provided in local file with no filter`, async t => {
   try {
-    const output = await tools.runAsync(
+    let output = await tools.runAsync(
+      `node productSets.v1p3beta1.js listProductSets nodejs-docs-samples us-west1`,
+      cwd
+    );
+    console.log('List product sets output:', output);
+    output = await tools.runAsync(
       `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
