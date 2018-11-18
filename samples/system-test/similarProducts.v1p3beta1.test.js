@@ -26,11 +26,11 @@ const filter = ['', 'style=womens'];
 const localPath = path.join(__dirname, `.`, `../resources`, `shoes_1.jpg`);
 
 //('./../resources/shoes_1.jpg');
-const gcsUri = 'gs://java-docs-samples-testing/product-search/shoes_1.jpg';
+const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
 
 // Shared fixture data for product tests
 const testSimilarProducts = {
-  projectId: 'java-docs-samples-testing',
+  projectId: 'nodejs-docs-samples',
   location: 'us-west1',
   productSetId: 'indexed_product_set_id_for_testing',
   productCategory: 'apparel',
