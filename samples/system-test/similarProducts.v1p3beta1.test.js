@@ -50,15 +50,15 @@ test(`should check if similar product exists to one provided in local file with 
       }" "${localPath}" "${filter[0]}"`,
       cwd
     );
-
+    console.log(output);
     t.true(output.includes(`Similar product information:`));
-    // t.true(
-    //   output.includes(
-    //     `Product category: ${testSimilarProducts.productCategory}`
-    //   )
-    // );
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
+    t.true(
+      output.includes(
+        `Product category: ${testSimilarProducts.productCategory}`
+      )
+    );
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
   } catch (err) {
     console.log('test 1:', err);
   }
@@ -74,14 +74,14 @@ test(`should check if similar product exists to one provided in local file with 
       }" "${localPath}" "${filter[1]}"`,
       cwd
     );
-
+    console.log(output);
     t.true(output.includes(`Similar product information:`));
-    // t.true(
-    //   output.includes(
-    //     `Product category: ${testSimilarProducts.productCategory}`
-    //   )
-    // );
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    t.true(
+      output.includes(
+        `Product category: ${testSimilarProducts.productCategory}`
+      )
+    );
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
   } catch (err) {
     console.log('test 2:', err);
   }
@@ -97,15 +97,15 @@ test(`should check if similar product exists to one provided in GCS file with no
       }" "${gcsUri}" "${filter[0]}"`,
       cwd
     );
-
+    console.log(output);
     t.true(output.includes(`Similar product information:`));
-    // t.true(
-    //   output.includes(
-    //     `Product category: ${testSimilarProducts.productCategory}`
-    //   )
-    // );
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
+    t.true(
+      output.includes(
+        `Product category: ${testSimilarProducts.productCategory}`
+      )
+    );
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
   } catch (err) {
     console.log('test 3:', err);
   }
@@ -121,14 +121,13 @@ test(`should check if similar product exists to one provided in GCS file with fi
       }" "${gcsUri}" "${filter[1]}"`,
       cwd
     );
-
     t.true(output.includes(`Similar product information:`));
-    // t.true(
-    //   output.includes(
-    //     `Product category: ${testSimilarProducts.productCategory}`
-    //   )
-    // );
-    // t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    t.true(
+      output.includes(
+        `Product category: ${testSimilarProducts.productCategory}`
+      )
+    );
+    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
   } catch (err) {
     console.log('test 4:', err);
   }
