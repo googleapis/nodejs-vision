@@ -28,7 +28,7 @@ const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
 
 // Shared fixture data for product tests
 const testSimilarProducts = {
-  projectId: process.env.GCLOUD_PROJECT,
+  projectId: 'nodejs-docs-samples',
   location: 'us-west1',
   productSetId: 'indexed_product_set_id_for_testing',
   productCategory: 'apparel',
