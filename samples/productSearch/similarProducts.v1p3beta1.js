@@ -66,6 +66,7 @@ async function getSimilarProductsFile(
     requests: [request],
   });
   console.log('Search Image:', filePath);
+  console.log(JSON.stringify(response));
   const results = response['responses'][0]['productSearchResults']['results'];
   console.log('\nSimilar product information:');
   results.forEach(result => {
@@ -130,6 +131,7 @@ async function getSimilarProductsGcs(
     requests: [request],
   });
   console.log('Search Image:', filePath);
+  console.log(JSON.stringify(response));
   console.log('\nSimilar product information:');
 
   const results = response['responses'][0]['productSearchResults']['results'];
