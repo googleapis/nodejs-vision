@@ -101,7 +101,7 @@ describe(`product search`, () => {
     assert.ok(output.includes(`Product added to product set.`));
   });
 
-  test(`remove a product from a product set`, async () => {
+  it(`should remove a product from a product set`, async () => {
     const output = await tools.runAsync(
       `${cmd} removeProductFromProductSet "${testProductSet.projectId}" "${
         testProductSet.location

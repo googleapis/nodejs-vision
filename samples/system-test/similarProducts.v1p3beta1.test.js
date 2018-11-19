@@ -16,38 +16,32 @@
 'use strict';
 
 const path = require(`path`);
-//const vision = require('@google-cloud/vision').v1p3beta1;
-//const productSearch = new vision.ProductSearchClient();
-const test = require(`ava`);
+const vision = require('@google-cloud/vision').v1p3beta1;
+const productSearch = new vision.ProductSearchClient();
+const assert = require('assert');
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 const cmd = `node similarProducts.v1p3beta1.js`;
 const cwd = path.join(__dirname, `..`, `productSearch`);
 const filter = ['', 'style=womens'];
-const localPath = path.join(__dirname, `.`, `../resources`, `shoes_1.jpg`);
-
-//('./../resources/shoes_1.jpg');
+const localPath = './../resources/shoes_1.jpg';
 const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
 
 // Shared fixture data for product tests
 const testSimilarProducts = {
-  projectId: 'nodejs-docs-samples',
+  projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
   productSetId: 'indexed_product_set_id_for_testing',
   productCategory: 'apparel',
 };
-// testSimilarProducts.productPath = productSearch.productSetPath(
-//   testSimilarProducts.projectId,
-//   testSimilarProducts.location,
-//   testSimilarProducts.productSetId
-// );
-test(`should check if similar product exists to one provided in local file with no filter`, async t => {
-  try {
-    let output = await tools.runAsync(
-      `node productSets.v1p3beta1.js listProductSets nodejs-docs-samples us-west1`,
-      cwd
-    );
-    console.log('List product sets output:', output);
-    output = await tools.runAsync(
+testSimilarProducts.productPath = productSearch.productSetPath(
+  testSimilarProducts.projectId,
+  testSimilarProducts.location,
+  testSimilarProducts.productSetId
+);
+
+describe(`similar products`, () => {
+  it(`should check if similar product exists to one provided in local file with no filter`, async () => {
+    const output = await tools.runAsync(
       `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
@@ -55,22 +49,18 @@ test(`should check if similar product exists to one provided in local file with 
       }" "${localPath}" "${filter[0]}"`,
       cwd
     );
-    console.log(output);
-    t.true(output.includes(`Similar product information:`));
-    t.true(
+
+    assert.ok(output.includes(`Similar product information:`));
+    assert.ok(
       output.includes(
         `Product category: ${testSimilarProducts.productCategory}`
       )
     );
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
-  } catch (err) {
-    console.log('test 1:', err);
-  }
-});
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_2`));
+  });
 
-test(`should check if similar product exists to one provided in local file with filter`, async t => {
-  try {
+  it(`should check if similar product exists to one provided in local file with filter`, async () => {
     const output = await tools.runAsync(
       `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
@@ -79,21 +69,17 @@ test(`should check if similar product exists to one provided in local file with 
       }" "${localPath}" "${filter[1]}"`,
       cwd
     );
-    console.log(output);
-    t.true(output.includes(`Similar product information:`));
-    t.true(
+
+    assert.ok(output.includes(`Similar product information:`));
+    assert.ok(
       output.includes(
         `Product category: ${testSimilarProducts.productCategory}`
       )
     );
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-  } catch (err) {
-    console.log('test 2:', err);
-  }
-});
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_1`));
+  });
 
-test(`should check if similar product exists to one provided in GCS file with no filter`, async t => {
-  try {
+  it(`should check if similar product exists to one provided in GCS file with no filter`, async () => {
     const output = await tools.runAsync(
       `${cmd} getSimilarProductsGcs "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
@@ -102,22 +88,18 @@ test(`should check if similar product exists to one provided in GCS file with no
       }" "${gcsUri}" "${filter[0]}"`,
       cwd
     );
-    console.log(output);
-    t.true(output.includes(`Similar product information:`));
-    t.true(
+
+    assert.ok(output.includes(`Similar product information:`));
+    assert.ok(
       output.includes(
         `Product category: ${testSimilarProducts.productCategory}`
       )
     );
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_2`));
-  } catch (err) {
-    console.log('test 3:', err);
-  }
-});
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_1`));
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_2`));
+  });
 
-test(`should check if similar product exists to one provided in GCS file with filter`, async t => {
-  try {
+  it(`should check if similar product exists to one provided in GCS file with filter`, async () => {
     const output = await tools.runAsync(
       `${cmd} getSimilarProductsGcs "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
@@ -126,14 +108,13 @@ test(`should check if similar product exists to one provided in GCS file with fi
       }" "${gcsUri}" "${filter[1]}"`,
       cwd
     );
-    t.true(output.includes(`Similar product information:`));
-    t.true(
+
+    assert.ok(output.includes(`Similar product information:`));
+    assert.ok(
       output.includes(
         `Product category: ${testSimilarProducts.productCategory}`
       )
     );
-    t.true(output.includes(`Product id: indexed_product_id_for_testing_1`));
-  } catch (err) {
-    console.log('test 4:', err);
-  }
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_1`));
+  });
 });

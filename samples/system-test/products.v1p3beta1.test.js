@@ -22,13 +22,13 @@ const productSearch = new vision.ProductSearchClient();
 const assert = require('assert');
 const tools = require(`@google-cloud/nodejs-repo-tools`);
 const cmd = `node products.v1p3beta1.js`;
-const cwd = path.join(__dirname, `..`);
+const cwd = path.join(__dirname, `..`, `productSearch`);
 
 // Shared fixture data for product tests
 const testProduct = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'test_product_id_1',
+  productId: 'test_products_id_01',
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
   productKey: 'myKey',
@@ -39,7 +39,6 @@ testProduct.productPath = productSearch.productPath(
   testProduct.location,
   testProduct.productId
 );
-testProduct.createdProductPaths = [];
 
 // Helper function: returns product if exists else false
 async function getProductOrFalse(productPath) {
@@ -58,31 +57,6 @@ async function getProductOrFalse(productPath) {
 describe(`products`, () => {
   before(tools.checkCredentials);
 
-  before(async () => {
-    // Create a test product for each test
-    await productSearch.createProduct({
-      parent: productSearch.locationPath(
-        testProduct.projectId,
-        testProduct.location
-      ),
-      productId: testProduct.productId,
-      product: {
-        displayName: testProduct.productDisplayName,
-        productCategory: testProduct.productCategory,
-      },
-    });
-    testProduct.createdProductPaths.push(testProduct.productPath);
-  });
-
-  after(async () => {
-    // Delete products after each test
-    testProduct.createdProductPaths.forEach(async path => {
-      try {
-        await productSearch.deleteProduct({name: path});
-      } catch (err) {} // ignore error
-    });
-  });
-
   it(`should create product`, async () => {
     const newProductId = `ProductId${uuid.v4()}`;
     const newProductPath = productSearch.productPath(
@@ -91,9 +65,8 @@ describe(`products`, () => {
       newProductId
     );
     assert.strictEqual(await getProductOrFalse(newProductPath), false);
-    testProduct.createdProductPaths.push(newProductPath);
 
-    const output = await tools.runAsync(
+    let output = await tools.runAsync(
       `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -107,24 +80,58 @@ describe(`products`, () => {
     const newProduct = await getProductOrFalse(newProductPath);
     assert.ok(newProduct.displayName === testProduct.productDisplayName);
     assert.ok(newProduct.productCategory === testProduct.productCategory);
+
+    output = await tools.runAsync(
+      `${cmd} deleteProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`,
+      cwd
+    );
+    assert.ok(output.includes(`Product deleted.`));
   });
 
   it(`should get product`, async () => {
-    const output = await tools.runAsync(
-      `${cmd} getProduct "${testProduct.projectId}" "${
+    const newProductId = `ProductId${uuid.v4()}`;
+    const newProductPath = productSearch.productPath(
+      testProduct.projectId,
+      testProduct.location,
+      newProductId
+    );
+    assert.strictEqual(await getProductOrFalse(newProductPath), false);
+    let output = await tools.runAsync(
+      `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
-      }" "${testProduct.productId}"`,
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`,
       cwd
     );
 
-    assert.ok(output.includes(`Product name: ${testProduct.productPath}`));
-    assert.ok(output.includes(`Product id: ${testProduct.productId}`));
+    assert.ok(output.includes(`Product name: ${newProductPath}`));
+
+    output = await tools.runAsync(
+      `${cmd} getProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`,
+      cwd
+    );
+
+    assert.ok(output.includes(`Product name: ${newProductPath}`));
+    assert.ok(output.includes(`Product id: ${newProductId}`));
     assert.ok(output.includes(`Product display name:`));
     assert.ok(output.includes(`Product description:`));
     assert.ok(
       output.includes(`Product category: ${testProduct.productCategory}`)
     );
     assert.ok(output.includes(`Product labels:`));
+
+    output = await tools.runAsync(
+      `${cmd} deleteProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`,
+      cwd
+    );
+    assert.ok(output.includes(`Product deleted.`));
   });
 
   it(`should list products`, async () => {
@@ -135,34 +142,39 @@ describe(`products`, () => {
       cwd
     );
 
-    assert.ok(output.includes(`Product name: ${testProduct.productPath}`));
-    assert.ok(output.includes(`Product id: ${testProduct.productId}`));
-    assert.ok(
-      output.includes(`Product display name: ${testProduct.productDisplayName}`)
-    );
-    assert.ok(output.includes(`Product description:`));
-    assert.ok(
-      output.includes(`Product category: ${testProduct.productCategory}`)
-    );
+    assert.ok(output.includes(`Product id: indexed_product_id_for_testing_1`));
     assert.ok(output.includes(`Product labels:`));
   });
 
   it(`should delete product`, async () => {
-    const product = await productSearch.getProduct({
-      name: `${testProduct.productPath}`,
-    });
-    assert.ok(product);
+    const newProductId = `ProductId${uuid.v4()}`;
+    const newProductPath = productSearch.productPath(
+      testProduct.projectId,
+      testProduct.location,
+      newProductId
+    );
+    assert.strictEqual(await getProductOrFalse(newProductPath), false);
+    let output = await tools.runAsync(
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`,
+      cwd
+    );
 
-    const output = await tools.runAsync(
+    assert.ok(output.includes(`Product name: ${newProductPath}`));
+
+    output = await tools.runAsync(
       `${cmd} deleteProduct "${testProduct.projectId}" "${
         testProduct.location
-      }" "${testProduct.productId}"`,
+      }" "${newProductId}"`,
       cwd
     );
     assert.ok(output.includes(`Product deleted.`));
 
     try {
-      await productSearch.getProduct({name: `${testProduct.productPath}`});
+      await productSearch.getProduct({name: `${newProductPath}`});
       assert.fail('Product was not deleted');
     } catch (err) {
       assert.ok(err.message.includes('Not found'));
@@ -170,10 +182,26 @@ describe(`products`, () => {
   });
 
   it(`should update product label`, async () => {
-    const output = await tools.runAsync(
+    const newProductId = `ProductId${uuid.v4()}`;
+    const newProductPath = productSearch.productPath(
+      testProduct.projectId,
+      testProduct.location,
+      newProductId
+    );
+    let output = await tools.runAsync(
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`,
+      cwd
+    );
+
+    assert.ok(output.includes(`Product name: ${newProductPath}`));
+    output = await tools.runAsync(
       `${cmd} updateProductLabels "${testProduct.projectId}" "${
         testProduct.location
-      }" "${testProduct.productId}" "${testProduct.productKey}" "${
+      }" "${newProductId}" "${testProduct.productKey}" "${
         testProduct.productValue
       }"`,
       cwd
