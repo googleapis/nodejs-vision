@@ -25,11 +25,11 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 const testImportProductSets = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  gcsUri: 'gs://nodejs-docs-samples/product-search/product_sets.csv',
+  gcsUri: 'gs://long-door-651/product-search-node/product_sets.csv',
 };
 
 describe(`import product sets`, () => {
-  it.skip(`Should import a Product Set`, async () => {
+  it(`Should import a Product Set`, async () => {
     const output = await tools.runAsync(
       `${cmd} importProductSets "${testImportProductSets.projectId}" "${
         testImportProductSets.location
