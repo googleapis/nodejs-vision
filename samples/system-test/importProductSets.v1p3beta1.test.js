@@ -25,7 +25,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 const testImportProductSets = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  gcsUri: 'gs://long-door-651/product-search-node/product_sets.csv',
+  gcsUri: 'gs://product-search-node/product_sets.csv',
 };
 
 describe(`import product sets`, () => {
