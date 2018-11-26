@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "0.22.1",
+  "version": "0.23.0",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -28,54 +28,27 @@
     "vision",
     "Google Cloud Vision API"
   ],
-  "contributors": [
-    "Ace Nassri <anassri@google.com>",
-    "Alexander Fenster <fenster@google.com>",
-    "Ali Ijaz Sheikh <ofrobots@google.com>",
-    "Christopher Wilcox <git@crwilcox.com>",
-    "Dave Gramlich <callmehiphop@gmail.com>",
-    "Ernest Landrito <landrito@google.com>",
-    "Gus Class <gguuss@gmail.com>",
-    "Jason Dobry <jdobry@google.com>",
-    "Jonathan Lui <kinwa91@msn.com>",
-    "Jun Mukai <mukai@google.com>",
-    "Justin Beckwith <beckwith@google.com>",
-    "Justin Beckwith <justin.beckwith@gmail.com>",
-    "Kelvin Jin <kelvinjin@google.com>",
-    "Luke Sneeringer <lukesneeringer@google.com>",
-    "Rebecca Taylor <remily@google.com>",
-    "Shahin <happyhuman@users.noreply.github.com>",
-    "Song Wang <songwang@google.com>",
-    "Stephen Sawchuk <sawchuk@gmail.com>",
-    "Tim Swast <swast@google.com>",
-    "calibr <awcalibr@gmail.com>",
-    "dpebot <dpebot@google.com>",
-    "greenkeeper[bot] <greenkeeper[bot]@users.noreply.github.com>",
-    "rtw <rtw1981@gmail.com>"
-  ],
   "scripts": {
     "cover": "nyc --reporter=lcov mocha test/*.js && nyc report",
     "docs": "jsdoc -c .jsdoc.js",
     "generate-scaffolding": "repo-tools generate all && repo-tools generate lib_samples_readme -l samples/ --config ../.cloud-repo-tools.json",
-    "lint": "eslint src/ samples/ system-test/ test/",
-    "prettier": "prettier --write src/*.js src/*/*.js samples/*.js samples/*/*.js test/*.js test/*/*.js system-test/*.js system-test/*/*.js",
+    "lint": "eslint '**/*.js'",
     "samples-test": "cd samples/ && npm link ../ && npm test && cd ../",
     "system-test": "mocha system-test/*.js smoke-test/*.js --timeout 600000",
     "test-no-cover": "mocha test/*.js",
-    "test": "npm run cover"
+    "test": "npm run cover",
+    "fix": "eslint --fix '**/*.js'"
   },
   "dependencies": {
     "@google-cloud/promisify": "^0.3.0",
-    "google-gax": "^0.20.0",
+    "google-gax": "^0.22.0",
     "is": "^3.2.1",
     "lodash.merge": "^4.6.1",
-    "protobufjs": "^6.8.6",
-    "yargs": "^12.0.0"
+    "protobufjs": "^6.8.6"
   },
   "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^2.3.0",
+    "@google-cloud/nodejs-repo-tools": "^3.0.0",
     "@google-cloud/storage": "^2.0.0",
-    "async": "^2.6.1",
     "codecov": "^3.0.2",
     "eslint": "^5.0.1",
     "eslint-config-prettier": "^3.0.0",
