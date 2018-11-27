@@ -31,7 +31,7 @@ const testProductSet = {
   productCategory: 'homegoods',
   productId: `test_product_id${uuid.v4()}`,
   productDisplayName: 'test_product_display_name_1',
-  productSetId: 'test_product_set_id_1',
+  productSetId: `test_product_set_id${uuid.v4()}`,
   productSetDisplayName: 'test_product_set_display_name_1',
 };
 
