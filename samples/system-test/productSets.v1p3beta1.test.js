@@ -28,7 +28,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 const testProductSet = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productSetId: 'test_product_set_id_1',
+  productSetId: `test_product_set_id${uuid.v4()}`,
   productSetDisplayName: 'test_product_set_display_name_1',
 };
 testProductSet.productSetPath = productSearch.productSetPath(
