@@ -28,7 +28,7 @@ const cwd = path.join(__dirname, `..`, `productSearch`);
 const testProduct = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
-  productId: 'test_products_id_01',
+  productId: `test_products_id${uuid.v4()}`,
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
   productKey: 'myKey',
@@ -71,7 +71,9 @@ describe(`products`, () => {
         },
       });
       testProduct.createdProductPaths.push(testProduct.productPath);
-    } catch (err) {} // ignore error
+    } catch (err) {
+      throw err;
+    }
   });
 
   after(async () => {

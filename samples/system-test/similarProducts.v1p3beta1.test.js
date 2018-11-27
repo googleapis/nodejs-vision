@@ -24,11 +24,11 @@ const cmd = `node similarProducts.v1p3beta1.js`;
 const cwd = path.join(__dirname, `..`, `productSearch`);
 const filter = ['', 'style=womens'];
 const localPath = './../resources/shoes_1.jpg';
-const gcsUri = 'gs://product-search-node/shoes_1.jpg';
+const gcsUri = 'gs://nodejs-docs-samples/product-search/shoes_1.jpg';
 
 // Shared fixture data for product tests
 //Need to have a product set already imported and indexed
-// (gs://product-search-node/indexed_product_set.csv)
+// (gs://nodejs-docs-samples/product-search/indexed_product_set.csv)
 const testSimilarProducts = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
@@ -51,7 +51,6 @@ describe(`similar products`, () => {
       }" "${localPath}" "${filter[0]}"`,
       cwd
     );
-    console.log(output);
     assert.ok(output.includes(`Similar product information:`));
     assert.ok(
       output.includes(
@@ -71,7 +70,6 @@ describe(`similar products`, () => {
       }" "${localPath}" "${filter[1]}"`,
       cwd
     );
-    console.log(output);
     assert.ok(output.includes(`Similar product information:`));
     assert.ok(
       output.includes(
@@ -90,7 +88,6 @@ describe(`similar products`, () => {
       }" "${gcsUri}" "${filter[0]}"`,
       cwd
     );
-    console.log(output);
     assert.ok(output.includes(`Similar product information:`));
     assert.ok(
       output.includes(
@@ -110,7 +107,6 @@ describe(`similar products`, () => {
       }" "${gcsUri}" "${filter[1]}"`,
       cwd
     );
-    console.log(output);
     assert.ok(output.includes(`Similar product information:`));
     assert.ok(
       output.includes(

@@ -16,6 +16,7 @@
 'use strict';
 
 const path = require(`path`);
+const uuid = require(`uuid`);
 const vision = require('@google-cloud/vision').v1p3beta1;
 const productSearchClient = new vision.ProductSearchClient();
 const assert = require('assert');
@@ -28,7 +29,7 @@ const testProductSet = {
   projectId: process.env.GCLOUD_PROJECT,
   location: 'us-west1',
   productCategory: 'homegoods',
-  productId: 'test_product_id_1',
+  productId: `test_product_id${uuid.v4()}`,
   productDisplayName: 'test_product_display_name_1',
   productSetId: 'test_product_set_id_1',
   productSetDisplayName: 'test_product_set_display_name_1',
@@ -61,7 +62,9 @@ describe(`product search`, () => {
         },
       });
       testProductSet.createdProductPaths.push(testProductSet.productPath);
-    } catch (err) {} // ignore error
+    } catch (err) {
+      throw err;
+    }
 
     try {
       await productSearchClient.createProductSet({
@@ -77,7 +80,9 @@ describe(`product search`, () => {
       testProductSet.createdProductSetPaths.push(
         testProductSet.createdProductSetPaths
       );
-    } catch (err) {} // ignore error
+    } catch (err) {
+      throw err;
+    }
   });
 
   after(async () => {
@@ -108,10 +113,6 @@ describe(`product search`, () => {
       }" "${testProductSet.productId}" "${testProductSet.productSetId}"`,
       cwd
     );
-
-    console.log('---------------');
-    console.log(output);
-    console.log('---------------');
 
     assert.ok(output.includes(`Product removed from product set.`));
   });

@@ -71,7 +71,9 @@ describe(`product sets`, () => {
       testProductSet.createdProductSetPaths.push(
         testProductSet.createdProductSetPaths
       );
-    } catch (err) {} // ignore error
+    } catch (err) {
+      throw err;
+    }
   });
 
   after(async () => {

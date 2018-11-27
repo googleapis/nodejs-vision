@@ -32,7 +32,7 @@ const testProduct = {
   productDisplayName: 'test_product_display_name_1',
   productCategory: 'homegoods',
   productReferenceImageId: `ReferenceImage${uuid.v4()}`,
-  productImageUri: 'gs://product-search-node/shoes_1.jpg',
+  productImageUri: 'gs://nodejs-docs-samples/product-search/shoes_1.jpg',
 };
 testProduct.productPath = productSearchClient.productPath(
   testProduct.projectId,
