@@ -169,7 +169,7 @@ describe(`products`, () => {
       cwd
     );
 
-    assert.ok(output.includes(`Product id: test_products_id_01`));
+    assert.ok(output.includes(`Product id: ${testProduct.productId}`));
     assert.ok(output.includes(`Product labels:`));
   });
 
