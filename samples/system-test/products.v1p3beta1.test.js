@@ -48,8 +48,6 @@ async function getProductOrFalse(productPath) {
   } catch (err) {
     if (err.message.includes('Not found')) {
       return false;
-    } else {
-      throw err;
     }
   }
 }
@@ -58,22 +56,18 @@ describe(`products`, () => {
   before(tools.checkCredentials);
   before(async () => {
     // Create a test product set for each test
-    try {
-      await productSearch.createProduct({
-        parent: productSearch.locationPath(
-          testProduct.projectId,
-          testProduct.location
-        ),
-        productId: testProduct.productId,
-        product: {
-          displayName: testProduct.productDisplayName,
-          productCategory: testProduct.productCategory,
-        },
-      });
-      testProduct.createdProductPaths.push(testProduct.productPath);
-    } catch (err) {
-      throw err;
-    }
+    await productSearch.createProduct({
+      parent: productSearch.locationPath(
+        testProduct.projectId,
+        testProduct.location
+      ),
+      productId: testProduct.productId,
+      product: {
+        displayName: testProduct.productDisplayName,
+        productCategory: testProduct.productCategory,
+      },
+    });
+    testProduct.createdProductPaths.push(testProduct.productPath);
   });
 
   after(async () => {

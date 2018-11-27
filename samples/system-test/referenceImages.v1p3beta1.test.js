@@ -46,20 +46,19 @@ describe(`reference images`, () => {
 
   before(async () => {
     // Create a test product for each test
-    try {
-      await productSearchClient.createProduct({
-        parent: productSearchClient.locationPath(
-          testProduct.projectId,
-          testProduct.location
-        ),
-        productId: testProduct.productId,
-        product: {
-          displayName: testProduct.productDisplayName,
-          productCategory: testProduct.productCategory,
-        },
-      });
-      testProduct.createdProductPaths.push(testProduct.productPath);
-    } catch (err) {} // ignore error
+
+    await productSearchClient.createProduct({
+      parent: productSearchClient.locationPath(
+        testProduct.projectId,
+        testProduct.location
+      ),
+      productId: testProduct.productId,
+      product: {
+        displayName: testProduct.productDisplayName,
+        productCategory: testProduct.productCategory,
+      },
+    });
+    testProduct.createdProductPaths.push(testProduct.productPath);
   });
 
   after(async () => {

@@ -49,40 +49,32 @@ describe(`product search`, () => {
 
   before(async () => {
     // Create a test product set for each test
-    try {
-      await productSearchClient.createProduct({
-        parent: productSearchClient.locationPath(
-          testProductSet.projectId,
-          testProductSet.location
-        ),
-        productId: testProductSet.productId,
-        product: {
-          displayName: testProductSet.productDisplayName,
-          productCategory: testProductSet.productCategory,
-        },
-      });
-      testProductSet.createdProductPaths.push(testProductSet.productPath);
-    } catch (err) {
-      throw err;
-    }
+    await productSearchClient.createProduct({
+      parent: productSearchClient.locationPath(
+        testProductSet.projectId,
+        testProductSet.location
+      ),
+      productId: testProductSet.productId,
+      product: {
+        displayName: testProductSet.productDisplayName,
+        productCategory: testProductSet.productCategory,
+      },
+    });
+    testProductSet.createdProductPaths.push(testProductSet.productPath);
 
-    try {
-      await productSearchClient.createProductSet({
-        parent: productSearchClient.locationPath(
-          testProductSet.projectId,
-          testProductSet.location
-        ),
-        productSetId: testProductSet.productSetId,
-        productSet: {
-          displayName: testProductSet.productSetDisplayName,
-        },
-      });
-      testProductSet.createdProductSetPaths.push(
-        testProductSet.createdProductSetPaths
-      );
-    } catch (err) {
-      throw err;
-    }
+    await productSearchClient.createProductSet({
+      parent: productSearchClient.locationPath(
+        testProductSet.projectId,
+        testProductSet.location
+      ),
+      productSetId: testProductSet.productSetId,
+      productSet: {
+        displayName: testProductSet.productSetDisplayName,
+      },
+    });
+    testProductSet.createdProductSetPaths.push(
+      testProductSet.createdProductSetPaths
+    );
   });
 
   after(async () => {
@@ -90,6 +82,10 @@ describe(`product search`, () => {
     testProductSet.createdProductSetPaths.forEach(async path => {
       try {
         await productSearchClient.deleteProductSet({name: path});
+      } catch (err) {} // ignore error
+    });
+    testProductSet.createdProductPaths.forEach(async path => {
+      try {
         await productSearchClient.deleteProduct({name: path});
       } catch (err) {} // ignore error
     });

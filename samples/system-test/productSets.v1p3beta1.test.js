@@ -57,23 +57,19 @@ describe(`product sets`, () => {
 
   before(async () => {
     // Create a test product set for each test
-    try {
-      await productSearch.createProductSet({
-        parent: productSearch.locationPath(
-          testProductSet.projectId,
-          testProductSet.location
-        ),
-        productSetId: testProductSet.productSetId,
-        productSet: {
-          displayName: testProductSet.productSetDisplayName,
-        },
-      });
-      testProductSet.createdProductSetPaths.push(
-        testProductSet.createdProductSetPaths
-      );
-    } catch (err) {
-      throw err;
-    }
+    await productSearch.createProductSet({
+      parent: productSearch.locationPath(
+        testProductSet.projectId,
+        testProductSet.location
+      ),
+      productSetId: testProductSet.productSetId,
+      productSet: {
+        displayName: testProductSet.productSetDisplayName,
+      },
+    });
+    testProductSet.createdProductSetPaths.push(
+      testProductSet.createdProductSetPaths
+    );
   });
 
   after(async () => {

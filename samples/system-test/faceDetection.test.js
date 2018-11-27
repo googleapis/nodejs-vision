@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- // *
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,9 @@ class MockCanvas {
 
 MockCanvas.Image = class Image {};
 
-const faceDetectionExample = require(`../faceDetection`);
-const inputFile = path.join(__dirname, `../resources`, `face.png`);
-const outputFile = path.join(__dirname, `../../`, `out.png`);
+const faceDetectionExample = require('../faceDetection');
+const inputFile = path.join(__dirname, '../resources', 'face.png');
+const outputFile = path.join(__dirname, '../../', 'out.png');
 
 describe(`face detection`, () => {
   before(tools.checkCredentials);
@@ -77,9 +77,9 @@ describe(`face detection`, () => {
 
         const image = fs.readFileSync(outputFile);
         assert.strictEqual(image.toString(`utf8`), `testfoobar`);
-        assert.ok(console.log.calledWith(`Found 1 face`));
-        assert.ok(console.log.calledWith(`Highlighting...`));
-        assert.ok(console.log.calledWith(`Finished!`));
+        assert(console.log.calledWith(`Found 1 face`));
+        assert(console.log.calledWith(`Highlighting...`));
+        assert(console.log.calledWith(`Finished!`));
         done = true;
         clearTimeout(timeout);
       }
