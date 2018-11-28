@@ -15,10 +15,10 @@
 
 'use strict';
 
-const fs = require(`fs`);
-const path = require(`path`);
+const fs = require('fs');
+const path = require('path');
 const assert = require('assert');
-const tools = require(`@google-cloud/nodejs-repo-tools`);
+const tools = require('@google-cloud/nodejs-repo-tools');
 
 class MockCanvas {
   getContext() {
@@ -77,9 +77,9 @@ describe(`face detection`, () => {
 
         const image = fs.readFileSync(outputFile);
         assert.strictEqual(image.toString(`utf8`), `testfoobar`);
-        assert(console.log.calledWith(`Found 1 face`));
-        assert(console.log.calledWith(`Highlighting...`));
-        assert(console.log.calledWith(`Finished!`));
+        assert.ok(console.log.calledWith('Found 1 face'));
+        assert.ok(console.log.calledWith('Highlighting...'));
+        assert.ok(console.log.calledWith('Finished!'));
         done = true;
         clearTimeout(timeout);
       }
