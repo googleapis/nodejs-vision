@@ -37,6 +37,8 @@ npm install
 cd samples/
 npm link ../
 npm install
+# Install node-canvas which has additional dependencies
+npm install canvas
 cd ..
 
 npm run samples-test
