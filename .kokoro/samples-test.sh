@@ -37,7 +37,6 @@ npm install
 cd samples/
 npm link ../
 npm install
-npm install canvas
 cd ..
 
 npm run samples-test
