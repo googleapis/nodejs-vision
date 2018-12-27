@@ -251,7 +251,7 @@ describe(`detect`, () => {
 
   it(`should extract text from pdf file`, async () => {
     const output = await exec(`${cmd} pdf ${bucketName} ${files[7].name}`);
-    assert.match(output, /pdf-ocr.pdf.json/);
+    assert.match(output, /pdf-ocr.pdf/);
   });
 
   it(`should detect objects in a local file`, async () => {
