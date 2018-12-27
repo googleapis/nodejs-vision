@@ -251,10 +251,7 @@ describe(`detect`, () => {
   });
 
   it(`should extract text from pdf file`, async () => {
-    const output = await tools.runAsync(
-      `${cmd} pdf ${bucketName} ${files[7].name} ${prefix}`,
-      cwd
-    );
+    const output = await exec(`${cmd} pdf ${bucketName} ${files[7].name}`);
     assert.ok(output.includes(`${prefix}`));
   });
 
