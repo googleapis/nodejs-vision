@@ -27,6 +27,7 @@ const client = new vision.ImageAnnotatorClient();
 
 const storage = new Storage();
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
+const prefix = 'results';
 const cmd = `node detect.js`;
 const files = [
   `face_no_surprise.jpg`,
@@ -250,8 +251,11 @@ describe(`detect`, () => {
   });
 
   it(`should extract text from pdf file`, async () => {
-    const output = await exec(`${cmd} pdf ${bucketName} ${files[7].name}`);
-    assert.match(output, /pdf-ocr.pdf/);
+    const output = await tools.runAsync(
+      `${cmd} pdf ${bucketName} ${files[7].name} ${prefix}`,
+      cwd
+    );
+    assert.ok(output.includes(`${prefix}`));
   });
 
   it(`should detect objects in a local file`, async () => {
