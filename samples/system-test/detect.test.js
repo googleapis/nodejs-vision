@@ -254,7 +254,7 @@ describe(`detect`, () => {
     const output = await exec(
       `${cmd} pdf ${bucketName} ${files[7].name} ${prefix}`
     );
-    assert.match(output, `/${prefix}/`);
+    assert.match(output, /results/);
   });
 
   it(`should detect objects in a local file`, async () => {
