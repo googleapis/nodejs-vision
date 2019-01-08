@@ -77,60 +77,10 @@ async function predict(
   // [END automl_vision_predict]
 }
 
-require(`yargs`) // eslint-disable-line
-  .demand(1)
-  .options({
-    computeRegion: {
-      alias: `c`,
-      type: `string`,
-      default: 'us-central1',
-      requiresArg: true,
-      description: `region name e.g. "us-central1"`,
-    },
-    filePath: {
-      alias: `f`,
-      default: `./resources/testImage.jpg`,
-      type: `string`,
-      requiresArg: true,
-      description: `local text file path of the content to be classified`,
-    },
-    modelId: {
-      alias: `i`,
-      //default: ``,
-      type: `string`,
-      requiresArg: true,
-      description: `Id of the model which will be used for text classification`,
-    },
-    projectId: {
-      alias: `z`,
-      type: `string`,
-      default: process.env.GCLOUD_PROJECT,
-      requiresArg: true,
-      description: `The GCLOUD_PROJECT string, e.g. "my-gcloud-project"`,
-    },
-    scoreThreshold: {
-      alias: `s`,
-      type: `string`,
-      default: `0.5`,
-      requiresArg: true,
-      description:
-        `A value from 0.0 to 1.0.  When the model makes predictions for an image it will` +
-        `only produce results that have at least this confidence score threshold.  Default is .5`,
-    },
-  })
-  .command(`predict`, `classify the content`, {}, opts =>
-    predict(
-      opts.projectId,
-      opts.computeRegion,
-      opts.modelId,
-      opts.filePath,
-      opts.scoreThreshold
-    )
-  )
-  .example(
-    `node $0 predict -i "modelId" -f "./resources/testImage.jpg" -s "0.5"`
-  )
-  .wrap(120)
-  .recommendCommands()
-  .help()
-  .strict().argv;
+predict( 
+  process.argv[3],
+  process.argv[4],
+  process.argv[5],
+  process.argv[6],
+  process.argv[7]
+).catch(console.error);
