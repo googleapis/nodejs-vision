@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-03-08T00:45:49.044779Z",
+  "updateTime": "2019-03-08T12:31:24.157168Z",
   "sources": [
     {
       "generator": {
@@ -13,6 +13,65 @@
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "c986e1d9618ac41343962b353d136201d72626ae"
+      }
+    },
+    {
+      "template": {
+        "name": "node_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.2.26"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1",
+        "language": "nodejs",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p1beta1",
+        "language": "nodejs",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p2beta1",
+        "language": "nodejs",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p2beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p3beta1",
+        "language": "nodejs",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p3beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p4beta1",
+        "language": "nodejs",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p4beta1.yaml"
       }
     }
   ]
