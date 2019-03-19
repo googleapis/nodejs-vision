@@ -137,6 +137,58 @@ async function detectBatchAnnotateFilesGCS(gcsSourceUri) {
   // [END vision_fulltext_detection_pdf_gcs_beta]
 }
 
+async function detectBatchAnnotateImageUri(inputImageUri, outputUri) {
+  // [START vision_async_batch_annotate_images_beta]
+
+  // Imports the Google Cloud client libraries
+  const vision = require('@google-cloud/vision').v1p4beta1;
+
+  // Creates a client
+  const client = new vision.ImageAnnotatorClient();
+
+  /**
+   * TODO(developer): Uncomment the following lines before running the sample.
+   */
+  // GCS path where the image resides
+  // const inputImageUri = 'gs://my-bucket/my_image.jpg';
+  // GCS path where to store the output json
+  // const outputUri = 'gs://mybucket/out/'
+
+  const features = [
+    {type: 'DOCUMENT_LABEL_DETECTION'},
+    {type: 'DOCUMENT_TEXT_DETECTION'},
+    {type: 'DOCUMENT_IMAGE_DETECTION'},
+  ];
+
+  const outputConfig = {
+    gcsDestination: {
+      uri: outputUri,
+    },
+  };
+
+  const request = {
+    requests: [
+      {
+        image: {
+          source: {
+            imageUri: inputImageUri,
+          },
+        },          
+        features: features,
+      },
+    ],
+    outputConfig: outputConfig,
+  };
+
+  const [operation] = await client.asyncBatchAnnotateImages(request);
+  const [filesResponse] = await operation.promise();
+
+  const destinationUri =
+    filesResponse.outputConfig.gcsDestination.uri;
+  console.log('Json saved to: ' + destinationUri);
+  // [END vision_async_batch_annotate_images_beta]
+}
+
 require(`yargs`)
   .demand(1)
   .command(
@@ -151,8 +203,15 @@ require(`yargs`)
     {},
     opts => detectBatchAnnotateFilesGCS(opts.uri)
   )
+  .command(
+    `detectBatchAnnotateImageUri <inputImageUri> <outputUri>`,
+    `Batch annotation of images on Google Cloud Storage asynchronously.`,
+    {},
+    opts => detectBatchAnnotateImageUri(opts.inputImageUri, opts.outputUri)
+  )
   .example(`node $0 detectBatchAnnotateFiles ./resources/kafka.pdf`)
-  .example(`node $0 detectBatchAnnotateFilesGCS gs://cloud-samples-data/vision/document_understanding/kafka.pdf`)
+  .example(`node $0 detectBatchAnnotateFilesGCS gs://my_bucket/my_pdf.pdf`)
+  .example(`node $0 detectBatchAnnotateImageUri gs://my_bucket/my_image.jpg gs://my_bucket/output_dir/`)
   .wrap(120)
   .recommendCommands()
   .epilogue(`For more information, see https://cloud.google.com/vision/docs`)

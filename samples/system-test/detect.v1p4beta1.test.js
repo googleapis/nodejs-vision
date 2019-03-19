@@ -26,7 +26,7 @@ const storage = new Storage();
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
 const cmd = `node detect.v1p4beta1.js`;
 
-const files = [`pdf-ocr.pdf`].map(
+const files = [`pdf-ocr.pdf`, `landmark.jpg`].map(
   name => {
     return {
       name,
@@ -60,5 +60,11 @@ describe(`detect v1 p4 beta1`, () => {
     );
     assert.match(output, /Word text: Boring/);
     assert.match(output, /Symbol: p/);
+  });
+
+  it(`should annotate the remote landmark.jpg sample`, async () => {
+    const output = await exec(
+      `${cmd} detectBatchAnnotateImageUri gs://${bucketName}/${files[1].name} gs://${bucketName}/out/`);
+    assert.match(output, /Json saved to: gs:\/\//);
   });
 });
