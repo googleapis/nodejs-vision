@@ -13,18 +13,18 @@
  * limitations under the License.
  */
 
-/* eslint-disable */
-
 'use strict';
 
 async function detectBatchAnnotateFiles(fileName) {
   // [START vision_batch_annotate_files_beta]
   // Imports the Google Cloud client libraries
-  const vision = require('@google-cloud/vision').v1p4beta1;
+  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1p4beta1;
   const fs = require('fs');
+  const {promisify} = require('util');
+  const readFileAsync = promisify(fs.readFile);
 
   // Creates a client
-  const client = new vision.ImageAnnotatorClient();
+  const client = new ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -34,7 +34,7 @@ async function detectBatchAnnotateFiles(fileName) {
   const inputConfig = {
     // Other supported mime_types: image/tiff' or 'image/gif'
     mimeType: 'application/pdf',
-    content: fs.readFileSync(fileName),
+    content: await readFileAsync(fileName),
   };
   const features = [{type: 'DOCUMENT_TEXT_DETECTION'}];
   const request = {
@@ -44,7 +44,7 @@ async function detectBatchAnnotateFiles(fileName) {
         features: features,
         // Annotate the first two pages and the last one (max 5 pages)
         // First page starts at 1, and not 0. Last page is -1.
-        pages: [1, 2, -1]
+        pages: [1, 2, -1],
       },
     ],
   };
@@ -55,23 +55,27 @@ async function detectBatchAnnotateFiles(fileName) {
   responses.forEach(response => {
     response.fullTextAnnotation.pages.forEach(page => {
       page.blocks.forEach(block => {
-        console.log(`\nBlock confidence: ${block.confidence}`);
+        console.log(`Block confidence: ${block.confidence}`);
         block.paragraphs.forEach(paragraph => {
-          console.log(`\tParagraph confidence: ${paragraph.confidence}`);
+          console.log(` Paragraph confidence: ${paragraph.confidence}`);
           paragraph.words.forEach(word => {
-            var symbol_texts = [];
+            const symbol_texts = [];
             for (var i = 0; i < word.symbols.length; i++) {
-              symbol_texts.push(word.symbols[i].text)
+              symbol_texts.push(word.symbols[i].text);
             }
             const word_text = symbol_texts.join('');
-            console.log(`\t\tWord text: ${word_text} (confidence: ${word.confidence})`);
+            console.log(
+              `  Word text: ${word_text} (confidence: ${word.confidence})`
+            );
             word.symbols.forEach(symbol => {
-              console.log(`\t\t\tSymbol: ${symbol.text} (confidence: ${symbol.confidence})`);
-            })
-          })
-        })
-      })
-    })
+              console.log(
+                `   Symbol: ${symbol.text} (confidence: ${symbol.confidence})`
+              );
+            });
+          });
+        });
+      });
+    });
   });
   // [END vision_batch_annotate_files_beta]
 }
@@ -79,11 +83,10 @@ async function detectBatchAnnotateFiles(fileName) {
 async function detectBatchAnnotateFilesGCS(gcsSourceUri) {
   // [START vision_fulltext_detection_pdf_gcs_beta]
   // Imports the Google Cloud client libraries
-  const vision = require('@google-cloud/vision').v1p4beta1;
-  const fs = require('fs');
+  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1p4beta1;
 
   // Creates a client
-  const client = new vision.ImageAnnotatorClient();
+  const client = new ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following line before running the sample.
@@ -105,7 +108,7 @@ async function detectBatchAnnotateFilesGCS(gcsSourceUri) {
         features: features,
         // Annotate the first two pages and the last one (max 5 pages)
         // First page starts at 1, and not 0. Last page is -1.
-        pages: [1, 2, -1]
+        pages: [1, 2, -1],
       },
     ],
   };
@@ -120,19 +123,22 @@ async function detectBatchAnnotateFilesGCS(gcsSourceUri) {
         block.paragraphs.forEach(paragraph => {
           console.log(`\tParagraph confidence: ${paragraph.confidence}`);
           paragraph.words.forEach(word => {
-            var symbol_texts = [];
-            for (var i = 0; i < word.symbols.length; i++) {
-              symbol_texts.push(word.symbols[i].text)
-            }
+            var symbol_texts = word.symbols.map(symbol => symbol.text);
             const word_text = symbol_texts.join('');
-            console.log(`\t\tWord text: ${word_text} (confidence: ${word.confidence})`);
+            console.log(
+              `\t\tWord text: ${word_text} (confidence: ${word.confidence})`
+            );
             word.symbols.forEach(symbol => {
-              console.log(`\t\t\tSymbol: ${symbol.text} (confidence: ${symbol.confidence})`);
-            })
-          })
-        })
-      })
-    })
+              console.log(
+                `\t\t\tSymbol: ${symbol.text} (confidence: ${
+                  symbol.confidence
+                })`
+              );
+            });
+          });
+        });
+      });
+    });
   });
   // [END vision_fulltext_detection_pdf_gcs_beta]
 }
@@ -141,10 +147,10 @@ async function detectBatchAnnotateImageUri(inputImageUri, outputUri) {
   // [START vision_async_batch_annotate_images_beta]
 
   // Imports the Google Cloud client libraries
-  const vision = require('@google-cloud/vision').v1p4beta1;
+  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1p4beta1;
 
   // Creates a client
-  const client = new vision.ImageAnnotatorClient();
+  const client = new ImageAnnotatorClient();
 
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
@@ -173,7 +179,7 @@ async function detectBatchAnnotateImageUri(inputImageUri, outputUri) {
           source: {
             imageUri: inputImageUri,
           },
-        },          
+        },
         features: features,
       },
     ],
@@ -183,8 +189,7 @@ async function detectBatchAnnotateImageUri(inputImageUri, outputUri) {
   const [operation] = await client.asyncBatchAnnotateImages(request);
   const [filesResponse] = await operation.promise();
 
-  const destinationUri =
-    filesResponse.outputConfig.gcsDestination.uri;
+  const destinationUri = filesResponse.outputConfig.gcsDestination.uri;
   console.log('Json saved to: ' + destinationUri);
   // [END vision_async_batch_annotate_images_beta]
 }
@@ -211,7 +216,9 @@ require(`yargs`)
   )
   .example(`node $0 detectBatchAnnotateFiles ./resources/kafka.pdf`)
   .example(`node $0 detectBatchAnnotateFilesGCS gs://my_bucket/my_pdf.pdf`)
-  .example(`node $0 detectBatchAnnotateImageUri gs://my_bucket/my_image.jpg gs://my_bucket/output_dir/`)
+  .example(
+    `node $0 detectBatchAnnotateImageUri gs://my_bucket/my_image.jpg gs://my_bucket/output_dir/`
+  )
   .wrap(120)
   .recommendCommands()
   .epilogue(`For more information, see https://cloud.google.com/vision/docs`)

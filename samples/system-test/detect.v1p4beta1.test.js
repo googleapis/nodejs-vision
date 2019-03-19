@@ -42,7 +42,6 @@ describe(`detect v1 p4 beta1`, () => {
   after(async () => {
     const bucket = storage.bucket(bucketName);
     await bucket.deleteFiles({force: true});
-    await bucket.deleteFiles({force: true}); // Try a second time...
     await bucket.delete();
   });
 
