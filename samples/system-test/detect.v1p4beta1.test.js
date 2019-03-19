@@ -26,14 +26,12 @@ const storage = new Storage();
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
 const cmd = `node detect.v1p4beta1.js`;
 
-const files = [`pdf-ocr.pdf`, `landmark.jpg`].map(
-  name => {
-    return {
-      name,
-      localPath: path.resolve(path.join(__dirname, `../resources/${name}`)),
-    };
-  }
-);
+const files = [`pdf-ocr.pdf`, `landmark.jpg`].map(name => {
+  return {
+    name,
+    localPath: path.resolve(path.join(__dirname, `../resources/${name}`)),
+  };
+});
 
 describe(`detect v1 p4 beta1`, () => {
   before(async () => {
@@ -49,7 +47,9 @@ describe(`detect v1 p4 beta1`, () => {
   });
 
   it(`should annotate the local pdf-ocr.pdf sample`, async () => {
-    const output = await exec(`${cmd} detectBatchAnnotateFiles ${files[0].localPath}`);
+    const output = await exec(
+      `${cmd} detectBatchAnnotateFiles ${files[0].localPath}`
+    );
     assert.match(output, /Word text: Boring/);
     assert.match(output, /Symbol: p/);
   });
@@ -64,7 +64,10 @@ describe(`detect v1 p4 beta1`, () => {
 
   it(`should annotate the remote landmark.jpg sample`, async () => {
     const output = await exec(
-      `${cmd} detectBatchAnnotateImageUri gs://${bucketName}/${files[1].name} gs://${bucketName}/out/`);
+      `${cmd} detectBatchAnnotateImageUri gs://${bucketName}/${
+        files[1].name
+      } gs://${bucketName}/out/`
+    );
     assert.match(output, /Json saved to: gs:\/\//);
   });
 });
