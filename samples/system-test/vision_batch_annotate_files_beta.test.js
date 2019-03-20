@@ -33,7 +33,7 @@ const files = [`pdf-ocr.pdf`, `landmark.jpg`].map(name => {
   };
 });
 
-describe(`Detects annotations in a local file`, () => {
+describe(`detect v1 p4 beta1`, () => {
   before(async () => {
     const [bucket] = await storage.createBucket(bucketName);
     await Promise.all(files.map(file => bucket.upload(file.localPath)));
