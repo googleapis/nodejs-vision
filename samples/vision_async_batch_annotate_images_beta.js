@@ -55,7 +55,7 @@ async function main(inputImageUri, outputUri) {
         features: features,
       },
     ],
-    outputConfig: outputConfig,
+    outputConfig,
   };
 
   const [operation] = await client.asyncBatchAnnotateImages(request);
