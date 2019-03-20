@@ -55,18 +55,18 @@ async function main(fileName) {
   for (const response of responses) {
     for (const page of response.fullTextAnnotation.pages) {
       for (const block of page.blocks) {
-        console.log(`\nBlock confidence: ${block.confidence}`);
+        console.log(`Block confidence: ${block.confidence}`);
         for (const paragraph of block.paragraphs) {
-          console.log(`\tParagraph confidence: ${paragraph.confidence}`);
+          console.log(` Paragraph confidence: ${paragraph.confidence}`);
           for (const word of paragraph.words) {
             const symbol_texts = word.symbols.map(symbol => symbol.text);
             const word_text = symbol_texts.join('');
             console.log(
-              `\t\tWord text: ${word_text} (confidence: ${word.confidence})`
+              `  Word text: ${word_text} (confidence: ${word.confidence})`
             );
             for (const symbol of word.symbols) {
               console.log(
-                `\t\t\tSymbol: ${symbol.text} (confidence: ${
+                `   Symbol: ${symbol.text} (confidence: ${
                   symbol.confidence
                 })`
               );
