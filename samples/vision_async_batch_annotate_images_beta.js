@@ -66,4 +66,4 @@ async function main(inputImageUri, outputUri) {
   // [END vision_async_batch_annotate_images_beta]
 }
 
-main(...process.argv.slice(2));
+main(...process.argv.slice(2)).catch(console.error);
