@@ -66,9 +66,7 @@ async function main(fileName) {
             );
             for (const symbol of word.symbols) {
               console.log(
-                `   Symbol: ${symbol.text} (confidence: ${
-                  symbol.confidence
-                })`
+                `   Symbol: ${symbol.text} (confidence: ${symbol.confidence})`
               );
             }
           }
