@@ -24,7 +24,7 @@ const uuid = require('uuid');
 const exec = async cmd => (await execa.shell(cmd)).stdout;
 const storage = new Storage();
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
-const cmd = `node async_batch_annotate_images.js`;
+const cmd = `node async-batch-annotate-images.js`;
 
 const files = [`pdf-ocr.pdf`, `landmark.jpg`].map(name => {
   return {
