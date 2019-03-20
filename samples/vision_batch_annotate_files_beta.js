@@ -79,4 +79,4 @@ async function main(fileName) {
   // [END vision_batch_annotate_files_beta]
 }
 
-main(...process.argv.slice(2));
+main(...process.argv.slice(2)).catch(console.error);
