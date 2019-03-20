@@ -40,7 +40,7 @@ async function main(fileName) {
   const request = {
     requests: [
       {
-        inputConfig: inputConfig,
+        inputConfig,
         features: features,
         // Annotate the first two pages and the last one (max 5 pages)
         // First page starts at 1, and not 0. Last page is -1.
