@@ -52,19 +52,19 @@ async function main(gcsSourceUri) {
   const [result] = await client.batchAnnotateFiles(request);
   const responses = result.responses[0].responses;
 
-  for (let response of responses) {
-    for (let page of response.fullTextAnnotation.pages) {
-      for (let block of page.blocks) {
+  for (const response of responses) {
+    for (const page of response.fullTextAnnotation.pages) {
+      for (const block of page.blocks) {
         console.log(`\nBlock confidence: ${block.confidence}`);
-        for (let paragraph of block.paragraphs) {
+        for (const paragraph of block.paragraphs) {
           console.log(`\tParagraph confidence: ${paragraph.confidence}`);
-          for (let word of paragraph.words) {
+          for (const word of paragraph.words) {
             const symbol_texts = word.symbols.map(symbol => symbol.text);
             const word_text = symbol_texts.join('');
             console.log(
               `\t\tWord text: ${word_text} (confidence: ${word.confidence})`
             );
-            for (let symbol of word.symbols) {
+            for (const symbol of word.symbols) {
               console.log(
                 `\t\t\tSymbol: ${symbol.text} (confidence: ${
                   symbol.confidence
