@@ -62,7 +62,7 @@ async function main(inputImageUri, outputUri) {
   const [filesResponse] = await operation.promise();
 
   const destinationUri = filesResponse.outputConfig.gcsDestination.uri;
-  console.log('Json saved to: ' + destinationUri);
+  console.log(`Json saved to: ${destinationUri}`);
   // [END vision_async_batch_annotate_images_beta]
 }
 
