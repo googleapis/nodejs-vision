@@ -16,11 +16,11 @@
 'use strict';
 
 const {assert} = require('chai');
-const execa = require('execa');
+const {execSync} = require('child_process');
 
 describe(`quickstart`, () => {
   it(`should detect labels in a remote file`, async () => {
-    const {stdout} = await execa.shell('node quickstart.js');
+    const stdout = execSync('node quickstart.js');
     assert.match(stdout, /Labels:/);
     assert.match(stdout, /cat/);
   });

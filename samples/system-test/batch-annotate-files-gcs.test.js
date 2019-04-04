@@ -17,11 +17,10 @@
 
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
-const execa = require('execa');
+const {execSync} = require('child_process');
 const {assert} = require('chai');
 const uuid = require('uuid');
 
-const exec = async cmd => (await execa.shell(cmd)).stdout;
 const storage = new Storage();
 const bucketName = `nodejs-docs-samples-test-${uuid.v4()}`;
 const cmd = `node batch-annotate-files-gcs.js`;
@@ -46,7 +45,7 @@ describe(`detect v1 p4 beta1`, () => {
   });
 
   it(`should annotate the remote pdf-ocr.pdf in GCS bucket`, async () => {
-    const output = await exec(`${cmd} gs://${bucketName}/${files[0].name}`);
+    const output = execSync(`${cmd} gs://${bucketName}/${files[0].name}`);
     assert.match(output, /Word text: Boring/);
     assert.match(output, /Symbol: p/);
   });

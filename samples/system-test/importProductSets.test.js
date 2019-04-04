@@ -16,9 +16,8 @@
 'use strict';
 
 const {assert} = require('chai');
-const execa = require('execa');
+const {execSync} = require('child_process');
 
-const exec = async cmd => (await execa.shell(cmd)).stdout;
 const cmd = `node productSearch/importProductSets.js`;
 
 //Shared fixture data for product tests
@@ -30,7 +29,7 @@ const testImportProductSets = {
 
 describe(`import product sets`, () => {
   it(`should import a Product Set`, async () => {
-    const output = await exec(
+    const output = execSync(
       `${cmd} importProductSets "${testImportProductSets.projectId}" "${
         testImportProductSets.location
       }" "${testImportProductSets.gcsUri}"`

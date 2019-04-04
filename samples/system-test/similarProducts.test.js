@@ -17,10 +17,9 @@
 
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const execa = require('execa');
+const {execSync} = require('child_process');
 const path = require('path');
 
-const exec = async cmd => (await execa.shell(cmd)).stdout;
 const cmd = `node productSearch/similarProducts.js`;
 const filter = ['', 'style=womens'];
 const localPath = path.join(__dirname, '../resources/shoes_1.jpg');
@@ -45,7 +44,7 @@ testSimilarProducts.productPath = productSearch.productSetPath(
 
 describe(`similar products`, () => {
   it(`should check if similar product exists to one provided in local file with no filter`, async () => {
-    const output = await exec(
+    const output = execSync(
       `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
@@ -62,7 +61,7 @@ describe(`similar products`, () => {
   });
 
   it(`should check if similar product exists to one provided in local file with filter`, async () => {
-    const output = await exec(
+    const output = execSync(
       `${cmd} getSimilarProductsFile "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
@@ -78,7 +77,7 @@ describe(`similar products`, () => {
   });
 
   it(`should check if similar product exists to one provided in GCS file with no filter`, async () => {
-    const output = await exec(
+    const output = execSync(
       `${cmd} getSimilarProductsGcs "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
@@ -95,7 +94,7 @@ describe(`similar products`, () => {
   });
 
   it(`should check if similar product exists to one provided in GCS file with filter`, async () => {
-    const output = await exec(
+    const output = execSync(
       `${cmd} getSimilarProductsGcs "${testSimilarProducts.projectId}" "${
         testSimilarProducts.location
       }" "${testSimilarProducts.productSetId}" "${
