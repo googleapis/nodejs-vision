@@ -66,9 +66,7 @@ describe(`detect`, () => {
   });
 
   it(`should detect faces in a remote file`, async () => {
-    const output = execSync(
-      `${cmd} faces-gcs ${bucketName} ${files[0].name}`
-    );
+    const output = execSync(`${cmd} faces-gcs ${bucketName} ${files[0].name}`);
     assert.match(output, /Faces:/);
     assert.match(output, /Face #1:/);
   });
@@ -80,9 +78,7 @@ describe(`detect`, () => {
   });
 
   it(`should detect labels in a remote file`, async () => {
-    const output = execSync(
-      `${cmd} labels-gcs ${bucketName} ${files[4].name}`
-    );
+    const output = execSync(`${cmd} labels-gcs ${bucketName} ${files[4].name}`);
     assert.match(output, /Labels:/);
     assert.match(output, /cat/);
   });
@@ -120,9 +116,7 @@ describe(`detect`, () => {
   });
 
   it(`should detect logos in a remote file`, async () => {
-    const output = execSync(
-      `${cmd} logos-gcs ${bucketName} ${files[9].name}`
-    );
+    const output = execSync(`${cmd} logos-gcs ${bucketName} ${files[9].name}`);
     assert.match(output, /Logos:/);
     assert.match(output, /google/);
   });
@@ -161,9 +155,7 @@ describe(`detect`, () => {
   });
 
   it(`should detect crop hints in a remote file`, async () => {
-    const output = execSync(
-      `${cmd} crops-gcs ${bucketName} ${files[2].name}`
-    );
+    const output = execSync(`${cmd} crops-gcs ${bucketName} ${files[2].name}`);
     assert.match(output, /Crop Hint 0:/);
     assert.match(output, /Bound 2: \(280, 43\)/);
   });
