@@ -17,9 +17,7 @@
 
 const path = require('path');
 const {assert} = require('chai');
-const cp = require('child_process');
-
-const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
+const execa = require('execa');
 
 describe(`Text Detection`, () => {
   it(`should detect texts`, async () => {
@@ -36,7 +34,7 @@ describe(`Text Detection`, () => {
       }
       throw new Error(result.stderr);
     }
-    const stdout = execSync('node textDetection lookup sunbeams');
+    const {stdout} = await execa.shell('node textDetection lookup sunbeams');
     assert.match(stdout, /sunbeamkitties/);
   });
 });

@@ -18,10 +18,9 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const cp = require('child_process');
+const execa = require('execa');
 
-const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
-
+const exec = async cmd => (await execa.shell(cmd)).stdout;
 const cmd = `node productSearch/products.js`;
 
 const productSearch = new vision.ProductSearchClient();
@@ -91,7 +90,7 @@ describe(`products`, () => {
     const maybeProduct = await getProductOrFalse(newProductPath);
     assert.strictEqual(maybeProduct, false);
 
-    let output = execSync(
+    let output = await exec(
       `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -105,7 +104,7 @@ describe(`products`, () => {
     assert.ok(newProduct.displayName === testProduct.productDisplayName);
     assert.ok(newProduct.productCategory === testProduct.productCategory);
 
-    output = execSync(
+    output = await exec(
       `${cmd} deleteProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}"`
@@ -121,7 +120,7 @@ describe(`products`, () => {
       newProductId
     );
     assert.strictEqual(await getProductOrFalse(newProductPath), false);
-    let output = execSync(
+    let output = await exec(
       `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -131,7 +130,7 @@ describe(`products`, () => {
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
 
-    output = execSync(
+    output = await exec(
       `${cmd} getProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}"`
@@ -147,7 +146,7 @@ describe(`products`, () => {
     );
     assert.match(output, /Product labels:/);
 
-    output = execSync(
+    output = await exec(
       `${cmd} deleteProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}"`
@@ -156,7 +155,7 @@ describe(`products`, () => {
   });
 
   it(`should list products`, async () => {
-    const output = execSync(
+    const output = await exec(
       `${cmd} listProducts "${testProduct.projectId}" "${testProduct.location}"`
     );
     assert.match(output, new RegExp(`Product id: ${testProduct.productId}`));
@@ -170,7 +169,7 @@ describe(`products`, () => {
       testProduct.location,
       newProductId
     );
-    let output = execSync(
+    let output = await exec(
       `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -179,7 +178,7 @@ describe(`products`, () => {
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
-    output = execSync(
+    output = await exec(
       `${cmd} updateProductLabels "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productKey}" "${
@@ -212,7 +211,7 @@ describe(`products`, () => {
       newProductId
     );
     assert.strictEqual(await getProductOrFalse(newProductPath), false);
-    let output = execSync(
+    let output = await exec(
       `${cmd} createProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}" "${testProduct.productDisplayName}" "${
@@ -222,7 +221,7 @@ describe(`products`, () => {
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
 
-    output = execSync(
+    output = await exec(
       `${cmd} deleteProduct "${testProduct.projectId}" "${
         testProduct.location
       }" "${newProductId}"`

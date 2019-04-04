@@ -18,11 +18,10 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const cp = require('child_process');
-
-const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
+const execa = require('execa');
 
 const productSearchClient = new vision.ProductSearchClient();
+const exec = async cmd => (await execa.shell(cmd)).stdout;
 const cmd = `node productSearch/productSearch.js`;
 
 // Shared fixture data for product tests
@@ -95,7 +94,7 @@ describe(`product search`, () => {
   });
 
   it(`should add product to product set`, async () => {
-    const output = execSync(
+    const output = await exec(
       `${cmd} addProductToProductSet "${testProductSet.projectId}" "${
         testProductSet.location
       }" "${testProductSet.productId}" "${testProductSet.productSetId}"`
@@ -104,7 +103,7 @@ describe(`product search`, () => {
   });
 
   it(`should remove a product from a product set`, async () => {
-    const output = execSync(
+    const output = await exec(
       `${cmd} removeProductFromProductSet "${testProductSet.projectId}" "${
         testProductSet.location
       }" "${testProductSet.productId}" "${testProductSet.productSetId}"`
