@@ -16,8 +16,10 @@
 'use strict';
 
 const path = require('path');
-const {execSync} = require('child_process');
+const cp = require('child_process');
 const {assert} = require('chai');
+
+const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
 
 const cmd = `node detect.v1p1beta1.js`;
 const files = [`text.jpg`, `wakeupcat.jpg`, `landmark.jpg`, `city.jpg`].map(

@@ -17,8 +17,10 @@
 
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {execSync} = require('child_process');
+const cp = require('child_process');
 const path = require('path');
+
+const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
 
 const cmd = `node productSearch/similarProducts.js`;
 const filter = ['', 'style=womens'];

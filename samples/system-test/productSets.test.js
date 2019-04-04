@@ -18,7 +18,9 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {execSync} = require('child_process');
+const cp = require('child_process');
+
+const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
 
 const productSearch = new vision.ProductSearchClient();
 const cmd = `node productSearch/productSets.js`;
