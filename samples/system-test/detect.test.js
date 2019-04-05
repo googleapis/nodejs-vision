@@ -22,7 +22,7 @@ const uuid = require('uuid');
 const {assert} = require('chai');
 const vision = require('@google-cloud/vision');
 
-const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
+const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
 const client = new vision.ImageAnnotatorClient();
 
