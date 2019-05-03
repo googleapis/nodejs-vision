@@ -21,6 +21,8 @@ call npm install -g npm@latest || goto :error
 call npm install || goto :error
 call npm run test || goto :error
 
+call node -v
+
 goto :EOF
 
 :error
