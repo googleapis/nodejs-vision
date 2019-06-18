@@ -92,7 +92,11 @@ describe(`products`, () => {
     assert.strictEqual(maybeProduct, false);
 
     let output = execSync(
-      `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
@@ -102,7 +106,9 @@ describe(`products`, () => {
     assert.ok(newProduct.productCategory === testProduct.productCategory);
 
     output = execSync(
-      `${cmd} deleteProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}"`
+      `${cmd} deleteProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`
     );
     assert.match(output, /Product deleted./);
   });
@@ -116,13 +122,19 @@ describe(`products`, () => {
     );
     assert.strictEqual(await getProductOrFalse(newProductPath), false);
     let output = execSync(
-      `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
 
     output = execSync(
-      `${cmd} getProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}"`
+      `${cmd} getProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
@@ -136,7 +148,9 @@ describe(`products`, () => {
     assert.match(output, /Product labels:/);
 
     output = execSync(
-      `${cmd} deleteProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}"`
+      `${cmd} deleteProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`
     );
     assert.match(output, /Product deleted./);
   });
@@ -157,12 +171,20 @@ describe(`products`, () => {
       newProductId
     );
     let output = execSync(
-      `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
     output = execSync(
-      `${cmd} updateProductLabels "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productKey}" "${testProduct.productValue}"`
+      `${cmd} updateProductLabels "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productKey}" "${
+        testProduct.productValue
+      }"`
     );
 
     assert.match(
@@ -191,13 +213,19 @@ describe(`products`, () => {
     );
     assert.strictEqual(await getProductOrFalse(newProductPath), false);
     let output = execSync(
-      `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`
+      `${cmd} createProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}" "${testProduct.productDisplayName}" "${
+        testProduct.productCategory
+      }"`
     );
 
     assert.match(output, new RegExp(`Product name: ${newProductPath}`));
 
     output = execSync(
-      `${cmd} deleteProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}"`
+      `${cmd} deleteProduct "${testProduct.projectId}" "${
+        testProduct.location
+      }" "${newProductId}"`
     );
     assert.match(output, /Product deleted./);
 

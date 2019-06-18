@@ -32,7 +32,9 @@ const testImportProductSets = {
 describe(`import product sets`, () => {
   it(`should import a Product Set`, async () => {
     const output = execSync(
-      `${cmd} importProductSets "${testImportProductSets.projectId}" "${testImportProductSets.location}" "${testImportProductSets.gcsUri}"`
+      `${cmd} importProductSets "${testImportProductSets.projectId}" "${
+        testImportProductSets.location
+      }" "${testImportProductSets.gcsUri}"`
     );
     assert.match(output, /Processing done./);
   });
