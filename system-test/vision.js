@@ -76,9 +76,9 @@ describe('Vision', function() {
   it('should detect from a filename', () => {
     return client.logoDetection(IMAGES.logo).then(responses => {
       const response = responses[0];
-      assert.deepStrictEqual(
+      assert.match(
         response.logoAnnotations[0].description.toLowerCase(),
-        'google'
+        /google/
       );
     });
   });
@@ -87,9 +87,9 @@ describe('Vision', function() {
     const buffer = fs.readFileSync(IMAGES.logo);
     return client.logoDetection(buffer).then(responses => {
       const response = responses[0];
-      assert.deepStrictEqual(
+      assert.match(
         response.logoAnnotations[0].description.toLowerCase(),
-        'google'
+        /google/
       );
     });
   });
