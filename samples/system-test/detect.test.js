@@ -114,13 +114,13 @@ describe(`detect`, () => {
   it(`should detect logos in a local file`, async () => {
     const output = execSync(`${cmd} logos ${files[9].localPath}`);
     assert.match(output, /Logos:/);
-    assert.match(output, /google/);
+    assert.match(output, /Google/);
   });
 
   it(`should detect logos in a remote file`, async () => {
     const output = execSync(`${cmd} logos-gcs ${bucketName} ${files[9].name}`);
     assert.match(output, /Logos:/);
-    assert.match(output, /google/);
+    assert.match(output, /Google/);
   });
 
   it(`should detect properties in a local file`, async () => {
