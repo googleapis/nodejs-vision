@@ -139,6 +139,20 @@ describe(`product sets`, () => {
     );
   });
 
+  it(`should purge a product set`, async () => {
+    const output = execSync(
+      `${cmd} purgeProductsInProductSet "${testProductSet.projectId}" "${testProductSet.location}" "${testProductSet.productSetId}"`
+    );
+
+    assert.match(output, new RegExp(`Products removed from product set.`));
+    // assert.match(
+    //   output,
+    //   new RegExp(
+    //     `Product Set display name: ${testProductSet.productSetDisplayName}`
+    //   )
+    // );
+  });
+
   it(`should delete product sets`, async () => {
     const productSet = await productSearch.getProductSet({
       name: `${testProductSet.productSetPath}`,
