@@ -208,4 +208,32 @@ describe(`products`, () => {
       assert.ok(err.message.includes('Not found'));
     }
   });
+
+  it(`should remove orphaned products`, async () => {
+    const newProductId = `ProductId${uuid.v4()}`;
+    const newProductPath = productSearch.productPath(
+      testProduct.projectId,
+      testProduct.location,
+      newProductId
+    );
+
+    assert.strictEqual(await getProductOrFalse(newProductPath), false);
+    let output = execSync(
+      `${cmd} createProduct "${testProduct.projectId}" "${testProduct.location}" "${newProductId}" "${testProduct.productDisplayName}" "${testProduct.productCategory}"`
+    );
+
+    assert.match(output, new RegExp(`Product name: ${newProductPath}`));
+
+    output = execSync(
+      `${cmd} purgeOrphanProducts "${testProduct.projectId}" "${testProduct.location}"`
+    );
+
+    assert.match(output, new RegExp(`Orphan products deleted.`));
+    try {
+      await productSearch.getProduct({name: `${newProductPath}`});
+      assert.fail('Product was not deleted');
+    } catch (err) {
+      assert.ok(err.message.includes('Not found'));
+    }
+  });
 });
