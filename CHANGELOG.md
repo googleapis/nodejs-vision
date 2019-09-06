@@ -4,6 +4,14 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/nodejs-vision?activeTab=versions
 
+### [1.2.1](https://www.github.com/googleapis/nodejs-vision/compare/v1.2.0...v1.2.1) (2019-09-06)
+
+
+### Bug Fixes
+
+* use process versions object for client header ([#428](https://www.github.com/googleapis/nodejs-vision/issues/428)) ([c1dde85](https://www.github.com/googleapis/nodejs-vision/commit/c1dde85))
+* **samples:** upgrade yargs and fix broken CLI config ([#436](https://www.github.com/googleapis/nodejs-vision/issues/436)) ([1a9c374](https://www.github.com/googleapis/nodejs-vision/commit/1a9c374))
+
 ## [1.2.0](https://www.github.com/googleapis/nodejs-vision/compare/v1.1.4...v1.2.0) (2019-08-19)
 
 
