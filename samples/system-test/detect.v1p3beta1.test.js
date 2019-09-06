@@ -50,7 +50,9 @@ describe(`detect v1 p3 beta1`, () => {
   });
 
   it(`should read handwriting in local handwritten.jpg sample`, async () => {
-    const output = execSync(`${cmd} detectHandwriting -h ${files[1].localPath}`);
+    const output = execSync(
+      `${cmd} detectHandwriting -h ${files[1].localPath}`
+    );
     assert.match(output, /hand written message/);
   });
 
