@@ -50,13 +50,13 @@ describe(`detect v1 p3 beta1`, () => {
   });
 
   it(`should read handwriting in local handwritten.jpg sample`, async () => {
-    const output = execSync(`${cmd} detectHandwriting ${files[1]}`);
+    const output = execSync(`${cmd} detectHandwriting -h ${files[1].localPath}`);
     assert.match(output, /hand written message/);
   });
 
   it(`should read handwriting from handwritten.jpg in GCS bucket`, async () => {
     const output = execSync(
-      `${cmd} detectHandwritingGCS gs://${bucketName}/${files[1].name}`
+      `${cmd} detectHandwritingGCS -u gs://${bucketName}/${files[1].name}`
     );
     assert.match(output, /hand written message/);
   });
