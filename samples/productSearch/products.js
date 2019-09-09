@@ -192,8 +192,8 @@ async function updateProductLabels(projectId, location, productId, key, value) {
   // [END vision_product_search_update_product_labels]
 }
 
+// [START vision_product_search_purge_orphan_products]
 async function purgeOrphanProducts(projectId, location) {
-  // [START vision_product_search_purge_orphan_products]
   // Deletes all products not in any product sets.
 
   // Imports the Google Cloud client library
@@ -226,8 +226,8 @@ async function purgeOrphanProducts(projectId, location) {
   } catch (err) {
     console.log(err);
   }
-  // [END vision_product_search_purge_orphan_products]
 }
+// [END vision_product_search_purge_orphan_products]
 
 require(`yargs`) // eslint-disable-line
   .demand(1)

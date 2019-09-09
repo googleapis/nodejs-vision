@@ -145,12 +145,6 @@ describe(`product sets`, () => {
     );
 
     assert.match(output, new RegExp(`Products removed from product set.`));
-    // assert.match(
-    //   output,
-    //   new RegExp(
-    //     `Product Set display name: ${testProductSet.productSetDisplayName}`
-    //   )
-    // );
   });
 
   it(`should delete product sets`, async () => {

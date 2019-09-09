@@ -134,8 +134,8 @@ async function deleteProductSet(projectId, location, productSetId) {
   // [END vision_product_search_delete_product_set]
 }
 
+// [START vision_product_search_purge_products_in_product_set]
 async function purgeProductsInProductSet(projectId, location, productSetId) {
-  // [START vision_product_search_purge_products_in_product_set]
   // Deletes all products in a product set.
 
   // Imports the Google Cloud client library
@@ -170,8 +170,8 @@ async function purgeProductsInProductSet(projectId, location, productSetId) {
   } catch (err) {
     console.log(err);
   }
-  // [END vision_product_search_purge_products_in_product_set]
 }
+// [END vision_product_search_purge_products_in_product_set]
 
 require(`yargs`) // eslint-disable-line
   .demand(1)
