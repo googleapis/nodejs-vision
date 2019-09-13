@@ -18,7 +18,6 @@
 
 const fs = require('fs');
 const is = require('is');
-const path = require('path');
 const {promisify} = require('@google-cloud/promisify');
 const gax = require('google-gax');
 
