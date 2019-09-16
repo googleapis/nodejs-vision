@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -41,9 +41,8 @@
   },
   "dependencies": {
     "@google-cloud/promisify": "^1.0.0",
-    "google-gax": "^1.0.0",
-    "is": "^3.2.1",
-    "protobufjs": "^6.8.6"
+    "google-gax": "^1.5.2",
+    "is": "^3.2.1"
   },
   "devDependencies": {
     "@google-cloud/storage": "^3.0.0",
