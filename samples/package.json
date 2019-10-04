@@ -10,7 +10,9 @@
     "*.js"
   ],
   "scripts": {
-    "test": "mocha system-test --timeout 600000"
+    "test": "mocha system-test --timeout 600000",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@google-cloud/vision": "^1.4.0",
@@ -18,12 +20,14 @@
     "mathjs": "^6.0.0",
     "natural": "^0.6.1",
     "redis": "^2.8.0",
-    "yargs": "^14.0.0"
+    "yargs": "^14.0.0",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "@google-cloud/storage": "^2.0.0",
     "chai": "^4.2.0",
     "mocha": "^6.0.0",
     "uuid": "^3.2.1"
-  }
+  },
+  "snyk": true
 }
