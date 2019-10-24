@@ -20,7 +20,7 @@ async function setEndpoint() {
   const vision = require('@google-cloud/vision');
 
   // Specifies the location of the api endpoint
-  const clientOptions = {'apiEndpoint': 'eu-vision.googleapis.com'};
+  const clientOptions = {apiEndpoint: 'eu-vision.googleapis.com'};
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient(clientOptions);
