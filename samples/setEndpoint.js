@@ -16,7 +16,7 @@
 'use strict';
 
 
-async function quickstart() {
+async function setEndpoint() {
   // [START vision_set_endpoint]
   // Imports the Google Cloud client library
   const vision = require('@google-cloud/vision');
@@ -35,4 +35,4 @@ async function quickstart() {
 }
 // [END vision_set_endpoint]
 
-quickstart().catch(console.error);
+setEndpoint().catch(console.error);
