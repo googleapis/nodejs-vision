@@ -34,4 +34,3 @@ async function setEndpoint() {
 // [END vision_set_endpoint]
 
 setEndpoint().catch(console.error);
- 
