@@ -71,7 +71,9 @@ class ImageAnnotatorClient {
     const gaxModule = !global.isBrowser && opts.fallback ? gax.fallback : gax;
 
     const servicePath =
-      opts.servicePath || opts.apiEndpoint || this.constructor.servicePath;
+      opts.servicePath ||
+      opts.apiEndpoint ||
+      this.constructor.servicePath;
 
     // Ensure that options include the service address and port.
     opts = Object.assign(
@@ -112,20 +114,16 @@ class ImageAnnotatorClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     const protos = gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
-    const protoFilesRoot = opts.fallback
-      ? gaxModule.protobuf.Root.fromJSON(require('../../protos/protos.json'))
-      : gaxModule.protobuf.loadSync(nodejsProtoPath);
+    const protoFilesRoot = opts.fallback ?
+      gaxModule.protobuf.Root.fromJSON(require("../../protos/protos.json")) :
+      gaxModule.protobuf.loadSync(nodejsProtoPath);
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
@@ -151,21 +149,13 @@ class ImageAnnotatorClient {
     this._descriptors.longrunning = {
       asyncBatchAnnotateImages: new gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        asyncBatchAnnotateImagesResponse.decode.bind(
-          asyncBatchAnnotateImagesResponse
-        ),
-        asyncBatchAnnotateImagesMetadata.decode.bind(
-          asyncBatchAnnotateImagesMetadata
-        )
+        asyncBatchAnnotateImagesResponse.decode.bind(asyncBatchAnnotateImagesResponse),
+        asyncBatchAnnotateImagesMetadata.decode.bind(asyncBatchAnnotateImagesMetadata)
       ),
       asyncBatchAnnotateFiles: new gaxModule.LongrunningDescriptor(
         this.operationsClient,
-        asyncBatchAnnotateFilesResponse.decode.bind(
-          asyncBatchAnnotateFilesResponse
-        ),
-        asyncBatchAnnotateFilesMetadata.decode.bind(
-          asyncBatchAnnotateFilesMetadata
-        )
+        asyncBatchAnnotateFilesResponse.decode.bind(asyncBatchAnnotateFilesResponse),
+        asyncBatchAnnotateFilesMetadata.decode.bind(asyncBatchAnnotateFilesMetadata)
       ),
     };
 
@@ -185,9 +175,9 @@ class ImageAnnotatorClient {
     // Put together the "service stub" for
     // google.cloud.vision.v1p4beta1.ImageAnnotator.
     const imageAnnotatorStub = gaxGrpc.createStub(
-      opts.fallback
-        ? protos.lookupService('google.cloud.vision.v1p4beta1.ImageAnnotator')
-        : protos.google.cloud.vision.v1p4beta1.ImageAnnotator,
+      opts.fallback ?
+        protos.lookupService('google.cloud.vision.v1p4beta1.ImageAnnotator') :
+        protos.google.cloud.vision.v1p4beta1.ImageAnnotator,
       opts
     );
 
@@ -484,11 +474,7 @@ class ImageAnnotatorClient {
     request = request || {};
     options = options || {};
 
-    return this._innerApiCalls.asyncBatchAnnotateImages(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.asyncBatchAnnotateImages(request, options, callback);
   }
 
   /**
@@ -586,12 +572,9 @@ class ImageAnnotatorClient {
     request = request || {};
     options = options || {};
 
-    return this._innerApiCalls.asyncBatchAnnotateFiles(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.asyncBatchAnnotateFiles(request, options, callback);
   }
 }
+
 
 module.exports = ImageAnnotatorClient;

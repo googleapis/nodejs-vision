@@ -45,9 +45,7 @@ describe('ImageAnnotatorClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new visionModule.v1p1beta1.ImageAnnotatorClient({
-      fallback: true,
-    });
+    const client = new visionModule.v1p1beta1.ImageAnnotatorClient({fallback: true});
     assert(client);
   });
 
@@ -107,6 +105,7 @@ describe('ImageAnnotatorClient', () => {
       });
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {

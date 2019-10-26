@@ -82,7 +82,9 @@ class ProductSearchClient {
     const gaxModule = !global.isBrowser && opts.fallback ? gax.fallback : gax;
 
     const servicePath =
-      opts.servicePath || opts.apiEndpoint || this.constructor.servicePath;
+      opts.servicePath ||
+      opts.apiEndpoint ||
+      this.constructor.servicePath;
 
     // Ensure that options include the service address and port.
     opts = Object.assign(
@@ -123,15 +125,11 @@ class ProductSearchClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     const protos = gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
     // This API contains "path templates"; forward-slash-separated
@@ -178,9 +176,9 @@ class ProductSearchClient {
       ),
     };
 
-    const protoFilesRoot = opts.fallback
-      ? gaxModule.protobuf.Root.fromJSON(require('../../protos/protos.json'))
-      : gaxModule.protobuf.loadSync(nodejsProtoPath);
+    const protoFilesRoot = opts.fallback ?
+      gaxModule.protobuf.Root.fromJSON(require("../../protos/protos.json")) :
+      gaxModule.protobuf.loadSync(nodejsProtoPath);
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
@@ -232,9 +230,9 @@ class ProductSearchClient {
     // Put together the "service stub" for
     // google.cloud.vision.v1.ProductSearch.
     const productSearchStub = gaxGrpc.createStub(
-      opts.fallback
-        ? protos.lookupService('google.cloud.vision.v1.ProductSearch')
-        : protos.google.cloud.vision.v1.ProductSearch,
+      opts.fallback ?
+        protos.lookupService('google.cloud.vision.v1.ProductSearch') :
+        protos.google.cloud.vision.v1.ProductSearch,
       opts
     );
 
@@ -273,8 +271,7 @@ class ProductSearchClient {
       this._innerApiCalls[methodName] = gaxModule.createApiCall(
         innerCallPromise,
         defaults[methodName],
-        this._descriptors.page[methodName] ||
-          this._descriptors.longrunning[methodName]
+        this._descriptors.page[methodName] || this._descriptors.longrunning[methodName]
       );
     }
   }
@@ -391,11 +388,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createProductSet(request, options, callback);
   }
@@ -500,11 +496,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listProductSets(request, options, callback);
   }
@@ -564,7 +559,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a ProductSet.
@@ -618,11 +613,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getProductSet(request, options, callback);
   }
@@ -688,11 +682,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      'product_set.name': request.productSet.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'product_set.name': request.productSet.name
+      });
 
     return this._innerApiCalls.updateProductSet(request, options, callback);
   }
@@ -740,11 +733,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteProductSet(request, options, callback);
   }
@@ -818,11 +810,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createProduct(request, options, callback);
   }
@@ -927,11 +918,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listProducts(request, options, callback);
   }
@@ -992,7 +982,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a Product.
@@ -1046,11 +1036,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getProduct(request, options, callback);
   }
@@ -1125,11 +1114,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      'product.name': request.product.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'product.name': request.product.name
+      });
 
     return this._innerApiCalls.updateProduct(request, options, callback);
   }
@@ -1178,11 +1166,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteProduct(request, options, callback);
   }
@@ -1268,11 +1255,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createReferenceImage(request, options, callback);
   }
@@ -1324,11 +1310,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteReferenceImage(request, options, callback);
   }
@@ -1435,11 +1420,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listReferenceImages(request, options, callback);
   }
@@ -1500,7 +1484,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets information associated with a ReferenceImage.
@@ -1555,11 +1539,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getReferenceImage(request, options, callback);
   }
@@ -1621,17 +1604,12 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
-    return this._innerApiCalls.addProductToProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.addProductToProductSet(request, options, callback);
   }
 
   /**
@@ -1684,17 +1662,12 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
-    return this._innerApiCalls.removeProductFromProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.removeProductFromProductSet(request, options, callback);
   }
 
   /**
@@ -1799,17 +1772,12 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
-    return this._innerApiCalls.listProductsInProductSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.listProductsInProductSet(request, options, callback);
   }
 
   /**
@@ -1868,7 +1836,7 @@ class ProductSearchClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Asynchronous API that imports a list of reference images to specified
@@ -1990,11 +1958,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.importProductSets(request, options, callback);
   }
@@ -2123,11 +2090,10 @@ class ProductSearchClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.purgeProducts(request, options, callback);
   }
@@ -2208,7 +2174,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromLocationName(locationName) {
-    return this._pathTemplates.locationPathTemplate.match(locationName).project;
+    return this._pathTemplates.locationPathTemplate
+      .match(locationName)
+      .project;
   }
 
   /**
@@ -2219,7 +2187,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromLocationName(locationName) {
-    return this._pathTemplates.locationPathTemplate.match(locationName)
+    return this._pathTemplates.locationPathTemplate
+      .match(locationName)
       .location;
   }
 
@@ -2231,7 +2200,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).project;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .project;
   }
 
   /**
@@ -2242,7 +2213,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).location;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .location;
   }
 
   /**
@@ -2253,7 +2226,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product.
    */
   matchProductFromProductName(productName) {
-    return this._pathTemplates.productPathTemplate.match(productName).product;
+    return this._pathTemplates.productPathTemplate
+      .match(productName)
+      .product;
   }
 
   /**
@@ -2264,7 +2239,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .project;
   }
 
@@ -2276,7 +2252,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .location;
   }
 
@@ -2288,7 +2265,8 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product_set.
    */
   matchProductSetFromProductSetName(productSetName) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
+    return this._pathTemplates.productSetPathTemplate
+      .match(productSetName)
       .product_set;
   }
 
@@ -2300,9 +2278,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).project;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .project;
   }
 
   /**
@@ -2313,9 +2291,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the location.
    */
   matchLocationFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).location;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .location;
   }
 
   /**
@@ -2326,9 +2304,9 @@ class ProductSearchClient {
    * @returns {String} - A string representing the product.
    */
   matchProductFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).product;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .product;
   }
 
   /**
@@ -2339,10 +2317,11 @@ class ProductSearchClient {
    * @returns {String} - A string representing the reference_image.
    */
   matchReferenceImageFromReferenceImageName(referenceImageName) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).reference_image;
+    return this._pathTemplates.referenceImagePathTemplate
+      .match(referenceImageName)
+      .reference_image;
   }
 }
+
 
 module.exports = ProductSearchClient;

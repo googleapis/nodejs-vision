@@ -71,7 +71,9 @@ class ImageAnnotatorClient {
     const gaxModule = !global.isBrowser && opts.fallback ? gax.fallback : gax;
 
     const servicePath =
-      opts.servicePath || opts.apiEndpoint || this.constructor.servicePath;
+      opts.servicePath ||
+      opts.apiEndpoint ||
+      this.constructor.servicePath;
 
     // Ensure that options include the service address and port.
     opts = Object.assign(
@@ -112,15 +114,11 @@ class ImageAnnotatorClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     const protos = gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
     // Put together the default options sent with requests.
@@ -139,15 +137,17 @@ class ImageAnnotatorClient {
     // Put together the "service stub" for
     // google.cloud.vision.v1p1beta1.ImageAnnotator.
     const imageAnnotatorStub = gaxGrpc.createStub(
-      opts.fallback
-        ? protos.lookupService('google.cloud.vision.v1p1beta1.ImageAnnotator')
-        : protos.google.cloud.vision.v1p1beta1.ImageAnnotator,
+      opts.fallback ?
+        protos.lookupService('google.cloud.vision.v1p1beta1.ImageAnnotator') :
+        protos.google.cloud.vision.v1p1beta1.ImageAnnotator,
       opts
     );
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
-    const imageAnnotatorStubMethods = ['batchAnnotateImages'];
+    const imageAnnotatorStubMethods = [
+      'batchAnnotateImages',
+    ];
     for (const methodName of imageAnnotatorStubMethods) {
       const innerCallPromise = imageAnnotatorStub.then(
         stub => (...args) => {
@@ -260,5 +260,6 @@ class ImageAnnotatorClient {
     return this._innerApiCalls.batchAnnotateImages(request, options, callback);
   }
 }
+
 
 module.exports = ImageAnnotatorClient;
