@@ -33,6 +33,4 @@ async function setEndpoint() {
   labels.forEach(label => console.log(label.description));
 }
 
-
 setEndpoint().catch(console.error);
- 
