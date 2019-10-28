@@ -24,6 +24,7 @@ async function setEndpoint() {
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient(clientOptions);
+  // [END vision_set_endpoint]
 
   // Performs label detection on the image file
   const [result] = await client.labelDetection('./resources/wakeupcat.jpg');
@@ -31,6 +32,7 @@ async function setEndpoint() {
   console.log('Labels:');
   labels.forEach(label => console.log(label.description));
 }
-// [END vision_set_endpoint]
+
 
 setEndpoint().catch(console.error);
+ 
