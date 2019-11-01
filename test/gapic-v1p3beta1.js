@@ -45,9 +45,7 @@ describe('ProductSearchClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new visionModule.v1p3beta1.ProductSearchClient({
-      fallback: true,
-    });
+    const client = new visionModule.v1p3beta1.ProductSearchClient({fallback: true});
     assert(client);
   });
 
@@ -144,11 +142,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProductSets = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProductSets = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.productSets);
       };
@@ -196,11 +190,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -233,11 +223,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -332,11 +318,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -357,11 +339,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -478,11 +456,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProducts = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProducts = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.products);
       };
@@ -530,11 +504,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         name: formattedName,
       };
@@ -571,11 +541,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         name: formattedName,
       };
@@ -674,11 +640,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         name: formattedName,
       };
@@ -699,11 +661,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedName = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         name: formattedName,
       };
@@ -731,11 +689,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const referenceImage = {};
       const referenceImageId = 'referenceImageId1946713331';
       const request = {
@@ -772,11 +726,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const referenceImage = {};
       const referenceImageId = 'referenceImageId1946713331';
       const request = {
@@ -809,20 +759,13 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      const formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       const request = {
         name: formattedName,
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.deleteReferenceImage = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.deleteReferenceImage = mockSimpleGrpcMethod(request);
 
       client.deleteReferenceImage(request, err => {
         assert.ifError(err);
@@ -837,12 +780,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      const formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       const request = {
         name: formattedName,
       };
@@ -870,11 +808,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         parent: formattedParent,
       };
@@ -891,11 +825,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listReferenceImages = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listReferenceImages = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.referenceImages);
       };
@@ -914,11 +844,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.productPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]'
-      );
+      const formattedParent = client.productPath('[PROJECT]', '[LOCATION]', '[PRODUCT]');
       const request = {
         parent: formattedParent,
       };
@@ -947,12 +873,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      const formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       const request = {
         name: formattedName,
       };
@@ -985,12 +906,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.referenceImagePath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT]',
-        '[REFERENCE_IMAGE]'
-      );
+      const formattedName = client.referenceImagePath('[PROJECT]', '[LOCATION]', '[PRODUCT]', '[REFERENCE_IMAGE]');
       const request = {
         name: formattedName,
       };
@@ -1019,11 +935,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const product = 'product-309474065';
       const request = {
         name: formattedName,
@@ -1031,9 +943,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.addProductToProductSet = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.addProductToProductSet = mockSimpleGrpcMethod(request);
 
       client.addProductToProductSet(request, err => {
         assert.ifError(err);
@@ -1048,11 +958,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const product = 'product-309474065';
       const request = {
         name: formattedName,
@@ -1082,11 +988,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const product = 'product-309474065';
       const request = {
         name: formattedName,
@@ -1094,9 +996,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.removeProductFromProductSet = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.removeProductFromProductSet = mockSimpleGrpcMethod(request);
 
       client.removeProductFromProductSet(request, err => {
         assert.ifError(err);
@@ -1111,11 +1011,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const product = 'product-309474065';
       const request = {
         name: formattedName,
@@ -1145,11 +1041,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -1164,11 +1056,7 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listProductsInProductSet = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listProductsInProductSet = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.products);
       };
@@ -1187,11 +1075,7 @@ describe('ProductSearchClient', () => {
       });
 
       // Mock request
-      const formattedName = client.productSetPath(
-        '[PROJECT]',
-        '[LOCATION]',
-        '[PRODUCT_SET]'
-      );
+      const formattedName = client.productSetPath('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]');
       const request = {
         name: formattedName,
       };
@@ -1231,24 +1115,17 @@ describe('ProductSearchClient', () => {
       const expectedResponse = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .importProductSets(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.importProductSets(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes importProductSets with error', done => {
@@ -1266,26 +1143,18 @@ describe('ProductSearchClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.importProductSets = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .importProductSets(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.importProductSets(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1293,16 +1162,11 @@ describe('ProductSearchClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.importProductSets
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.importProductSets
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.importProductSets.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.importProductSets.metadataDecoder instanceof Function);
     });
   });
+
 });
 describe('ImageAnnotatorClient', () => {
   it('has servicePath', () => {
@@ -1327,9 +1191,7 @@ describe('ImageAnnotatorClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new visionModule.v1p3beta1.ImageAnnotatorClient({
-      fallback: true,
-    });
+    const client = new visionModule.v1p3beta1.ImageAnnotatorClient({fallback: true});
     assert(client);
   });
 
@@ -1407,24 +1269,17 @@ describe('ImageAnnotatorClient', () => {
       const expectedResponse = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes asyncBatchAnnotateFiles with error', done => {
@@ -1440,26 +1295,18 @@ describe('ImageAnnotatorClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1467,16 +1314,11 @@ describe('ImageAnnotatorClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.metadataDecoder instanceof Function);
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {
@@ -1500,11 +1342,12 @@ function mockLongRunningGrpcMethod(expectedRequest, response, error) {
         return new Promise((resolve, reject) => {
           if (error) {
             reject(error);
-          } else {
+          }
+          else {
             resolve([response]);
           }
         });
-      },
+      }
     };
     return Promise.resolve([mockOperation]);
   };

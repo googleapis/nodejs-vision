@@ -45,9 +45,7 @@ describe('ImageAnnotatorClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new visionModule.v1p2beta1.ImageAnnotatorClient({
-      fallback: true,
-    });
+    const client = new visionModule.v1p2beta1.ImageAnnotatorClient({fallback: true});
     assert(client);
   });
 
@@ -125,24 +123,17 @@ describe('ImageAnnotatorClient', () => {
       const expectedResponse = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes asyncBatchAnnotateFiles with error', done => {
@@ -158,26 +149,18 @@ describe('ImageAnnotatorClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.asyncBatchAnnotateFiles = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .asyncBatchAnnotateFiles(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.asyncBatchAnnotateFiles(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -185,16 +168,11 @@ describe('ImageAnnotatorClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.asyncBatchAnnotateFiles
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.asyncBatchAnnotateFiles.metadataDecoder instanceof Function);
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {
@@ -218,11 +196,12 @@ function mockLongRunningGrpcMethod(expectedRequest, response, error) {
         return new Promise((resolve, reject) => {
           if (error) {
             reject(error);
-          } else {
+          }
+          else {
             resolve([response]);
           }
         });
-      },
+      }
     };
     return Promise.resolve([mockOperation]);
   };
