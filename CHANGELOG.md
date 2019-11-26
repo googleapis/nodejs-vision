@@ -4,6 +4,28 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/nodejs-vision?activeTab=versions
 
+### [1.7.2](https://www.github.com/googleapis/nodejs-vision/compare/v1.7.1...v1.7.2) (2019-11-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency yargs to v15 ([#488](https://www.github.com/googleapis/nodejs-vision/issues/488)) ([21c889e](https://www.github.com/googleapis/nodejs-vision/commit/21c889ee3157e38cc8eefec5da8f1d103fd41f17))
+
+### [1.7.1](https://www.github.com/googleapis/nodejs-vision/compare/v1.7.0...v1.7.1) (2019-11-13)
+
+
+### Bug Fixes
+
+* import long in proto ts declaration file ([#482](https://www.github.com/googleapis/nodejs-vision/issues/482)) ([1f5258b](https://www.github.com/googleapis/nodejs-vision/commit/1f5258b65665c4813463592af32720d07e5c8de4))
+* **docs:** snippets are now replaced in jsdoc comments ([#481](https://www.github.com/googleapis/nodejs-vision/issues/481)) ([07281d6](https://www.github.com/googleapis/nodejs-vision/commit/07281d6d0acbd59a9c308308cb090b598cda53a2))
+
+## [1.7.0](https://www.github.com/googleapis/nodejs-vision/compare/v1.6.0...v1.7.0) (2019-11-08)
+
+
+### Features
+
+* add celebrity face detection ([#477](https://www.github.com/googleapis/nodejs-vision/issues/477)) ([cdfa59e](https://www.github.com/googleapis/nodejs-vision/commit/cdfa59e4156c5b557651c3bf50cfc46487149a7d))
+
 ## [1.6.0](https://www.github.com/googleapis/nodejs-vision/compare/v1.5.0...v1.6.0) (2019-11-05)
 
 
