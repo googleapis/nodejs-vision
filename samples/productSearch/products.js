@@ -28,31 +28,35 @@ async function createProduct(
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
-  // const productDisplayName = 'Display name of the product';
-  // const productCategory = 'Catoegory of the product';
+  async function createProduct() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
+    // const productId = 'Id of the product';
+    // const productDisplayName = 'Display name of the product';
+    // const productCategory = 'Catoegory of the product';
 
-  // Resource path that represents Google Cloud Platform location.
-  const locationPath = client.locationPath(projectId, location);
+    // Resource path that represents Google Cloud Platform location.
+    const locationPath = client.locationPath(projectId, location);
 
-  const product = {
-    displayName: productDisplayName,
-    productCategory: productCategory,
-  };
+    const product = {
+      displayName: productDisplayName,
+      productCategory: productCategory,
+    };
 
-  const request = {
-    parent: locationPath,
-    product: product,
-    productId: productId,
-  };
+    const request = {
+      parent: locationPath,
+      product: product,
+      productId: productId,
+    };
 
-  const [createdProduct] = await client.createProduct(request);
-  console.log(`Product name: ${createdProduct.name}`);
+    const [createdProduct] = await client.createProduct(request);
+    console.log(`Product name: ${createdProduct.name}`);
+  }
+
+  createProduct();
   // [END vision_product_search_create_product]
 }
 
@@ -64,23 +68,27 @@ async function getProduct(projectId, location, productId) {
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
+  async function getProduct() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
+    // const productId = 'Id of the product';
 
-  // Resource path that represents Google Cloud Platform location.
-  const productPath = client.productPath(projectId, location, productId);
+    // Resource path that represents Google Cloud Platform location.
+    const productPath = client.productPath(projectId, location, productId);
 
-  const [product] = await client.getProduct({name: productPath});
-  console.log(`Product name: ${product.name}`);
-  console.log(`Product id: ${product.name.split('/').pop()}`);
-  console.log(`Product display name: ${product.displayName}`);
-  console.log(`Product description: ${product.description}`);
-  console.log(`Product category: ${product.productCategory}`);
-  console.log(`Product labels: ${product.productLabels}`);
+    const [product] = await client.getProduct({name: productPath});
+    console.log(`Product name: ${product.name}`);
+    console.log(`Product id: ${product.name.split('/').pop()}`);
+    console.log(`Product display name: ${product.displayName}`);
+    console.log(`Product description: ${product.description}`);
+    console.log(`Product category: ${product.productCategory}`);
+    console.log(`Product labels: ${product.productLabels}`);
+  }
+
+  getProduct();
   // [END vision_product_search_get_product]
 }
 
@@ -92,29 +100,33 @@ async function listProducts(projectId, location) {
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
+  async function listProducts() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
 
-  // Resource path that represents Google Cloud Platform location.
-  const locationPath = client.locationPath(projectId, location);
+    // Resource path that represents Google Cloud Platform location.
+    const locationPath = client.locationPath(projectId, location);
 
-  const [products] = await client.listProducts({parent: locationPath});
-  products.forEach(product => {
-    console.log(`Product name: ${product.name}`);
-    console.log(`Product id: ${product.name.split('/').pop()}`);
-    console.log(`Product display name: ${product.displayName}`);
-    console.log(`Product description: ${product.description}`);
-    console.log(`Product category: ${product.productCategory}`);
-    if (product.productLabels.length) {
-      console.log(`Product labels:`);
-      product.productLabels.forEach(productLabel => {
-        console.log(`${productLabel.key}: ${productLabel.value}`);
-      });
-    }
-  });
+    const [products] = await client.listProducts({parent: locationPath});
+    products.forEach(product => {
+      console.log(`Product name: ${product.name}`);
+      console.log(`Product id: ${product.name.split('/').pop()}`);
+      console.log(`Product display name: ${product.displayName}`);
+      console.log(`Product description: ${product.description}`);
+      console.log(`Product category: ${product.productCategory}`);
+      if (product.productLabels.length) {
+        console.log(`Product labels:`);
+        product.productLabels.forEach(productLabel => {
+          console.log(`${productLabel.key}: ${productLabel.value}`);
+        });
+      }
+    });
+  }
+
+  listProducts();
   // [END vision_product_search_list_products]
 }
 
@@ -126,18 +138,22 @@ async function deleteProduct(projectId, location, productId) {
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
+  async function deleteProduct() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
+    // const productId = 'Id of the product';
 
-  // Resource path that represents full path to the product.
-  const productPath = client.productPath(projectId, location, productId);
+    // Resource path that represents full path to the product.
+    const productPath = client.productPath(projectId, location, productId);
 
-  await client.deleteProduct({name: productPath});
-  console.log('Product deleted.');
+    await client.deleteProduct({name: productPath});
+    console.log('Product deleted.');
+  }
+
+  deleteProduct();
   // [END vision_product_search_delete_product]
 }
 
@@ -149,45 +165,49 @@ async function updateProductLabels(projectId, location, productId, key, value) {
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
-  // const productId = 'Id of the product';
-  // const key = 'The key of the label';
-  // const value = 'The value of the label';
+  async function updateProductLabels() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
+    // const productId = 'Id of the product';
+    // const key = 'The key of the label';
+    // const value = 'The value of the label';
 
-  // Resource path that represents full path to the product.
-  const productPath = client.productPath(projectId, location, productId);
+    // Resource path that represents full path to the product.
+    const productPath = client.productPath(projectId, location, productId);
 
-  const product = {
-    name: productPath,
-    productLabels: [
-      {
-        key: key,
-        value: value,
-      },
-    ],
-  };
+    const product = {
+      name: productPath,
+      productLabels: [
+        {
+          key: key,
+          value: value,
+        },
+      ],
+    };
 
-  const updateMask = {
-    paths: ['product_labels'],
-  };
+    const updateMask = {
+      paths: ['product_labels'],
+    };
 
-  const request = {
-    product: product,
-    updateMask: updateMask,
-  };
+    const request = {
+      product: product,
+      updateMask: updateMask,
+    };
 
-  const [updatedProduct] = await client.updateProduct(request);
-  console.log(`Product name: ${updatedProduct.name}`);
-  console.log(`Product display name: ${updatedProduct.displayName}`);
-  console.log(`Product description: ${updatedProduct.description}`);
-  console.log(`Product category: ${updatedProduct.productCategory}`);
-  console.log(
-    `Product Labels: ${updatedProduct.productLabels[0].key}: ${updatedProduct.productLabels[0].value}`
-  );
+    const [updatedProduct] = await client.updateProduct(request);
+    console.log(`Product name: ${updatedProduct.name}`);
+    console.log(`Product display name: ${updatedProduct.displayName}`);
+    console.log(`Product description: ${updatedProduct.description}`);
+    console.log(`Product category: ${updatedProduct.productCategory}`);
+    console.log(
+      `Product Labels: ${updatedProduct.productLabels[0].key}: ${updatedProduct.productLabels[0].value}`
+    );
+  }
+
+  updateProductLabels();
   // [END vision_product_search_update_product_labels]
 }
 
@@ -201,33 +221,36 @@ async function purgeOrphanProducts(projectId, location) {
   // Creates a client
   const client = new vision.ProductSearchClient();
 
-  /**
-   * TODO(developer): Uncomment the following line before running the sample.
-   */
-  // const projectId = 'Your Google Cloud project Id';
-  // const location = 'A compute region name';
+  async function purgeOrphanProducts() {
+    /**
+     * TODO(developer): Uncomment the following line before running the sample.
+     */
+    // const projectId = 'Your Google Cloud project Id';
+    // const location = 'A compute region name';
 
-  const formattedParent = client.locationPath(projectId, location);
+    const formattedParent = client.locationPath(projectId, location);
 
-  // The operation is irreversible and removes multiple products.
-  // The user is required to pass in force=true to actually perform the purge.
-  // If force is not set to True, the service raises an error.
-  const force = true;
+    // The operation is irreversible and removes multiple products.
+    // The user is required to pass in force=true to actually perform the purge.
+    // If force is not set to True, the service raises an error.
+    const force = true;
 
-  try {
-    const [operation] = await client.purgeProducts({
-      parent: formattedParent,
-      deleteOrphanProducts: true,
-      force: force,
-    });
-    await operation.promise();
-    console.log('Orphan products deleted.');
-  } catch (err) {
-    console.log(err);
+    try {
+      const [operation] = await client.purgeProducts({
+        parent: formattedParent,
+        deleteOrphanProducts: true,
+        force: force,
+      });
+      await operation.promise();
+      console.log('Orphan products deleted.');
+    } catch (err) {
+      console.log(err);
+    }
   }
-}
-// [END vision_product_search_purge_orphan_products]
 
+  purgeOrphanProducts();
+  // [END vision_product_search_purge_orphan_products]
+}
 require(`yargs`) // eslint-disable-line
   .demand(1)
   .command(
