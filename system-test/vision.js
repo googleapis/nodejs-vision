@@ -17,6 +17,7 @@
 'use strict';
 
 const assert = require('assert');
+const {describe, it} = require('mocha');
 const fs = require('fs');
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
