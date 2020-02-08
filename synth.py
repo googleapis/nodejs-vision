@@ -22,11 +22,19 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Run the gapic generator
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICmicrogenerator()
 versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1', 'v1p4beta1']
 for version in versions:
-    library = gapic.node_library('vision', version)
-    s.copy(library, excludes=['src/index.js', 'README.md', 'package.json'])
+    library = gapic.typescript_library(
+        'vision', version,
+        generator_args={
+            "grpc-service-config": f"google/cloud/vision/{version}/vision_grpc_service_config.json",
+            "package-name": f"@google-cloud/vision",
+            },
+        proto_path=f'/google/cloud/vision/{version}',
+        extra_proto_files=['google/cloud/common_resources.proto'],
+    )
+    s.copy(library, excludes=['src/index.ts', 'README.md', 'package.json'])
 
 # Copy common templates
 common_templates = gcp.CommonTemplates()
