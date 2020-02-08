@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-'use strict';
 
-const assert = require('assert');
-const {describe, it, before, after} = require('mocha');
-const fs = require('fs');
-const path = require('path');
-const {Storage} = require('@google-cloud/storage');
-const uuid = require('uuid');
+import * as assert from 'assert';
+import {describe, it, before, after} from 'mocha';
+import * as fs from 'fs';
+import * as  path from 'path';
+import {Storage} from '@google-cloud/storage';
+import * as uuid from 'uuid';
 
 const vision = require('../');
-
 describe('Vision', function() {
   const IMAGES = Object.freeze({
     document: path.join(__dirname, 'data/document.jpg'),

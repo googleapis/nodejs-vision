@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-'use strict';
 
-const assert = require('assert');
-const {describe, it, afterEach} = require('mocha');
-const fs = require('fs');
-const is = require('is');
-const sinon = require('sinon');
+import * as assert from 'assert';
+import {describe, it, afterEach} from 'mocha';
+import * as fs from 'fs';
+import * as is from 'is';
+import * as sinon from 'sinon';
 
 const vision = require('../');
 

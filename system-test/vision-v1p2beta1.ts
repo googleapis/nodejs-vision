@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
-
-const {describe, it} = require('mocha');
+import {describe, it} from 'mocha';
 
 describe('ImageAnnotatorSmokeTest', () => {
   it('successfully makes a call to the service', done => {
