@@ -20,6 +20,7 @@ import {describe, it, afterEach} from 'mocha';
 import * as fs from 'fs';
 import * as is from 'is';
 import * as sinon from 'sinon';
+import * as prototypes from '../protos/protos';
 
 const vision = require('../');
 
@@ -53,7 +54,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then(r => {
+      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -87,7 +88,7 @@ describe('Vision helper methods', () => {
         image: Buffer.from('fakeImage'),
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then(r => {
+      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -113,8 +114,7 @@ describe('Vision helper methods', () => {
       // This allows us to test filename detection.
       const readFile = sandbox.stub(fs, 'readFile');
       readFile
-        .withArgs('image.jpg')
-        .callsArgWith(1, null, Buffer.from('fakeImage'));
+        .withArgs('image.jpg', {buffer: Buffer.from('fakeImage')})
       readFile.callThrough();
 
       // Stub out the batch annotation method as before.
@@ -133,7 +133,7 @@ describe('Vision helper methods', () => {
         image: {source: {filename: 'image.jpg'}},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then(r => {
+      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -163,7 +163,7 @@ describe('Vision helper methods', () => {
       // Stub out `fs.readFile` and return a bogus image object.
       // This allows us to test filename detection.
       const readFile = sandbox.stub(fs, 'readFile');
-      readFile.withArgs('image.jpg').callsArgWith(1, {error: 404});
+      readFile.withArgs('image.jpg', {error: 404});
       readFile.callThrough();
 
       // Ensure that the annotateImage method arrifies the request and
@@ -175,7 +175,7 @@ describe('Vision helper methods', () => {
       return client
         .annotateImage(request)
         .then(assert.fail)
-        .catch(err => {
+        .catch((err: {}) => {
           assert.deepStrictEqual(err, {error: 404});
         });
     });
@@ -197,7 +197,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request, {foo: 'bar'}).then(r => {
+      return client.annotateImage(request, {foo: 'bar'}).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -229,7 +229,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      client.annotateImage(request, function(err, response) {
+      client.annotateImage(request, function(err: {}, response: {}) {
         // Establish that we got the expected response.
         assert(is.undefined(err));
         assert.deepStrictEqual(response, {
@@ -255,7 +255,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).catch(err => {
+      return client.annotateImage(request).catch((err: {}) => {
         // Establish that we got the expected response.
         assert.deepStrictEqual(err, {message: 'Bad things!'});
 
@@ -272,7 +272,7 @@ describe('Vision helper methods', () => {
       return client
         .annotateImage(request)
         .then(assert.fail)
-        .catch(err => {
+        .catch((err: {message: string}) => {
           assert(err.message === 'No image present.');
         });
     });
@@ -294,7 +294,7 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
       const imageRequest = {image: {content: Buffer.from('bogus==')}};
-      return client.logoDetection(Object.assign({}, imageRequest)).then(r => {
+      return client.logoDetection(Object.assign({}, imageRequest)).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -334,7 +334,7 @@ describe('Vision helper methods', () => {
       });
 
       // Call a request to a single-feature method using a URL.
-      return client.logoDetection('https://goo.gl/logo.png').then(r => {
+      return client.logoDetection('https://goo.gl/logo.png').then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure we got the slice of the response that we expected.
@@ -368,7 +368,7 @@ describe('Vision helper methods', () => {
       });
 
       // Call a request to a single-feature method using a URL.
-      return client.logoDetection('/path/to/logo.png').then(response => {
+      return client.logoDetection('/path/to/logo.png').then((response: {}) => {
         // Ensure we got the slice of the response that we expected.
         assert.deepStrictEqual(response, [
           {
@@ -403,7 +403,7 @@ describe('Vision helper methods', () => {
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
-      return client.logoDetection(Buffer.from('fakeImage')).then(r => {
+      return client.logoDetection(Buffer.from('fakeImage')).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
 
         // Ensure that we got the slice of the response that we expected.
@@ -443,7 +443,7 @@ describe('Vision helper methods', () => {
 
       // Perform the request. Send `opts` as an explicit second argument
       // to ensure that sending call options works appropriately.
-      return client.logoDetection(Buffer.from('fakeImage'), opts).then(r => {
+      return client.logoDetection(Buffer.from('fakeImage'), opts).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
         const response = r[0];
         assert.deepStrictEqual(response, {
           logoAnnotations: [{description: 'Google'}],
@@ -474,7 +474,7 @@ describe('Vision helper methods', () => {
       client
         .logoDetection(imageRequest)
         .then(assert.fail)
-        .catch(ex => {
+        .catch((ex: {message: string}) => {
           assert(ex.message.indexOf('Setting explicit') > -1);
         });
     });
@@ -499,7 +499,7 @@ describe('Vision helper methods', () => {
 
       client
         .productSearch(request)
-        .then(r => {
+        .then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
           const response = r[0];
 
           assert.deepStrictEqual(response, {

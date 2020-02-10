@@ -21,6 +21,7 @@ import * as fs from 'fs';
 import * as  path from 'path';
 import {Storage} from '@google-cloud/storage';
 import * as uuid from 'uuid';
+import * as prototypes from '../protos/protos';
 
 const vision = require('../');
 describe('Vision', function() {
@@ -40,7 +41,7 @@ describe('Vision', function() {
   const bucket = storage.bucket(generateName());
 
   before(function(done) {
-    bucket.create(function(err) {
+    bucket.create(function(err: {}) {
       if (err) {
         done(err);
         return;
@@ -63,30 +64,30 @@ describe('Vision', function() {
   it('should detect from a URL', () => {
     const url =
       'https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png';
-    return client.logoDetection(url).then(responses => {
+    return client.logoDetection(url).then((responses: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
       const response = responses[0];
       assert.strictEqual(
-        response.logoAnnotations[0].description.toLowerCase(),
+        response.logoAnnotations![0].description!.toLowerCase(),
         'google'
       );
     });
   });
 
   it('should detect from a filename', () => {
-    return client.logoDetection(IMAGES.logo).then(responses => {
+    return client.logoDetection(IMAGES.logo).then((responses: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
       const response = responses[0];
       assert.ok(
-        /google/.test(response.logoAnnotations[0].description.toLowerCase())
+        /google/.test(response.logoAnnotations![0].description!.toLowerCase())
       );
     });
   });
 
   it('should detect from a Buffer', () => {
     const buffer = fs.readFileSync(IMAGES.logo);
-    return client.logoDetection(buffer).then(responses => {
+    return client.logoDetection(buffer).then((responses: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
       const response = responses[0];
       assert.ok(
-        /google/.test(response.logoAnnotations[0].description.toLowerCase())
+        /google/.test(response.logoAnnotations![0].description!.toLowerCase())
       );
     });
   });
@@ -103,10 +104,10 @@ describe('Vision', function() {
           features: TYPES,
           image: {source: {filename: IMAGES.rushmore}},
         })
-        .then(responses => {
+        .then((responses: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
           const response = responses[0];
-          assert(response.faceAnnotations.length >= 1);
-          assert(response.labelAnnotations.length >= 1);
+          assert(response.faceAnnotations!.length >= 1);
+          assert(response.labelAnnotations!.length >= 1);
           assert(response.safeSearchAnnotation !== null);
         });
     });
