@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -63,7 +63,7 @@
     "jsdoc": "^3.6.2",
     "jsdoc-fresh": "^1.0.1",
     "jsdoc-region-tag": "^1.0.2",
-    "linkinator": "^1.5.0",
+    "linkinator": "^2.0.0",
     "mocha": "^7.0.0",
     "nyc": "^14.0.0",
     "prettier": "^1.13.6",
