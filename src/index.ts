@@ -23,19 +23,19 @@ import * as v1p3beta1 from './v1p3beta1';
 import * as v1p4beta1 from './v1p4beta1';
 import * as helpers from './helpers';
 const gapic: any = Object.freeze({
-    v1: v1,
-    v1p1beta1: v1p1beta1,
-    v1p2beta1: v1p2beta1,
-    v1p3beta1: v1p3beta1,
-    v1p4beta1: v1p4beta1,
-  });
+  v1,
+  v1p1beta1,
+  v1p2beta1,
+  v1p3beta1,
+  v1p4beta1,
+});
 
 // Augment the ImageAnnotatorClient objects with the helpers.
 for (const gapicVersion of Object.keys(gapic)) {
-    const clientProto = gapic[gapicVersion].ImageAnnotatorClient.prototype;
-    Object.assign(clientProto, helpers.call(gapicVersion));
-  }
-  
+  const clientProto = gapic[gapicVersion].ImageAnnotatorClient.prototype;
+  Object.assign(clientProto, helpers.call(gapicVersion));
+}
+
 module.exports = gapic.v1;
 module.exports.v1 = gapic.v1;
 module.exports.v1p1beta1 = gapic.v1p1beta1;

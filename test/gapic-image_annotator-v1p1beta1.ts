@@ -18,110 +18,115 @@
 
 import * as protosTypes from '../protos/protos';
 import * as assert from 'assert';
-import { describe, it } from 'mocha';
+import {describe, it} from 'mocha';
 const imageannotatorModule = require('../src');
 
-
 const FAKE_STATUS_CODE = 1;
-class FakeError{
-    name: string;
-    message: string;
-    code: number;
-    constructor(n: number){
-        this.name = 'fakeName';
-        this.message = 'fake message';
-        this.code = n;
-    }
+class FakeError {
+  name: string;
+  message: string;
+  code: number;
+  constructor(n: number) {
+    this.name = 'fakeName';
+    this.message = 'fake message';
+    this.code = n;
+  }
 }
 const error = new FakeError(FAKE_STATUS_CODE);
 export interface Callback {
-  (err: FakeError|null, response?: {} | null): void;
+  (err: FakeError | null, response?: {} | null): void;
 }
 
-export class Operation{
-    constructor(){};
-    promise() {};
+export class Operation {
+  constructor() {}
+  promise() {}
 }
-function mockSimpleGrpcMethod(expectedRequest: {}, response: {} | null, error: FakeError | null) {
-    return (actualRequest: {}, options: {}, callback: Callback) => {
-        assert.deepStrictEqual(actualRequest, expectedRequest);
-        if (error) {
-            callback(error);
-        } else if (response) {
-            callback(null, response);
-        } else {
-            callback(null);
-        }
-    };
+function mockSimpleGrpcMethod(
+  expectedRequest: {},
+  response: {} | null,
+  error: FakeError | null
+) {
+  return (actualRequest: {}, options: {}, callback: Callback) => {
+    assert.deepStrictEqual(actualRequest, expectedRequest);
+    if (error) {
+      callback(error);
+    } else if (response) {
+      callback(null, response);
+    } else {
+      callback(null);
+    }
+  };
 }
 describe('v1p1beta1.ImageAnnotatorClient', () => {
-    it('has servicePath', () => {
-        const servicePath = imageannotatorModule.v1p1beta1.ImageAnnotatorClient.servicePath;
-        assert(servicePath);
+  it('has servicePath', () => {
+    const servicePath =
+      imageannotatorModule.v1p1beta1.ImageAnnotatorClient.servicePath;
+    assert(servicePath);
+  });
+  it('has apiEndpoint', () => {
+    const apiEndpoint =
+      imageannotatorModule.v1p1beta1.ImageAnnotatorClient.apiEndpoint;
+    assert(apiEndpoint);
+  });
+  it('has port', () => {
+    const port = imageannotatorModule.v1p1beta1.ImageAnnotatorClient.port;
+    assert(port);
+    assert(typeof port === 'number');
+  });
+  it('should create a client with no option', () => {
+    const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient();
+    assert(client);
+  });
+  it('should create a client with gRPC fallback', () => {
+    const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
+      fallback: true,
     });
-    it('has apiEndpoint', () => {
-        const apiEndpoint = imageannotatorModule.v1p1beta1.ImageAnnotatorClient.apiEndpoint;
-        assert(apiEndpoint);
+    assert(client);
+  });
+  describe('batchAnnotateImages', () => {
+    it('invokes batchAnnotateImages without error', done => {
+      const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      // Mock request
+      const request: protosTypes.google.cloud.vision.v1p1beta1.IBatchAnnotateImagesRequest = {};
+      // Mock response
+      const expectedResponse = {};
+      // Mock gRPC layer
+      client._innerApiCalls.batchAnnotateImages = mockSimpleGrpcMethod(
+        request,
+        expectedResponse,
+        null
+      );
+      client.batchAnnotateImages(request, (err: {}, response: {}) => {
+        assert.ifError(err);
+        assert.deepStrictEqual(response, expectedResponse);
+        done();
+      });
     });
-    it('has port', () => {
-        const port = imageannotatorModule.v1p1beta1.ImageAnnotatorClient.port;
-        assert(port);
-        assert(typeof port === 'number');
-    });
-    it('should create a client with no option', () => {
-        const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient();
-        assert(client);
-    });
-    it('should create a client with gRPC fallback', () => {
-        const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
-            fallback: true,
-        });
-        assert(client);
-    });
-    describe('batchAnnotateImages', () => {
-        it('invokes batchAnnotateImages without error', done => {
-            const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
-                credentials: {client_email: 'bogus', private_key: 'bogus'},
-                projectId: 'bogus',
-            });
-            // Mock request
-            const request: protosTypes.google.cloud.vision.v1p1beta1.IBatchAnnotateImagesRequest = {};
-            // Mock response
-            const expectedResponse = {};
-            // Mock gRPC layer
-            client._innerApiCalls.batchAnnotateImages = mockSimpleGrpcMethod(
-                request,
-                expectedResponse,
-                null
-            );
-            client.batchAnnotateImages(request, (err: {}, response: {}) => {
-                assert.ifError(err);
-                assert.deepStrictEqual(response, expectedResponse);
-                done();
-            })
-        });
 
-        it('invokes batchAnnotateImages with error', done => {
-            const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
-                credentials: {client_email: 'bogus', private_key: 'bogus'},
-                projectId: 'bogus',
-            });
-            // Mock request
-            const request: protosTypes.google.cloud.vision.v1p1beta1.IBatchAnnotateImagesRequest = {};
-            // Mock response
-            const expectedResponse = {};
-            // Mock gRPC layer
-            client._innerApiCalls.batchAnnotateImages = mockSimpleGrpcMethod(
-                request,
-                null,
-                error
-            );
-            client.batchAnnotateImages(request, (err: FakeError, response: {}) => {
-                assert(err instanceof FakeError);
-                assert.strictEqual(err.code, FAKE_STATUS_CODE);
-                assert(typeof response === 'undefined');
-                done();
-            })
-        });
+    it('invokes batchAnnotateImages with error', done => {
+      const client = new imageannotatorModule.v1p1beta1.ImageAnnotatorClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+      // Mock request
+      const request: protosTypes.google.cloud.vision.v1p1beta1.IBatchAnnotateImagesRequest = {};
+      // Mock response
+      const expectedResponse = {};
+      // Mock gRPC layer
+      client._innerApiCalls.batchAnnotateImages = mockSimpleGrpcMethod(
+        request,
+        null,
+        error
+      );
+      client.batchAnnotateImages(request, (err: FakeError, response: {}) => {
+        assert(err instanceof FakeError);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        assert(typeof response === 'undefined');
+        done();
+      });
     });
+  });
 });

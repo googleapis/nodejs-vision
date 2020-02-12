@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import {describe, it} from 'mocha';
 
 describe('ImageAnnotatorSmokeTest', () => {
@@ -25,23 +24,23 @@ describe('ImageAnnotatorSmokeTest', () => {
 
     const gcsImageUri = 'gs://gapic-toolkit/President_Barack_Obama.jpg';
     const source = {
-      gcsImageUri: gcsImageUri,
+      gcsImageUri,
     };
     const image = {
-      source: source,
+      source,
     };
     const type = 'FACE_DETECTION';
     const featuresElement = {
-      type: type,
+      type,
     };
     const features = [featuresElement];
     const requestsElement = {
-      image: image,
-      features: features,
+      image,
+      features,
     };
     const requests = [requestsElement];
     client
-      .batchAnnotateImages({requests: requests})
+      .batchAnnotateImages({requests})
       .then((responses: {[index: number]: string}) => {
         const response = responses[0];
         console.log(response);

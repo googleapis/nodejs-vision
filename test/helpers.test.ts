@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import * as assert from 'assert';
 import {describe, it, afterEach} from 'mocha';
 import * as fs from 'fs';
@@ -54,19 +53,23 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .annotateImage(request)
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith({requests: [request]}));
-      });
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert(batchAnnotate.calledWith({requests: [request]}));
+          }
+        );
     });
 
     it('understands buffers in a request object', () => {
@@ -88,23 +91,27 @@ describe('Vision helper methods', () => {
         image: Buffer.from('fakeImage'),
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .annotateImage(request)
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert.deepStrictEqual(request, {
-          image: {content: 'ZmFrZUltYWdl'},
-          features: {type: ['LOGO_DETECTION']},
-        });
-        assert(batchAnnotate.calledWith({requests: [request]}));
-      });
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert.deepStrictEqual(request, {
+              image: {content: 'ZmFrZUltYWdl'},
+              features: {type: ['LOGO_DETECTION']},
+            });
+            assert(batchAnnotate.calledWith({requests: [request]}));
+          }
+        );
     });
 
     it('understands filenames', () => {
@@ -113,8 +120,7 @@ describe('Vision helper methods', () => {
       // Stub out `fs.readFile` and return a bogus image object.
       // This allows us to test filename detection.
       const readFile = sandbox.stub(fs, 'readFile');
-      readFile
-        .withArgs('image.jpg', {buffer: Buffer.from('fakeImage')})
+      readFile.withArgs('image.jpg', {buffer: Buffer.from('fakeImage')});
       readFile.callThrough();
 
       // Stub out the batch annotation method as before.
@@ -133,28 +139,32 @@ describe('Vision helper methods', () => {
         image: {source: {filename: 'image.jpg'}},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .annotateImage(request)
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to `readFile` to ensure that they matched
-        // the expected signature.
-        assert(readFile.callCount === 1);
-        assert(readFile.calledWith('image.jpg'));
+            // Inspect the calls to `readFile` to ensure that they matched
+            // the expected signature.
+            assert(readFile.callCount === 1);
+            assert(readFile.calledWith('image.jpg'));
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert.deepStrictEqual(request, {
-          image: {content: 'ZmFrZUltYWdl'},
-          features: {type: ['LOGO_DETECTION']},
-        });
-        assert(batchAnnotate.calledWith({requests: [request]}));
-      });
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert.deepStrictEqual(request, {
+              image: {content: 'ZmFrZUltYWdl'},
+              features: {type: ['LOGO_DETECTION']},
+            });
+            assert(batchAnnotate.calledWith({requests: [request]}));
+          }
+        );
     });
 
     it('propagates the error if a file is not found', () => {
@@ -174,7 +184,7 @@ describe('Vision helper methods', () => {
       };
       return client
         .annotateImage(request)
-        .then(assert.fail)
+        .then(assert.fail('request fails'))
         .catch((err: {}) => {
           assert.deepStrictEqual(err, {error: 404});
         });
@@ -197,19 +207,25 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request, {foo: 'bar'}).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .annotateImage(request, {foo: 'bar'})
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert(batchAnnotate.calledWith({requests: [request]}, {foo: 'bar'}));
-      });
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert(
+              batchAnnotate.calledWith({requests: [request]}, {foo: 'bar'})
+            );
+          }
+        );
     });
 
     it('fires a callback if provided', done => {
@@ -229,7 +245,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      client.annotateImage(request, function(err: {}, response: {}) {
+      client.annotateImage(request, (err: {}, response: {}) => {
         // Establish that we got the expected response.
         assert(is.undefined(err));
         assert.deepStrictEqual(response, {
@@ -271,7 +287,7 @@ describe('Vision helper methods', () => {
       const request = {};
       return client
         .annotateImage(request)
-        .then(assert.fail)
+        .then(assert.fail('request fails'))
         .catch((err: {message: string}) => {
           assert(err.message === 'No image present.');
         });
@@ -294,30 +310,34 @@ describe('Vision helper methods', () => {
       // Ensure that the annotateImage method does *not* pass the callback
       // on to batchAnnotateImages, but rather handles it itself.
       const imageRequest = {image: {content: Buffer.from('bogus==')}};
-      return client.logoDetection(Object.assign({}, imageRequest)).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .logoDetection(Object.assign({}, imageRequest))
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to annotateImage and batchAnnotateImages and
-        // ensure they matched the expected signature.
-        assert(annotate.callCount === 1);
-        assert(
-          annotate.calledWith({
-            features: [{type: 3}],
-            image: imageRequest.image,
-          })
+            // Inspect the calls to annotateImage and batchAnnotateImages and
+            // ensure they matched the expected signature.
+            assert(annotate.callCount === 1);
+            assert(
+              annotate.calledWith({
+                features: [{type: 3}],
+                image: imageRequest.image,
+              })
+            );
+            assert(batchAnnotate.callCount === 1);
+            assert(
+              batchAnnotate.calledWith({
+                requests: [{image: imageRequest.image, features: [{type: 3}]}],
+              })
+            );
+          }
         );
-        assert(batchAnnotate.callCount === 1);
-        assert(
-          batchAnnotate.calledWith({
-            requests: [{image: imageRequest.image, features: [{type: 3}]}],
-          })
-        );
-      });
     });
 
     it('accept a URL as a string', () => {
@@ -334,28 +354,32 @@ describe('Vision helper methods', () => {
       });
 
       // Call a request to a single-feature method using a URL.
-      return client.logoDetection('https://goo.gl/logo.png').then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .logoDetection('https://goo.gl/logo.png')
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert(
-          batchAnnotate.calledWith({
-            requests: [
-              {
-                image: {source: {imageUri: 'https://goo.gl/logo.png'}},
-                features: [{type: 3}],
-              },
-            ],
-          })
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert(
+              batchAnnotate.calledWith({
+                requests: [
+                  {
+                    image: {source: {imageUri: 'https://goo.gl/logo.png'}},
+                    features: [{type: 3}],
+                  },
+                ],
+              })
+            );
+          }
         );
-      });
     });
 
     it('accept a filename as a string', () => {
@@ -403,28 +427,32 @@ describe('Vision helper methods', () => {
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
-      return client.logoDetection(Buffer.from('fakeImage')).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
+      return client
+        .logoDetection(Buffer.from('fakeImage'))
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-        // Ensure that we got the slice of the response that we expected.
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+            // Ensure that we got the slice of the response that we expected.
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert(
-          batchAnnotate.calledWith({
-            requests: [
-              {
-                image: {content: 'ZmFrZUltYWdl'},
-                features: [{type: 3}],
-              },
-            ],
-          })
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert(
+              batchAnnotate.calledWith({
+                requests: [
+                  {
+                    image: {content: 'ZmFrZUltYWdl'},
+                    features: [{type: 3}],
+                  },
+                ],
+              })
+            );
+          }
         );
-      });
     });
 
     it('handle being sent call options', () => {
@@ -443,26 +471,30 @@ describe('Vision helper methods', () => {
 
       // Perform the request. Send `opts` as an explicit second argument
       // to ensure that sending call options works appropriately.
-      return client.logoDetection(Buffer.from('fakeImage'), opts).then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-        const response = r[0];
-        assert.deepStrictEqual(response, {
-          logoAnnotations: [{description: 'Google'}],
-        });
+      return client
+        .logoDetection(Buffer.from('fakeImage'), opts)
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
+            assert.deepStrictEqual(response, {
+              logoAnnotations: [{description: 'Google'}],
+            });
 
-        // Inspect the calls to batchAnnotateImages and ensure they matched
-        // the expected signature.
-        assert(batchAnnotate.callCount === 1);
-        assert(
-          batchAnnotate.calledWith({
-            requests: [
-              {
-                image: {content: 'ZmFrZUltYWdl'},
-                features: [{type: 3}],
-              },
-            ],
-          })
+            // Inspect the calls to batchAnnotateImages and ensure they matched
+            // the expected signature.
+            assert(batchAnnotate.callCount === 1);
+            assert(
+              batchAnnotate.calledWith({
+                requests: [
+                  {
+                    image: {content: 'ZmFrZUltYWdl'},
+                    features: [{type: 3}],
+                  },
+                ],
+              })
+            );
+          }
         );
-      });
     });
 
     it('throw an exception if conflicting features are given', () => {
@@ -473,7 +505,7 @@ describe('Vision helper methods', () => {
       };
       client
         .logoDetection(imageRequest)
-        .then(assert.fail)
+        .then(assert.fail('request fails'))
         .catch((ex: {message: string}) => {
           assert(ex.message.indexOf('Setting explicit') > -1);
         });
@@ -499,16 +531,18 @@ describe('Vision helper methods', () => {
 
       client
         .productSearch(request)
-        .then((r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
-          const response = r[0];
+        .then(
+          (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
+            const response = r[0];
 
-          assert.deepStrictEqual(response, {
-            localizedObjectAnnotations: [{dummy: 'response'}],
-          });
+            assert.deepStrictEqual(response, {
+              localizedObjectAnnotations: [{dummy: 'response'}],
+            });
 
-          assert(batchAnnotate.callCount === 1);
-          assert(batchAnnotate.calledWith({requests: [request]}));
-        })
+            assert(batchAnnotate.callCount === 1);
+            assert(batchAnnotate.calledWith({requests: [request]}));
+          }
+        )
         .catch(assert.ifError);
     });
 
