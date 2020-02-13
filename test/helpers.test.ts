@@ -21,10 +21,10 @@ import * as is from 'is';
 import * as sinon from 'sinon';
 import * as prototypes from '../protos/protos';
 
-const vision = require('../');
+const vision = require('../src');
 
 describe('Vision helper methods', () => {
-  const CREDENTIALS = Object.freeze({
+  const CREDENTIALS = ({
     credentials: {client_email: 'bogus', private_key: 'bogus'},
     projectId: 'bogus',
   });
@@ -53,12 +53,12 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
+      
       return client
         .annotateImage(request)
         .then(
           (r: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]) => {
             const response = r[0];
-
             // Ensure that we got the slice of the response that we expected.
             assert.deepStrictEqual(response, {
               logoAnnotations: [{description: 'Google'}],
@@ -174,6 +174,7 @@ describe('Vision helper methods', () => {
       // This allows us to test filename detection.
       const readFile = sandbox.stub(fs, 'readFile');
       readFile.withArgs('image.jpg', {error: 404});
+
       readFile.callThrough();
 
       // Ensure that the annotateImage method arrifies the request and

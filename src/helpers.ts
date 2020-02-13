@@ -49,7 +49,7 @@ const _requestToObject = (request: string) => {
     // both work identically.
     requestObject = ({image: request} as unknown) as ImprovedRequest;
   }
-  return requestObject ?? {};
+  return requestObject;
 };
 
 const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
@@ -58,16 +58,19 @@ const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
   if (!is.object(request) || is.undefined(request.image)) {
     return callback(new Error('No image present.'));
   }
+  console.warn('request: ', request);
 
   // If this is a buffer, read it and send the object
   // that the Vision API expects.
   if (Buffer.isBuffer(request.image)) {
+    console.warn('buffer....');
     request.image = {content: request.image.toString('base64')};
   }
 
   // If the file is specified as a filename and exists on disk, read it
   // and coerce it into the base64 content.
   if (request.image!.source && request.image!.source.filename) {
+    console.warn('read file');
     fs.readFile(request.image!.source.filename, (err, blob) => {
       if (err) {
         callback(err);
@@ -129,7 +132,7 @@ const _createSingleFeatureMethod = (
 };
 
 export function call(apiVersion: string) {
-  const client = require(`./${apiVersion}`).ImageAnnotatorClient;
+  // const client = require(`./${apiVersion}`).ImageAnnotatorClient;
   const methods: {[methodName: string]: Function} = {
     annotateImage: Function,
     faceDetection: Function,
@@ -164,7 +167,8 @@ export function call(apiVersion: string) {
 
       // Call the GAPIC batch annotation function.
       const requests = {requests: [req]};
-      return client.batchAnnotateImages(
+      // @ts-ignore
+      return this.batchAnnotateImages(
         requests,
         callOptions,
         (err: {}, r: {responses: {[index: number]: string}}) => {
@@ -198,6 +202,12 @@ export function call(apiVersion: string) {
   methods.landmarkDetection = promisify(
     _createSingleFeatureMethod(features!.LANDMARK_DETECTION)
   );
+  methods.textDetection = promisify(
+    _createSingleFeatureMethod(features.TEXT_DETECTION)
+  );
+  methods.logoDetection = promisify(
+    _createSingleFeatureMethod(features.LOGO_DETECTION)
+  );
 
   methods.labelDetection = promisify(
     _createSingleFeatureMethod(features!.LABEL_DETECTION)
@@ -215,6 +225,9 @@ export function call(apiVersion: string) {
   );
   methods.webDetection = promisify(
     _createSingleFeatureMethod(features!.WEB_DETECTION)
+  );
+  methods.documentTextDetection = promisify(
+    _createSingleFeatureMethod(features.DOCUMENT_TEXT_DETECTION)
   );
   if (features!.PRODUCT_SEARCH !== undefined) {
     methods.productSearch = promisify(

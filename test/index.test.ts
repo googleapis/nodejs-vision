@@ -15,10 +15,10 @@
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
 
-const vision = require('../');
+const vision = require('../src');
 
 describe('Vision', () => {
-  const CREDENTIALS = Object.freeze({
+  const CREDENTIALS = ({
     credentials: {client_email: 'bogus', private_key: 'bogus'},
     projectId: 'bogus',
   });
