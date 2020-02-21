@@ -22,13 +22,25 @@ import {Storage} from '@google-cloud/storage';
 import * as uuid from 'uuid';
 import * as prototypes from '../protos/protos';
 
-const vision = require('../');
+const vision = require('../src');
 describe('Vision', () => {
   const IMAGES = Object.freeze({
-    document: path.join(__dirname, 'data/document.jpg'),
-    logo: path.join(__dirname, 'data/logo.jpg'),
-    rushmore: path.join(__dirname, 'data/rushmore.jpg'),
-    text: path.join(__dirname, 'data/text.png'),
+    document: path.join(
+      __dirname,
+      '..',
+      '..',
+      'system-test',
+      'data/document.jpg'
+    ),
+    logo: path.join(__dirname, '..', '..', 'system-test', 'data/logo.jpg'),
+    rushmore: path.join(
+      __dirname,
+      '..',
+      '..',
+      'system-test',
+      'data/rushmore.jpg'
+    ),
+    text: path.join(__dirname, '..', '..', 'system-test', 'data/text.png'),
     malformed: __filename,
   });
 

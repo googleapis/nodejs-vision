@@ -18,10 +18,10 @@ import {describe, it} from 'mocha';
 const vision = require('../src');
 
 describe('Vision', () => {
-  const CREDENTIALS = ({
+  const CREDENTIALS = {
     credentials: {client_email: 'bogus', private_key: 'bogus'},
     projectId: 'bogus',
-  });
+  };
 
   describe('v1', () => {
     it('returns a v1 GAPIC augmented with helpers', () => {

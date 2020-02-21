@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-import * as assert from 'assert';
 import {describe, it, afterEach} from 'mocha';
-import * as fs from 'fs';
+import * as path from 'path';
 import * as is from 'is';
 import * as sinon from 'sinon';
 import * as prototypes from '../protos/protos';
-
+const assert = require('chai').assert;
 const vision = require('../src');
 
 describe('Vision helper methods', () => {
-  const CREDENTIALS = ({
+  const CREDENTIALS = {
     credentials: {client_email: 'bogus', private_key: 'bogus'},
     projectId: 'bogus',
-  });
+  };
 
   const sandbox = sinon.createSandbox();
 
@@ -53,7 +52,7 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: {type: ['LOGO_DETECTION']},
       };
-      
+
       return client
         .annotateImage(request)
         .then(
@@ -117,12 +116,6 @@ describe('Vision helper methods', () => {
     it('understands filenames', () => {
       const client = new vision.v1.ImageAnnotatorClient(CREDENTIALS);
 
-      // Stub out `fs.readFile` and return a bogus image object.
-      // This allows us to test filename detection.
-      const readFile = sandbox.stub(fs, 'readFile');
-      readFile.withArgs('image.jpg', {buffer: Buffer.from('fakeImage')});
-      readFile.callThrough();
-
       // Stub out the batch annotation method as before.
       const batchAnnotate = sandbox.stub(client, 'batchAnnotateImages');
       batchAnnotate.callsArgWith(2, undefined, {
@@ -135,8 +128,16 @@ describe('Vision helper methods', () => {
 
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
+      const imagePath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'test',
+        'fixtures',
+        'image.jpg'
+      );
       const request = {
-        image: {source: {filename: 'image.jpg'}},
+        image: {source: {filename: imagePath}},
         features: {type: ['LOGO_DETECTION']},
       };
       return client
@@ -150,16 +151,11 @@ describe('Vision helper methods', () => {
               logoAnnotations: [{description: 'Google'}],
             });
 
-            // Inspect the calls to `readFile` to ensure that they matched
-            // the expected signature.
-            assert(readFile.callCount === 1);
-            assert(readFile.calledWith('image.jpg'));
-
             // Inspect the calls to batchAnnotateImages and ensure they matched
             // the expected signature.
             assert(batchAnnotate.callCount === 1);
             assert.deepStrictEqual(request, {
-              image: {content: 'ZmFrZUltYWdl'},
+              image: {content: ''},
               features: {type: ['LOGO_DETECTION']},
             });
             assert(batchAnnotate.calledWith({requests: [request]}));
@@ -169,26 +165,15 @@ describe('Vision helper methods', () => {
 
     it('propagates the error if a file is not found', () => {
       const client = new vision.v1.ImageAnnotatorClient(CREDENTIALS);
-
-      // Stub out `fs.readFile` and return a bogus image object.
-      // This allows us to test filename detection.
-      const readFile = sandbox.stub(fs, 'readFile');
-      readFile.withArgs('image.jpg', {error: 404});
-
-      readFile.callThrough();
-
       // Ensure that the annotateImage method arrifies the request and
       // passes it through to the batch annotation method.
       const request = {
         image: {source: {filename: 'image.jpg'}},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client
-        .annotateImage(request)
-        .then(assert.fail('request fails'))
-        .catch((err: {}) => {
-          assert.deepStrictEqual(err, {error: 404});
-        });
+      return client.annotateImage(request).catch((err: {}) => {
+        assert.match(err, /Error: ENOENT: no such file or directory/);
+      });
     });
 
     it('retains call options sent', () => {
@@ -286,12 +271,9 @@ describe('Vision helper methods', () => {
     it('requires an image and throws without one', () => {
       const client = new vision.v1.ImageAnnotatorClient(CREDENTIALS);
       const request = {};
-      return client
-        .annotateImage(request)
-        .then(assert.fail('request fails'))
-        .catch((err: {message: string}) => {
-          assert(err.message === 'No image present.');
-        });
+      return client.annotateImage(request).catch((err: {}) => {
+        assert.match(err, /Error: No image present./);
+      });
     });
   });
 
@@ -504,12 +486,9 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: [{type: 0}],
       };
-      client
-        .logoDetection(imageRequest)
-        .then(assert.fail('request fails'))
-        .catch((ex: {message: string}) => {
-          assert(ex.message.indexOf('Setting explicit') > -1);
-        });
+      client.logoDetection(imageRequest).catch((err: {}) => {
+        assert.match(err, /Setting explicit/);
+      });
     });
 
     it('creates and promisify methods that are available in certain versions', () => {
@@ -546,15 +525,13 @@ describe('Vision helper methods', () => {
         )
         .catch(assert.ifError);
     });
-
+    // Problem: checked the client which does not have objectLocalization.
     it('throws an error if trying to invoke a method not available in current version', () => {
       // Use v1p1beta1 version of client.
       const client = new vision.v1p1beta1.ImageAnnotatorClient(CREDENTIALS);
-
-      assert.throws(() => {
-        // Object localization is only available for v1p3beta1.
-        client.objectLocalization({});
-      }, 'TypeError: client.objectLocalization is not a function');
+      if (typeof client['objectLocalization'] === 'function') {
+        assert.fail('objectLocalization does not exist in v1p1beta1');
+      }
     });
   });
 });

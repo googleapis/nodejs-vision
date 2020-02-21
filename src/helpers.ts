@@ -26,20 +26,21 @@ import * as protoTypes from '../protos/protos';
 
 interface ImprovedRequest {
   image?: {source?: {filename: string}; content?: Uint8Array | string | null};
-  features?: protoTypes.google.cloud.vision.v1.IFeature[];
+  // tslint:disable-next-line no-any
+  features?: any;
 }
-const _requestToObject = (request: string) => {
-  let requestObject: ImprovedRequest = {};
+// tslint:disable-next-line no-any
+const _requestToObject = (request: any) => {
   if (is.string(request)) {
     // Is this a URL or a local file?
     // Guess based on what the string looks like, and build the full
     // request object in the correct format.
     if (request.indexOf('://') === -1 || request.indexOf('file://') === 0) {
-      requestObject = ({
+      request = ({
         image: {source: {filename: request}},
       } as unknown) as ImprovedRequest;
     } else {
-      requestObject = ({
+      request = ({
         image: {source: {imageUri: request}},
       } as unknown) as ImprovedRequest;
     }
@@ -47,9 +48,9 @@ const _requestToObject = (request: string) => {
     // Drop the buffer one level lower; it will get dealt with later
     // in the function. This allows sending <Buffer> and {image: <Buffer>} to
     // both work identically.
-    requestObject = ({image: request} as unknown) as ImprovedRequest;
+    request = ({image: request} as unknown) as ImprovedRequest;
   }
-  return requestObject;
+  return (request as unknown) as ImprovedRequest;
 };
 
 const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
@@ -58,19 +59,15 @@ const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
   if (!is.object(request) || is.undefined(request.image)) {
     return callback(new Error('No image present.'));
   }
-  console.warn('request: ', request);
-
   // If this is a buffer, read it and send the object
   // that the Vision API expects.
   if (Buffer.isBuffer(request.image)) {
-    console.warn('buffer....');
     request.image = {content: request.image.toString('base64')};
   }
 
   // If the file is specified as a filename and exists on disk, read it
   // and coerce it into the base64 content.
   if (request.image!.source && request.image!.source.filename) {
-    console.warn('read file');
     fs.readFile(request.image!.source.filename, (err, blob) => {
       if (err) {
         callback(err);
@@ -100,7 +97,6 @@ const _createSingleFeatureMethod = (
     // be synchronous (e.g. no file loading yet; that is handled by
     // annotateImage later.
     const annotateImageRequest: ImprovedRequest = _requestToObject(request);
-
     // If a callback was provided and options were skipped, normalize
     // the argument names.
     if (is.undefined(callback) && is.function(callOptions)) {
@@ -133,7 +129,7 @@ const _createSingleFeatureMethod = (
 
 export function call(apiVersion: string) {
   // const client = require(`./${apiVersion}`).ImageAnnotatorClient;
-  const methods: {[methodName: string]: Function} = {
+  let methods: {[methodName: string]: Function} = {
     annotateImage: Function,
     faceDetection: Function,
     landmarkDetection: Function,
@@ -142,8 +138,6 @@ export function call(apiVersion: string) {
     imageProperties: Function,
     cropHints: Function,
     webDetection: Function,
-    productSearch: Function,
-    objectLocalization: Function,
   };
 
   methods.annotateImage = promisify(function(
@@ -192,7 +186,7 @@ export function call(apiVersion: string) {
     require('../protos/protos.json')
   );
   const features = (protoFilesRoot.lookup(
-    `google.cloud.vision.v1.Feature.Type`
+    `google.cloud.vision.${apiVersion}.Feature.Type`
   ) as gax.protobuf.Enum).values;
 
   methods.faceDetection = promisify(

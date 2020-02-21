@@ -16,11 +16,11 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 
-import {ImageAnnotatorClient, ProductSearchClient} from '@google-cloud/vision';
+import * as vision from '@google-cloud/vision';
 
 function main() {
-  const imageAnnotatorClient = new ImageAnnotatorClient();
-  const productSearchClient = new ProductSearchClient();
+  const imageAnnotatorClient = new vision.ImageAnnotatorClient();
+  const productSearchClient = new vision.ProductSearchClient();
 }
 
 main();
