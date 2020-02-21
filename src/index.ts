@@ -45,4 +45,4 @@ module.exports.v1p2beta1 = gapic.v1p2beta1;
 module.exports.v1p3beta1 = gapic.v1p3beta1;
 module.exports.v1p4beta1 = gapic.v1p4beta1;
 module.exports.default = Object.assign({}, module.exports);
-export {ImageAnnotatorClient, ProductSearchClient}
+export {ImageAnnotatorClient, ProductSearchClient};
