@@ -17,6 +17,7 @@
 // ** All changes to this file may be overwritten. **
 
 import * as v1 from './v1';
+import {ImageAnnotatorClient, ProductSearchClient} from './v1';
 import * as v1p1beta1 from './v1p1beta1';
 import * as v1p2beta1 from './v1p2beta1';
 import * as v1p3beta1 from './v1p3beta1';
@@ -43,3 +44,5 @@ module.exports.v1p1beta1 = gapic.v1p1beta1;
 module.exports.v1p2beta1 = gapic.v1p2beta1;
 module.exports.v1p3beta1 = gapic.v1p3beta1;
 module.exports.v1p4beta1 = gapic.v1p4beta1;
+module.exports.default = Object.assign({}, module.exports);
+export {ImageAnnotatorClient, ProductSearchClient}

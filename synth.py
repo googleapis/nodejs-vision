@@ -22,7 +22,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Run the gapic generator
-gapic = gcp.GAPICmicrogenerator()
+gapic = gcp.GAPICMicrogenerator()
 versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1', 'v1p4beta1']
 for version in versions:
     library = gapic.typescript_library(
@@ -34,22 +34,12 @@ for version in versions:
         proto_path=f'/google/cloud/vision/{version}',
         extra_proto_files=['google/cloud/common_resources.proto'],
     )
-    s.copy(library, excludes=['src/index.ts', 'README.md', 'package.json'])
+    s.copy(library, excludes=['src/index.ts', 'README.md', 'package.json', 'tslint.json', '.jsdoc.js'])
 
 # Copy common templates
 common_templates = gcp.CommonTemplates()
 templates = common_templates.node_library()
 s.copy(templates)
-
-# [START fix-dead-link]
-s.replace('**/doc/google/protobuf/doc_timestamp.js',
-        'https:\/\/cloud\.google\.com[\s\*]*http:\/\/(.*)[\s\*]*\)',
-        r"https://\1)")
-
-s.replace('**/doc/google/protobuf/doc_timestamp.js',
-        'toISOString\]',
-        'toISOString)')
-# [END fix-dead-link]
 
 # Node.js specific cleanup
 subprocess.run(['npm', 'install'])
