@@ -36,6 +36,7 @@
     "test-no-cover": "mocha test/*.js",
     "docs-test": "linkinator docs",
     "predocs-test": "npm run docs",
+    "prelint": "cd samples; npm link ../; npm i",
     "clean": "gts clean",
     "compile": "tsc -p . && cp -r protos build/",
     "compile-protos": "compileProtos src",
