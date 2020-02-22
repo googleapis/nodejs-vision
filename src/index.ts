@@ -16,20 +16,19 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 
-import * as v1 from './v1';
-import {ImageAnnotatorClient, ProductSearchClient} from './v1';
-import * as v1p1beta1 from './v1p1beta1';
-import * as v1p2beta1 from './v1p2beta1';
-import * as v1p3beta1 from './v1p3beta1';
-import * as v1p4beta1 from './v1p4beta1';
+import * as v1Module from './v1';
+import * as v1p1beta1Module from './v1p1beta1';
+import * as v1p2beta1Module from './v1p2beta1';
+import * as v1p3beta1Module from './v1p3beta1';
+import * as v1p4beta1Module from './v1p4beta1';
 import * as helpers from './helpers';
-
+// tslint:disable-next-line no-any
 const gapic: any = Object.freeze({
-  v1: v1,
-  v1p1beta1: v1p1beta1,
-  v1p2beta1: v1p2beta1,
-  v1p3beta1: v1p3beta1,
-  v1p4beta1: v1p4beta1,
+  v1: v1Module,
+  v1p1beta1: v1p1beta1Module,
+  v1p2beta1: v1p2beta1Module,
+  v1p3beta1: v1p3beta1Module,
+  v1p4beta1: v1p4beta1Module,
 });
 
 // Augment the ImageAnnotatorClient objects with the helpers.
@@ -37,12 +36,19 @@ for (const gapicVersion of Object.keys(gapic)) {
   const clientProto = gapic[gapicVersion].ImageAnnotatorClient.prototype;
   Object.assign(clientProto, helpers.call(gapicVersion));
 }
-
-module.exports = gapic.v1;
-module.exports.v1 = gapic.v1;
-module.exports.v1p1beta1 = gapic.v1p1beta1;
-module.exports.v1p2beta1 = gapic.v1p2beta1;
-module.exports.v1p3beta1 = gapic.v1p3beta1;
-module.exports.v1p4beta1 = gapic.v1p4beta1;
-module.exports.default = Object.assign({}, module.exports);
-export {ImageAnnotatorClient, ProductSearchClient};
+const v1 = gapic.v1;
+const ImageAnnotatorClient = v1.ImageAnnotatorClient;
+const ProductSearchClient = v1.ProductSearchClient;
+const v1p1beta1 = gapic.v1p1beta1;
+const v1p2beta1 = gapic.v1p2beta1;
+const v1p3beta1 = gapic.v1p3beta1;
+const v1p4beta1 = gapic.v1p4beta1;
+export {
+  v1,
+  v1p1beta1,
+  v1p2beta1,
+  v1p3beta1,
+  v1p4beta1,
+  ImageAnnotatorClient,
+  ProductSearchClient,
+};

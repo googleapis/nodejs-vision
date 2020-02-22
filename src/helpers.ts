@@ -124,14 +124,17 @@ const _createSingleFeatureMethod = (
       }
     }
     // Call the underlying #annotateImage method.
-    // @ts-ignore
-    return this.annotateImage(annotateImageRequest, callOptions, callback);
+    // tslint:disable-next-line no-any
+    return (this as any).annotateImage(
+      annotateImageRequest,
+      callOptions,
+      callback
+    );
   };
 };
 
 export function call(apiVersion: string) {
-  // const client = require(`./${apiVersion}`).ImageAnnotatorClient;
-  let methods: {[methodName: string]: Function} = {
+  const methods: {[methodName: string]: Function} = {
     annotateImage: Function,
     faceDetection: Function,
     landmarkDetection: Function,
@@ -163,8 +166,8 @@ export function call(apiVersion: string) {
 
       // Call the GAPIC batch annotation function.
       const requests = {requests: [req]};
-      // @ts-ignore
-      return this.batchAnnotateImages(
+      // tslint:disable-next-line no-any
+      return (this as any).batchAnnotateImages(
         requests,
         callOptions,
         (err: {}, r: {responses: {[index: number]: string}}) => {
