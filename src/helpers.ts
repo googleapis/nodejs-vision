@@ -124,12 +124,8 @@ const _createSingleFeatureMethod = (
       }
     }
     // Call the underlying #annotateImage method.
-    // tslint:disable-next-line no-any
-    return (this as any).annotateImage(
-      annotateImageRequest,
-      callOptions,
-      callback
-    );
+    // @ts-ignore
+    return this.annotateImage(annotateImageRequest, callOptions, callback);
   };
 };
 
@@ -166,8 +162,8 @@ export function call(apiVersion: string) {
 
       // Call the GAPIC batch annotation function.
       const requests = {requests: [req]};
-      // tslint:disable-next-line no-any
-      return (this as any).batchAnnotateImages(
+      // @ts-ignore
+      return this.batchAnnotateImages(
         requests,
         callOptions,
         (err: {}, r: {responses: {[index: number]: string}}) => {
