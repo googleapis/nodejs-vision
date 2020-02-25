@@ -172,7 +172,9 @@ describe('Vision helper methods', () => {
         features: {type: ['LOGO_DETECTION']},
       };
       return client.annotateImage(request).catch((err: string) => {
-        assert(err.toString().match(/Error: ENOENT: no such file or directory/));
+        assert(
+          err.toString().match(/Error: ENOENT: no such file or directory/)
+        );
       });
     });
 
