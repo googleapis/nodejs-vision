@@ -31,6 +31,42 @@ interface ImprovedRequest {
   // tslint:disable-next-line no-any
   features?: any;
 }
+
+interface VisionClient {
+  batchAnnotateImages(
+    request: protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesRequest,
+    options?: gax.CallOptions
+  ): Promise<
+    [
+      protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesResponse,
+      protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesRequest | undefined,
+      {} | undefined
+    ]
+  >;
+  batchAnnotateImages(
+    request: protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesRequest,
+    options?: gax.CallOptions,
+    callback?: gax.Callback<
+      protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesResponse,
+      protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesRequest | undefined,
+      {} | undefined
+    >
+  ): void;
+  annotateImage(
+    request: ImprovedRequest,
+    callOptions?: gax.CallOptions
+  ): Promise<protoTypes.google.cloud.vision.v1.IAnnotateImageResponse>;
+  annotateImage(
+    request: ImprovedRequest,
+    callOptions: gax.CallOptions | undefined,
+    callback: gax.Callback<
+      protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+      {},
+      {}
+    >
+  ): void;
+}
+
 // tslint:disable-next-line no-any
 const _requestToObject = (request: any) => {
   if (is.string(request)) {
@@ -55,7 +91,13 @@ const _requestToObject = (request: any) => {
   return (request as unknown) as ImprovedRequest;
 };
 
-const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
+const _coerceRequest = (
+  request: ImprovedRequest,
+  callback: (
+    err: Error | null,
+    request?: protoTypes.google.cloud.vision.v1.IAnnotateImageRequest
+  ) => void
+) => {
   // At this point, request must be an object with an `image` key; if not,
   // it is an error. If there is no image, throw an exception.
   if (!is.object(request) || is.undefined(request.image)) {
@@ -77,10 +119,16 @@ const _coerceRequest = (request: ImprovedRequest, callback: Function) => {
       }
       request.image!.content = blob.toString('base64');
       delete request.image!.source;
-      return callback(null, request);
+      return callback(
+        null,
+        request as protoTypes.google.cloud.vision.v1.IAnnotateImageRequest
+      );
     });
   } else {
-    return callback(null, request);
+    return callback(
+      null,
+      request as protoTypes.google.cloud.vision.v1.IAnnotateImageRequest
+    );
   }
 };
 
@@ -88,9 +136,20 @@ const _createSingleFeatureMethod = (
   featureValue: protoTypes.google.cloud.vision.v1.Feature.Type
 ) => {
   return function(
+    this: VisionClient,
     request: string,
-    callOptions?: gax.CallOptions,
-    callback?: Function | gax.CallOptions
+    callOptionsOrCallback:
+      | gax.CallOptions
+      | gax.Callback<
+          protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+          {},
+          {}
+        >,
+    callback?: gax.Callback<
+      protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+      {},
+      {}
+    >
   ) {
     // Sanity check: If we got a string or buffer, we need this to be
     // in object form now, so we can tack on the features list.
@@ -101,9 +160,16 @@ const _createSingleFeatureMethod = (
     const annotateImageRequest: ImprovedRequest = _requestToObject(request);
     // If a callback was provided and options were skipped, normalize
     // the argument names.
-    if (is.undefined(callback) && is.function(callOptions)) {
-      callback = callOptions;
+    let callOptions: gax.CallOptions | undefined;
+    if (is.undefined(callback) && is.function(callOptionsOrCallback)) {
+      callback = callOptionsOrCallback as gax.Callback<
+        protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+        {},
+        {}
+      >;
       callOptions = undefined;
+    } else {
+      callOptions = callOptionsOrCallback as gax.CallOptions | undefined;
     }
 
     // Add the feature to the request.
@@ -124,8 +190,7 @@ const _createSingleFeatureMethod = (
       }
     }
     // Call the underlying #annotateImage method.
-    // @ts-ignore
-    return this.annotateImage(annotateImageRequest, callOptions, callback);
+    return this.annotateImage(annotateImageRequest, callOptions, callback!);
   };
 };
 
@@ -142,45 +207,86 @@ export function call(apiVersion: string) {
   };
 
   methods.annotateImage = promisify(function(
+    this: VisionClient,
     request: ImprovedRequest,
-    callOptions: gax.CallOptions,
-    callback: Function | gax.CallOptions
+    callOptionsOrCallback:
+      | gax.Callback<
+          protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+          {},
+          {}
+        >
+      | gax.CallOptions,
+    callback?: gax.Callback<
+      protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+      {},
+      {}
+    >
   ) {
     // If a callback was provided and options were skipped, normalize
     // the argument names.
-    if (is.undefined(callback) && is.function(callOptions)) {
-      callback = callOptions;
-      callOptions = (undefined as unknown) as gax.CallOptions;
+    let callOptions: gax.CallOptions | undefined;
+    if (is.undefined(callback) && is.function(callOptionsOrCallback)) {
+      callback = callOptionsOrCallback as gax.Callback<
+        protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+        {},
+        {}
+      >;
+      callOptions = undefined;
+    } else {
+      callOptions = callOptionsOrCallback as gax.CallOptions | undefined;
     }
 
     // If we got a filename for the image, open the file and transform
     // it to content.
-    return _coerceRequest(request, (err: {}, req: string) => {
-      if (err) {
-        return ((callback as unknown) as Function)(err);
-      }
-
-      // Call the GAPIC batch annotation function.
-      const requests = {requests: [req]};
-      // @ts-ignore
-      return this.batchAnnotateImages(
-        requests,
-        callOptions,
-        (err: {}, r: {responses: {[index: number]: string}}) => {
-          // If there is an error, handle it.
-          if (err) {
-            return ((callback as unknown) as Function)(err);
-          }
-
-          // We are guaranteed to only have one response element, since we
-          // only sent one image.
-          const response = r.responses[0];
-
-          // Fire the callback if applicable.
-          return ((callback as unknown) as Function)(undefined, response);
+    return _coerceRequest(
+      request,
+      (
+        err: Error | null,
+        req: protoTypes.google.cloud.vision.v1.IAnnotateImageRequest | undefined
+      ) => {
+        if (err) {
+          return ((callback as unknown) as gax.Callback<
+            protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+            {},
+            {}
+          >)(err);
         }
-      );
-    });
+
+        // Call the GAPIC batch annotation function.
+        const requests = {requests: [req!]};
+        return this.batchAnnotateImages(
+          requests,
+          callOptions,
+          (
+            err: Error | null | undefined,
+            r:
+              | protoTypes.google.cloud.vision.v1.IBatchAnnotateImagesResponse
+              | null
+              | undefined
+          ) => {
+            // If there is an error, handle it.
+            if (err) {
+              return ((callback as unknown) as gax.Callback<
+                protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+                {},
+                {}
+              >)(err);
+            }
+
+            // We are guaranteed to only have one response element, since we
+            // only sent one image.
+            const response = r!.responses![0];
+
+            // Fire the callback if applicable.
+            return ((callback as unknown) as gax.Callback<
+              protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
+              {},
+              {}
+            >)(undefined, response);
+          }
+        );
+      }
+    );
   });
 
   const protoFilesRoot = gax.protobuf.Root.fromJSON(
