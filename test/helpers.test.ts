@@ -19,7 +19,7 @@ import * as path from 'path';
 import * as is from 'is';
 import * as sinon from 'sinon';
 import * as prototypes from '../protos/protos';
-const assert = require('chai').assert;
+import * as assert from 'assert';
 const vision = require('../src');
 
 describe('Vision helper methods', () => {
@@ -171,8 +171,8 @@ describe('Vision helper methods', () => {
         image: {source: {filename: 'image.jpg'}},
         features: {type: ['LOGO_DETECTION']},
       };
-      return client.annotateImage(request).catch((err: {}) => {
-        assert.match(err, /Error: ENOENT: no such file or directory/);
+      return client.annotateImage(request).catch((err: string) => {
+        assert(err.toString().match(/Error: ENOENT: no such file or directory/));
       });
     });
 
@@ -271,8 +271,8 @@ describe('Vision helper methods', () => {
     it('requires an image and throws without one', () => {
       const client = new vision.v1.ImageAnnotatorClient(CREDENTIALS);
       const request = {};
-      return client.annotateImage(request).catch((err: {}) => {
-        assert.match(err, /Error: No image present./);
+      return client.annotateImage(request).catch((err: string) => {
+        assert(err.toString().match(/Error: No image present./));
       });
     });
   });
@@ -486,8 +486,8 @@ describe('Vision helper methods', () => {
         image: {content: Buffer.from('bogus==')},
         features: [{type: 0}],
       };
-      client.logoDetection(imageRequest).catch((err: {}) => {
-        assert.match(err, /Setting explicit/);
+      client.logoDetection(imageRequest).catch((err: string) => {
+        assert(err.toString().match(/Setting explicit/));
       });
     });
 
