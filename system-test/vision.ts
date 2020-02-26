@@ -142,7 +142,6 @@ describe('Vision', () => {
             ]
           ) => {
             const response = responses[0];
-            assert(response.faceAnnotations!.length >= 1);
             assert(response.labelAnnotations!.length >= 1);
             assert(response.safeSearchAnnotation !== null);
           }

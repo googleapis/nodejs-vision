@@ -41,7 +41,10 @@ module.exports = {
     includeDate: false,
     sourceFiles: false,
     systemName: '@google-cloud/vision',
-    theme: 'lumen'
+    theme: 'lumen',
+    default: {
+      "outputSourceFiles": false
+    }
   },
   markdown: {
     idInHeadings: true
