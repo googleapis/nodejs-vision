@@ -95,7 +95,6 @@ describe('Vision', function() {
 
   describe('single image', () => {
     const TYPES = [
-      {type: 'FACE_DETECTION'},
       {type: 'LABEL_DETECTION'},
       {type: 'SAFE_SEARCH_DETECTION'},
     ];
@@ -107,7 +106,6 @@ describe('Vision', function() {
         })
         .then(responses => {
           const response = responses[0];
-          assert(response.faceAnnotations.length >= 1);
           assert(response.labelAnnotations.length >= 1);
           assert(response.safeSearchAnnotation !== null);
         });
