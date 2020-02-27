@@ -94,10 +94,7 @@ describe('Vision', function() {
   });
 
   describe('single image', () => {
-    const TYPES = [
-      {type: 'LABEL_DETECTION'},
-      {type: 'SAFE_SEARCH_DETECTION'},
-    ];
+    const TYPES = [{type: 'LABEL_DETECTION'}, {type: 'SAFE_SEARCH_DETECTION'}];
     it('should perform multiple detections', () => {
       return client
         .annotateImage({
