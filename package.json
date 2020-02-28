@@ -64,7 +64,7 @@
     "jsdoc": "^3.6.3",
     "jsdoc-fresh": "^1.0.2",
     "jsdoc-region-tag": "^1.0.4",
-    "linkinator": "git://github.com/xiaozhenliu-gg5/linkinator.git#filter_links",
+    "linkinator": "^2.0.2",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",
     "sinon": "^9.0.0",
