@@ -17,8 +17,8 @@ const path = require('path');
 module.exports = {
   entry: './src/index.ts',
   output: {
-    library: 'ImageAnnotator',
-    filename: './image-annotator.js',
+    library: 'vision',
+    filename: './vision.js',
   },
   node: {
     child_process: 'empty',

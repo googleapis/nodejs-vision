@@ -46,7 +46,6 @@ describe('Vision', () => {
 
   const storage = new Storage();
   const client = new vision.v1.ImageAnnotatorClient();
-
   const bucket = storage.bucket(generateName());
 
   before(done => {
