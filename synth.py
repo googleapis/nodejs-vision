@@ -36,8 +36,9 @@ for version in versions:
         extra_proto_files=['google/cloud/common_resources.proto'],
     )
     s.copy(library, excludes=['src/index.ts', 'package.json'])
+# extends interface for client.ts
 for version in versions:
-    client_file = "src/${version}/image_annotator_client.ts"
+    client_file = f"src/{version}/image_annotator_client.ts"
     s.replace(client_file, '\Z',
     'import {FeaturesMethod} from \'../helpers\'; \n export interface ImageAnnotatorClient extends FeaturesMethod {}'
     )
