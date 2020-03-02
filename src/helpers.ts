@@ -402,6 +402,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.faceDetection = promisify(
     _createSingleFeatureMethod(features!.FACE_DETECTION)
   );
@@ -515,6 +516,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.logoDetection = promisify(
     _createSingleFeatureMethod(features.LOGO_DETECTION)
   );
@@ -571,10 +573,10 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.labelDetection = promisify(
     _createSingleFeatureMethod(features!.LABEL_DETECTION)
   );
-
   /**
    * Annotate a single image with text detection.
    *
@@ -628,6 +630,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.textDetection = promisify(
     _createSingleFeatureMethod(features.TEXT_DETECTION)
   );
@@ -684,6 +687,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.documentTextDetection = promisify(
     _createSingleFeatureMethod(features.DOCUMENT_TEXT_DETECTION)
   );
@@ -797,6 +801,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.imageProperties = promisify(
     _createSingleFeatureMethod(features!.IMAGE_PROPERTIES)
   );
@@ -853,6 +858,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.cropHints = promisify(
     _createSingleFeatureMethod(features!.CROP_HINTS)
   );
@@ -909,6 +915,7 @@ export function call(apiVersion: string) {
    *     console.error(err);
    *   });
    */
+
   methods.webDetection = promisify(
     _createSingleFeatureMethod(features!.WEB_DETECTION)
   );
