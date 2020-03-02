@@ -921,3 +921,5 @@ export class ImageAnnotatorClient {
     return Promise.resolve();
   }
 }
+import {FeaturesMethod} from '../helpers';
+export interface ImageAnnotatorClient extends FeaturesMethod {}

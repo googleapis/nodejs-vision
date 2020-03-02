@@ -22,6 +22,21 @@ import {promisify} from '@google-cloud/promisify';
 import * as gax from 'google-gax';
 import * as protoTypes from '../protos/protos';
 
+export interface FeaturesMethod {
+  annotateImage: Function;
+  faceDetection: Function;
+  landmarkDetection: Function;
+  labelDetection: Function;
+  safeSearchDetection: Function;
+  imageProperties: Function;
+  cropHints: Function;
+  webDetection: Function;
+  logoDetection: Function;
+  textDetection: Function;
+  documentTextDetection: Function;
+  productSearch?: Function;
+  objectLocalization?: Function;
+}
 interface ImprovedRequest {
   image?: {source?: {filename: string}; content?: Uint8Array | string | null};
   // tslint:disable-next-line no-any
@@ -191,7 +206,7 @@ const _createSingleFeatureMethod = (
 };
 
 export function call(apiVersion: string) {
-  const methods: {[methodName: string]: Function} = {
+  const methods: FeaturesMethod = {
     annotateImage: Function,
     faceDetection: Function,
     landmarkDetection: Function,
@@ -200,6 +215,9 @@ export function call(apiVersion: string) {
     imageProperties: Function,
     cropHints: Function,
     webDetection: Function,
+    logoDetection: Function,
+    textDetection: Function,
+    documentTextDetection: Function,
   };
   /**
    * Annotate a single image with the requested features.
