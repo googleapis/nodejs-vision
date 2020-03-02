@@ -30,6 +30,7 @@ for version in versions:
         generator_args={
             "grpc-service-config": f"google/cloud/vision/{version}/vision_grpc_service_config.json",
             "package-name": f"@google-cloud/vision",
+            "main-service": f"vision"
             },
         proto_path=f'/google/cloud/vision/{version}',
         extra_proto_files=['google/cloud/common_resources.proto'],

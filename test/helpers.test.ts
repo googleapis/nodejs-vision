@@ -527,7 +527,6 @@ describe('Vision helper methods', () => {
         )
         .catch(assert.ifError);
     });
-    // Problem: checked the client which does not have objectLocalization.
     it('throws an error if trying to invoke a method not available in current version', () => {
       // Use v1p1beta1 version of client.
       const client = new vision.v1p1beta1.ImageAnnotatorClient(CREDENTIALS);
