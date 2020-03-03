@@ -21,21 +21,25 @@ import * as is from 'is';
 import {promisify} from '@google-cloud/promisify';
 import * as gax from 'google-gax';
 import * as protoTypes from '../protos/protos';
-
+interface FeatureFunction {
+  (request: string | ImprovedRequest | Buffer): Promise<
+    [protoTypes.google.cloud.vision.v1.IAnnotateImageResponse]
+  >;
+}
 export interface FeaturesMethod {
-  annotateImage: Function;
-  faceDetection: Function;
-  landmarkDetection: Function;
-  labelDetection: Function;
-  safeSearchDetection: Function;
-  imageProperties: Function;
-  cropHints: Function;
-  webDetection: Function;
-  logoDetection: Function;
-  textDetection: Function;
-  documentTextDetection: Function;
-  productSearch?: Function;
-  objectLocalization?: Function;
+  annotateImage: FeatureFunction;
+  faceDetection: FeatureFunction;
+  landmarkDetection: FeatureFunction;
+  labelDetection: FeatureFunction;
+  safeSearchDetection: FeatureFunction;
+  imageProperties: FeatureFunction;
+  cropHints: FeatureFunction;
+  webDetection: FeatureFunction;
+  logoDetection: FeatureFunction;
+  textDetection: FeatureFunction;
+  documentTextDetection: FeatureFunction;
+  productSearch?: FeatureFunction;
+  objectLocalization?: FeatureFunction;
 }
 interface ImprovedRequest {
   image?: {source?: {filename: string}; content?: Uint8Array | string | null};
@@ -149,7 +153,7 @@ const _createSingleFeatureMethod = (
   return function(
     this: VisionClient,
     request: string,
-    callOptionsOrCallback:
+    callOptionsOrCallback?:
       | gax.CallOptions
       | gax.Callback<
           protoTypes.google.cloud.vision.v1.IAnnotateImageResponse,
@@ -206,19 +210,7 @@ const _createSingleFeatureMethod = (
 };
 
 export function call(apiVersion: string) {
-  const methods: FeaturesMethod = {
-    annotateImage: Function,
-    faceDetection: Function,
-    landmarkDetection: Function,
-    labelDetection: Function,
-    safeSearchDetection: Function,
-    imageProperties: Function,
-    cropHints: Function,
-    webDetection: Function,
-    logoDetection: Function,
-    textDetection: Function,
-    documentTextDetection: Function,
-  };
+  const methods: FeaturesMethod = ({} as unknown) as FeaturesMethod;
   /**
    * Annotate a single image with the requested features.
    *
