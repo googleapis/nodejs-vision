@@ -35,6 +35,10 @@ async function sampleAsyncBatchAnnotateImages(inputImageUri, outputUri) {
     image: image,
     features: features,
   };
+  
+  // Each requests element corresponds to a single image.  To annotate more
+  // images, create a request element for each image and add it to
+  // the array of requests 
   const requests = [requestsElement];
   const gcsDestination = {
     uri: outputUri,
