@@ -17,20 +17,12 @@
 // ** All changes to this file may be overwritten. **
 
 import * as gax from 'google-gax';
-import {
-  APICallback,
-  Callback,
-  CallOptions,
-  Descriptors,
-  ClientOptions,
-  LROperation,
-  PaginationCallback,
-  PaginationResponse,
-} from 'google-gax';
+import {Callback, CallOptions, Descriptors, ClientOptions, LROperation, PaginationCallback, GaxCall} from 'google-gax';
 import * as path from 'path';
 
-import {Transform} from 'stream';
-import * as protosTypes from '../../protos/protos';
+import { Transform } from 'stream';
+import { RequestType } from 'google-gax/build/src/apitypes';
+import * as protos from '../../protos/protos';
 import * as gapicConfig from './product_search_client_config.json';
 
 const version = require('../../../package.json').version;
@@ -54,14 +46,6 @@ const version = require('../../../package.json').version;
  * @memberof v1
  */
 export class ProductSearchClient {
-  private _descriptors: Descriptors = {
-    page: {},
-    stream: {},
-    longrunning: {},
-    batching: {},
-  };
-  private _innerApiCalls: {[name: string]: Function};
-  private _pathTemplates: {[name: string]: gax.PathTemplate};
   private _terminated = false;
   private _opts: ClientOptions;
   private _gaxModule: typeof gax | typeof gax.fallback;
@@ -69,6 +53,9 @@ export class ProductSearchClient {
   private _protos: {};
   private _defaults: {[method: string]: gax.CallSettings};
   auth: gax.GoogleAuth;
+  descriptors: Descriptors = {page: {}, stream: {}, longrunning: {}, batching: {}};
+  innerApiCalls: {[name: string]: Function};
+  pathTemplates: {[name: string]: gax.PathTemplate};
   operationsClient: gax.OperationsClient;
   productSearchStub?: Promise<{[name: string]: Function}>;
 
@@ -101,12 +88,10 @@ export class ProductSearchClient {
   constructor(opts?: ClientOptions) {
     // Ensure that options include the service address and port.
     const staticMembers = this.constructor as typeof ProductSearchClient;
-    const servicePath =
-      opts && opts.servicePath
-        ? opts.servicePath
-        : opts && opts.apiEndpoint
-        ? opts.apiEndpoint
-        : staticMembers.servicePath;
+    const servicePath = opts && opts.servicePath ?
+        opts.servicePath :
+        ((opts && opts.apiEndpoint) ? opts.apiEndpoint :
+                                      staticMembers.servicePath);
     const port = opts && opts.port ? opts.port : staticMembers.port;
 
     if (!opts) {
@@ -116,8 +101,8 @@ export class ProductSearchClient {
     opts.port = opts.port || port;
     opts.clientConfig = opts.clientConfig || {};
 
-    const isBrowser = typeof window !== 'undefined';
-    if (isBrowser) {
+    const isBrowser = (typeof window !== 'undefined');
+    if (isBrowser){
       opts.fallback = true;
     }
     // If we are in browser, we are already using fallback because of the
@@ -134,10 +119,13 @@ export class ProductSearchClient {
     this._opts = opts;
 
     // Save the auth object to the client, for use by other methods.
-    this.auth = this._gaxGrpc.auth as gax.GoogleAuth;
+    this.auth = (this._gaxGrpc.auth as gax.GoogleAuth);
 
     // Determine the client header string.
-    const clientHeader = [`gax/${this._gaxModule.version}`, `gapic/${version}`];
+    const clientHeader = [
+      `gax/${this._gaxModule.version}`,
+      `gapic/${version}`,
+    ];
     if (typeof process !== 'undefined' && 'versions' in process) {
       clientHeader.push(`gl-node/${process.versions.node}`);
     } else {
@@ -153,21 +141,18 @@ export class ProductSearchClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     this._protos = this._gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
     // This API contains "path templates"; forward-slash-separated
     // identifiers to uniquely identify resources within the API.
     // Create useful helper objects for these.
-    this._pathTemplates = {
+    this.pathTemplates = {
       locationPathTemplate: new this._gaxModule.PathTemplate(
         'projects/{project}/locations/{location}'
       ),
@@ -185,82 +170,59 @@ export class ProductSearchClient {
     // Some of the methods on this service return "paged" results,
     // (e.g. 50 results at a time, with tokens to get subsequent
     // pages). Denote the keys used for pagination and results.
-    this._descriptors.page = {
-      listProductSets: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'productSets'
-      ),
-      listProducts: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'products'
-      ),
-      listReferenceImages: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'referenceImages'
-      ),
-      listProductsInProductSet: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'products'
-      ),
+    this.descriptors.page = {
+      listProductSets:
+          new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'productSets'),
+      listProducts:
+          new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'products'),
+      listReferenceImages:
+          new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'referenceImages'),
+      listProductsInProductSet:
+          new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'products')
     };
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
     // rather than holding a request open.
-    const protoFilesRoot = opts.fallback
-      ? this._gaxModule.protobuf.Root.fromJSON(
-          require('../../protos/protos.json')
-        )
-      : this._gaxModule.protobuf.loadSync(nodejsProtoPath);
+    const protoFilesRoot = opts.fallback ?
+      this._gaxModule.protobuf.Root.fromJSON(
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require("../../protos/protos.json")) :
+      this._gaxModule.protobuf.loadSync(nodejsProtoPath);
 
-    this.operationsClient = this._gaxModule
-      .lro({
-        auth: this.auth,
-        grpc: 'grpc' in this._gaxGrpc ? this._gaxGrpc.grpc : undefined,
-      })
-      .operationsClient(opts);
+    this.operationsClient = this._gaxModule.lro({
+      auth: this.auth,
+      grpc: 'grpc' in this._gaxGrpc ? this._gaxGrpc.grpc : undefined
+    }).operationsClient(opts);
     const importProductSetsResponse = protoFilesRoot.lookup(
-      '.google.cloud.vision.v1.ImportProductSetsResponse'
-    ) as gax.protobuf.Type;
+      '.google.cloud.vision.v1.ImportProductSetsResponse') as gax.protobuf.Type;
     const importProductSetsMetadata = protoFilesRoot.lookup(
-      '.google.cloud.vision.v1.BatchOperationMetadata'
-    ) as gax.protobuf.Type;
+      '.google.cloud.vision.v1.BatchOperationMetadata') as gax.protobuf.Type;
     const purgeProductsResponse = protoFilesRoot.lookup(
-      '.google.protobuf.Empty'
-    ) as gax.protobuf.Type;
+      '.google.protobuf.Empty') as gax.protobuf.Type;
     const purgeProductsMetadata = protoFilesRoot.lookup(
-      '.google.cloud.vision.v1.BatchOperationMetadata'
-    ) as gax.protobuf.Type;
+      '.google.cloud.vision.v1.BatchOperationMetadata') as gax.protobuf.Type;
 
-    this._descriptors.longrunning = {
+    this.descriptors.longrunning = {
       importProductSets: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
         importProductSetsResponse.decode.bind(importProductSetsResponse),
-        importProductSetsMetadata.decode.bind(importProductSetsMetadata)
-      ),
+        importProductSetsMetadata.decode.bind(importProductSetsMetadata)),
       purgeProducts: new this._gaxModule.LongrunningDescriptor(
         this.operationsClient,
         purgeProductsResponse.decode.bind(purgeProductsResponse),
-        purgeProductsMetadata.decode.bind(purgeProductsMetadata)
-      ),
+        purgeProductsMetadata.decode.bind(purgeProductsMetadata))
     };
 
     // Put together the default options sent with requests.
     this._defaults = this._gaxGrpc.constructSettings(
-      'google.cloud.vision.v1.ProductSearch',
-      gapicConfig as gax.ClientConfig,
-      opts.clientConfig || {},
-      {'x-goog-api-client': clientHeader.join(' ')}
-    );
+        'google.cloud.vision.v1.ProductSearch', gapicConfig as gax.ClientConfig,
+        opts.clientConfig || {}, {'x-goog-api-client': clientHeader.join(' ')});
 
     // Set up a dictionary of "inner API calls"; the core implementation
     // of calling the API is handled in `google-gax`, with this code
     // merely providing the destination and request information.
-    this._innerApiCalls = {};
+    this.innerApiCalls = {};
   }
 
   /**
@@ -283,41 +245,18 @@ export class ProductSearchClient {
     // Put together the "service stub" for
     // google.cloud.vision.v1.ProductSearch.
     this.productSearchStub = this._gaxGrpc.createStub(
-      this._opts.fallback
-        ? (this._protos as protobuf.Root).lookupService(
-            'google.cloud.vision.v1.ProductSearch'
-          )
-        : // tslint:disable-next-line no-any
+        this._opts.fallback ?
+          (this._protos as protobuf.Root).lookupService('google.cloud.vision.v1.ProductSearch') :
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (this._protos as any).google.cloud.vision.v1.ProductSearch,
-      this._opts
-    ) as Promise<{[method: string]: Function}>;
+        this._opts) as Promise<{[method: string]: Function}>;
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
-    const productSearchStubMethods = [
-      'createProductSet',
-      'listProductSets',
-      'getProductSet',
-      'updateProductSet',
-      'deleteProductSet',
-      'createProduct',
-      'listProducts',
-      'getProduct',
-      'updateProduct',
-      'deleteProduct',
-      'createReferenceImage',
-      'deleteReferenceImage',
-      'listReferenceImages',
-      'getReferenceImage',
-      'addProductToProductSet',
-      'removeProductFromProductSet',
-      'listProductsInProductSet',
-      'importProductSets',
-      'purgeProducts',
-    ];
-
+    const productSearchStubMethods =
+        ['createProductSet', 'listProductSets', 'getProductSet', 'updateProductSet', 'deleteProductSet', 'createProduct', 'listProducts', 'getProduct', 'updateProduct', 'deleteProduct', 'createReferenceImage', 'deleteReferenceImage', 'listReferenceImages', 'getReferenceImage', 'addProductToProductSet', 'removeProductFromProductSet', 'listProductsInProductSet', 'importProductSets', 'purgeProducts'];
     for (const methodName of productSearchStubMethods) {
-      const innerCallPromise = this.productSearchStub.then(
+      const callPromise = this.productSearchStub.then(
         stub => (...args: Array<{}>) => {
           if (this._terminated) {
             return Promise.reject('The client has already been closed.');
@@ -325,26 +264,19 @@ export class ProductSearchClient {
           const func = stub[methodName];
           return func.apply(stub, args);
         },
-        (err: Error | null | undefined) => () => {
+        (err: Error|null|undefined) => () => {
           throw err;
-        }
-      );
+        });
 
       const apiCall = this._gaxModule.createApiCall(
-        innerCallPromise,
+        callPromise,
         this._defaults[methodName],
-        this._descriptors.page[methodName] ||
-          this._descriptors.stream[methodName] ||
-          this._descriptors.longrunning[methodName]
+        this.descriptors.page[methodName] ||
+            this.descriptors.stream[methodName] ||
+            this.descriptors.longrunning[methodName]
       );
 
-      this._innerApiCalls[methodName] = (
-        argument: {},
-        callOptions?: CallOptions,
-        callback?: APICallback
-      ) => {
-        return apiCall(argument, callOptions, callback);
-      };
+      this.innerApiCalls[methodName] = apiCall;
     }
 
     return this.productSearchStub;
@@ -379,7 +311,7 @@ export class ProductSearchClient {
   static get scopes() {
     return [
       'https://www.googleapis.com/auth/cloud-platform',
-      'https://www.googleapis.com/auth/cloud-vision',
+      'https://www.googleapis.com/auth/cloud-vision'
     ];
   }
 
@@ -390,9 +322,8 @@ export class ProductSearchClient {
    * @param {function(Error, string)} callback - the callback to
    *   be called with the current project Id.
    */
-  getProjectId(
-    callback?: Callback<string, undefined, undefined>
-  ): Promise<string> | void {
+  getProjectId(callback?: Callback<string, undefined, undefined>):
+      Promise<string>|void {
     if (callback) {
       this.auth.getProjectId(callback);
       return;
@@ -404,79 +335,73 @@ export class ProductSearchClient {
   // -- Service calls --
   // -------------------
   createProductSet(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.ICreateProductSetRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.ICreateProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.ICreateProductSetRequest|undefined, {}|undefined
+      ]>;
   createProductSet(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.ICreateProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Creates and returns a new ProductSet resource.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
-   *   4096 characters.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project in which the ProductSet should be created.
-   *
-   *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {google.cloud.vision.v1.ProductSet} request.productSet
-   *   Required. The ProductSet to create.
-   * @param {string} request.productSetId
-   *   A user-supplied resource id for this ProductSet. If set, the server will
-   *   attempt to use this value as the resource id. If it is already in use, an
-   *   error is returned with code ALREADY_EXISTS. Must be at most 128 characters
-   *   long. It cannot contain the character `/`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.ICreateProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.ICreateProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   createProductSet(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProductSet,
-          | protosTypes.google.cloud.vision.v1.ICreateProductSetRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.ICreateProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.ICreateProductSetRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.ICreateProductSetRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.ICreateProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Creates and returns a new ProductSet resource.
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
+ *   4096 characters.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project in which the ProductSet should be created.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {google.cloud.vision.v1.ProductSet} request.productSet
+ *   Required. The ProductSet to create.
+ * @param {string} request.productSetId
+ *   A user-supplied resource id for this ProductSet. If set, the server will
+ *   attempt to use this value as the resource id. If it is already in use, an
+ *   error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+ *   long. It cannot contain the character `/`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  createProductSet(
+      request: protos.google.cloud.vision.v1.ICreateProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.ICreateProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.ICreateProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.ICreateProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -485,77 +410,72 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.createProductSet(request, options, callback);
+    return this.innerApiCalls.createProductSet(request, options, callback);
   }
   getProductSet(
-    request: protosTypes.google.cloud.vision.v1.IGetProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IGetProductSetRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IGetProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.IGetProductSetRequest|undefined, {}|undefined
+      ]>;
   getProductSet(
-    request: protosTypes.google.cloud.vision.v1.IGetProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IGetProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Gets information associated with a ProductSet.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the ProductSet does not exist.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. Resource name of the ProductSet to get.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IGetProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IGetProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   getProductSet(
-    request: protosTypes.google.cloud.vision.v1.IGetProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProductSet,
-          protosTypes.google.cloud.vision.v1.IGetProductSetRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IGetProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IGetProductSetRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IGetProductSetRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IGetProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Gets information associated with a ProductSet.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the ProductSet does not exist.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. Resource name of the ProductSet to get.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getProductSet(
+      request: protos.google.cloud.vision.v1.IGetProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IGetProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IGetProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.IGetProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -564,83 +484,77 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.getProductSet(request, options, callback);
+    return this.innerApiCalls.getProductSet(request, options, callback);
   }
   updateProductSet(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IUpdateProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.IUpdateProductSetRequest|undefined, {}|undefined
+      ]>;
   updateProductSet(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Makes changes to a ProductSet resource.
-   * Only display_name can be updated currently.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the ProductSet does not exist.
-   * * Returns INVALID_ARGUMENT if display_name is present in update_mask but
-   *   missing from the request or longer than 4096 characters.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.cloud.vision.v1.ProductSet} request.productSet
-   *   Required. The ProductSet resource which replaces the one on the server.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   The {@link google.protobuf.FieldMask|FieldMask} that specifies which fields to
-   *   update.
-   *   If update_mask isn't specified, all mutable fields are to be updated.
-   *   Valid mask path is `display_name`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IUpdateProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IUpdateProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   updateProductSet(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProductSet,
-          | protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet,
-      protosTypes.google.cloud.vision.v1.IUpdateProductSetRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IUpdateProductSetRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IUpdateProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Makes changes to a ProductSet resource.
+ * Only display_name can be updated currently.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the ProductSet does not exist.
+ * * Returns INVALID_ARGUMENT if display_name is present in update_mask but
+ *   missing from the request or longer than 4096 characters.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {google.cloud.vision.v1.ProductSet} request.productSet
+ *   Required. The ProductSet resource which replaces the one on the server.
+ * @param {google.protobuf.FieldMask} request.updateMask
+ *   The {@link google.protobuf.FieldMask|FieldMask} that specifies which fields to
+ *   update.
+ *   If update_mask isn't specified, all mutable fields are to be updated.
+ *   Valid mask path is `display_name`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  updateProductSet(
+      request: protos.google.cloud.vision.v1.IUpdateProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IUpdateProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProductSet,
+          protos.google.cloud.vision.v1.IUpdateProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet,
+        protos.google.cloud.vision.v1.IUpdateProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -652,74 +566,68 @@ export class ProductSearchClient {
       'product_set.name': request.productSet!.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.updateProductSet(request, options, callback);
+    return this.innerApiCalls.updateProductSet(request, options, callback);
   }
   deleteProductSet(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IDeleteProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteProductSetRequest|undefined, {}|undefined
+      ]>;
   deleteProductSet(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Permanently deletes a ProductSet. Products and ReferenceImages in the
-   * ProductSet are not deleted.
-   *
-   * The actual image files are not deleted from Google Cloud Storage.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. Resource name of the ProductSet to delete.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IDeleteProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   deleteProductSet(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.protobuf.IEmpty,
-          | protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductSetRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IDeleteProductSetRequest,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Permanently deletes a ProductSet. Products and ReferenceImages in the
+ * ProductSet are not deleted.
+ *
+ * The actual image files are not deleted from Google Cloud Storage.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. Resource name of the ProductSet to delete.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  deleteProductSet(
+      request: protos.google.cloud.vision.v1.IDeleteProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -728,87 +636,82 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.deleteProductSet(request, options, callback);
+    return this.innerApiCalls.deleteProductSet(request, options, callback);
   }
   createProduct(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.ICreateProductRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.ICreateProductRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.ICreateProductRequest|undefined, {}|undefined
+      ]>;
   createProduct(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.ICreateProductRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Creates and returns a new product resource.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
-   *   characters.
-   * * Returns INVALID_ARGUMENT if description is longer than 4096 characters.
-   * * Returns INVALID_ARGUMENT if product_category is missing or invalid.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project in which the Product should be created.
-   *
-   *   Format is
-   *   `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {google.cloud.vision.v1.Product} request.product
-   *   Required. The product to create.
-   * @param {string} request.productId
-   *   A user-supplied resource id for this Product. If set, the server will
-   *   attempt to use this value as the resource id. If it is already in use, an
-   *   error is returned with code ALREADY_EXISTS. Must be at most 128 characters
-   *   long. It cannot contain the character `/`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.ICreateProductRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.ICreateProductRequest|null|undefined,
+          {}|null|undefined>): void;
   createProduct(
-    request: protosTypes.google.cloud.vision.v1.ICreateProductRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProduct,
-          protosTypes.google.cloud.vision.v1.ICreateProductRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.ICreateProductRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.ICreateProductRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.ICreateProductRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.ICreateProductRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Creates and returns a new product resource.
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
+ *   characters.
+ * * Returns INVALID_ARGUMENT if description is longer than 4096 characters.
+ * * Returns INVALID_ARGUMENT if product_category is missing or invalid.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project in which the Product should be created.
+ *
+ *   Format is
+ *   `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {google.cloud.vision.v1.Product} request.product
+ *   Required. The product to create.
+ * @param {string} request.productId
+ *   A user-supplied resource id for this Product. If set, the server will
+ *   attempt to use this value as the resource id. If it is already in use, an
+ *   error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+ *   long. It cannot contain the character `/`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  createProduct(
+      request: protos.google.cloud.vision.v1.ICreateProductRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.ICreateProductRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.ICreateProductRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.ICreateProductRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -817,77 +720,72 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.createProduct(request, options, callback);
+    return this.innerApiCalls.createProduct(request, options, callback);
   }
   getProduct(
-    request: protosTypes.google.cloud.vision.v1.IGetProductRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IGetProductRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IGetProductRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.IGetProductRequest|undefined, {}|undefined
+      ]>;
   getProduct(
-    request: protosTypes.google.cloud.vision.v1.IGetProductRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IGetProductRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Gets information associated with a Product.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product does not exist.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. Resource name of the Product to get.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IGetProductRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IGetProductRequest|null|undefined,
+          {}|null|undefined>): void;
   getProduct(
-    request: protosTypes.google.cloud.vision.v1.IGetProductRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProduct,
-          protosTypes.google.cloud.vision.v1.IGetProductRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IGetProductRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IGetProductRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IGetProductRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IGetProductRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Gets information associated with a Product.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the Product does not exist.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. Resource name of the Product to get.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getProduct(
+      request: protos.google.cloud.vision.v1.IGetProductRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IGetProductRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IGetProductRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.IGetProductRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -896,91 +794,86 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.getProduct(request, options, callback);
+    return this.innerApiCalls.getProduct(request, options, callback);
   }
   updateProduct(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IUpdateProductRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IUpdateProductRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.IUpdateProductRequest|undefined, {}|undefined
+      ]>;
   updateProduct(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IUpdateProductRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Makes changes to a Product resource.
-   * Only the `display_name`, `description`, and `labels` fields can be updated
-   * right now.
-   *
-   * If labels are updated, the change will not be reflected in queries until
-   * the next index time.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product does not exist.
-   * * Returns INVALID_ARGUMENT if display_name is present in update_mask but is
-   *   missing from the request or longer than 4096 characters.
-   * * Returns INVALID_ARGUMENT if description is present in update_mask but is
-   *   longer than 4096 characters.
-   * * Returns INVALID_ARGUMENT if product_category is present in update_mask.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.cloud.vision.v1.Product} request.product
-   *   Required. The Product resource which replaces the one on the server.
-   *   product.name is immutable.
-   * @param {google.protobuf.FieldMask} request.updateMask
-   *   The {@link google.protobuf.FieldMask|FieldMask} that specifies which fields
-   *   to update.
-   *   If update_mask isn't specified, all mutable fields are to be updated.
-   *   Valid mask paths include `product_labels`, `display_name`, and
-   *   `description`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IUpdateProductRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IUpdateProductRequest|null|undefined,
+          {}|null|undefined>): void;
   updateProduct(
-    request: protosTypes.google.cloud.vision.v1.IUpdateProductRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProduct,
-          protosTypes.google.cloud.vision.v1.IUpdateProductRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IUpdateProductRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct,
-      protosTypes.google.cloud.vision.v1.IUpdateProductRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IUpdateProductRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IUpdateProductRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Makes changes to a Product resource.
+ * Only the `display_name`, `description`, and `labels` fields can be updated
+ * right now.
+ *
+ * If labels are updated, the change will not be reflected in queries until
+ * the next index time.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the Product does not exist.
+ * * Returns INVALID_ARGUMENT if display_name is present in update_mask but is
+ *   missing from the request or longer than 4096 characters.
+ * * Returns INVALID_ARGUMENT if description is present in update_mask but is
+ *   longer than 4096 characters.
+ * * Returns INVALID_ARGUMENT if product_category is present in update_mask.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {google.cloud.vision.v1.Product} request.product
+ *   Required. The Product resource which replaces the one on the server.
+ *   product.name is immutable.
+ * @param {google.protobuf.FieldMask} request.updateMask
+ *   The {@link google.protobuf.FieldMask|FieldMask} that specifies which fields
+ *   to update.
+ *   If update_mask isn't specified, all mutable fields are to be updated.
+ *   Valid mask paths include `product_labels`, `display_name`, and
+ *   `description`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Product]{@link google.cloud.vision.v1.Product}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  updateProduct(
+      request: protos.google.cloud.vision.v1.IUpdateProductRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IUpdateProductRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IProduct,
+          protos.google.cloud.vision.v1.IUpdateProductRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct,
+        protos.google.cloud.vision.v1.IUpdateProductRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -992,74 +885,69 @@ export class ProductSearchClient {
       'product.name': request.product!.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.updateProduct(request, options, callback);
+    return this.innerApiCalls.updateProduct(request, options, callback);
   }
   deleteProduct(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IDeleteProductRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteProductRequest|undefined, {}|undefined
+      ]>;
   deleteProduct(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Permanently deletes a product and its reference images.
-   *
-   * Metadata of the product and all its images will be deleted right away, but
-   * search queries against ProductSets containing the product may still work
-   * until all related caches are refreshed.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. Resource name of product to delete.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IDeleteProductRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductRequest|null|undefined,
+          {}|null|undefined>): void;
   deleteProduct(
-    request: protosTypes.google.cloud.vision.v1.IDeleteProductRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.protobuf.IEmpty,
-          protosTypes.google.cloud.vision.v1.IDeleteProductRequest | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      protosTypes.google.cloud.vision.v1.IDeleteProductRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IDeleteProductRequest,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Permanently deletes a product and its reference images.
+ *
+ * Metadata of the product and all its images will be deleted right away, but
+ * search queries against ProductSets containing the product may still work
+ * until all related caches are refreshed.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. Resource name of product to delete.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  deleteProduct(
+      request: protos.google.cloud.vision.v1.IDeleteProductRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteProductRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteProductRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1068,108 +956,94 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.deleteProduct(request, options, callback);
+    return this.innerApiCalls.deleteProduct(request, options, callback);
   }
   createReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      (
-        | protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.ICreateReferenceImageRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage,
+        protos.google.cloud.vision.v1.ICreateReferenceImageRequest|undefined, {}|undefined
+      ]>;
   createReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      | protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Creates and returns a new ReferenceImage resource.
-   *
-   * The `bounding_poly` field is optional. If `bounding_poly` is not specified,
-   * the system will try to detect regions of interest in the image that are
-   * compatible with the product_category on the parent product. If it is
-   * specified, detection is ALWAYS skipped. The system converts polygons into
-   * non-rotated rectangles.
-   *
-   * Note that the pipeline will resize the image if the image resolution is too
-   * large to process (above 50MP).
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096
-   *   characters.
-   * * Returns INVALID_ARGUMENT if the product does not exist.
-   * * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing
-   *   compatible with the parent product's product_category is detected.
-   * * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. Resource name of the product in which to create the reference image.
-   *
-   *   Format is
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
-   * @param {google.cloud.vision.v1.ReferenceImage} request.referenceImage
-   *   Required. The reference image to create.
-   *   If an image ID is specified, it is ignored.
-   * @param {string} request.referenceImageId
-   *   A user-supplied resource id for the ReferenceImage to be added. If set,
-   *   the server will attempt to use this value as the resource id. If it is
-   *   already in use, an error is returned with code ALREADY_EXISTS. Must be at
-   *   most 128 characters long. It cannot contain the character `/`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.ICreateReferenceImageRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.ICreateReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
   createReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IReferenceImage,
-          | protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      | protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      (
-        | protosTypes.google.cloud.vision.v1.ICreateReferenceImageRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.ICreateReferenceImageRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.ICreateReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Creates and returns a new ReferenceImage resource.
+ *
+ * The `bounding_poly` field is optional. If `bounding_poly` is not specified,
+ * the system will try to detect regions of interest in the image that are
+ * compatible with the product_category on the parent product. If it is
+ * specified, detection is ALWAYS skipped. The system converts polygons into
+ * non-rotated rectangles.
+ *
+ * Note that the pipeline will resize the image if the image resolution is too
+ * large to process (above 50MP).
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096
+ *   characters.
+ * * Returns INVALID_ARGUMENT if the product does not exist.
+ * * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing
+ *   compatible with the parent product's product_category is detected.
+ * * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. Resource name of the product in which to create the reference image.
+ *
+ *   Format is
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+ * @param {google.cloud.vision.v1.ReferenceImage} request.referenceImage
+ *   Required. The reference image to create.
+ *   If an image ID is specified, it is ignored.
+ * @param {string} request.referenceImageId
+ *   A user-supplied resource id for the ReferenceImage to be added. If set,
+ *   the server will attempt to use this value as the resource id. If it is
+ *   already in use, an error is returned with code ALREADY_EXISTS. Must be at
+ *   most 128 characters long. It cannot contain the character `/`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  createReferenceImage(
+      request: protos.google.cloud.vision.v1.ICreateReferenceImageRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.ICreateReferenceImageRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.ICreateReferenceImageRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage,
+        protos.google.cloud.vision.v1.ICreateReferenceImageRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1178,89 +1052,75 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.createReferenceImage(request, options, callback);
+    return this.innerApiCalls.createReferenceImage(request, options, callback);
   }
   deleteReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IDeleteReferenceImageRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|undefined, {}|undefined
+      ]>;
   deleteReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Permanently deletes a reference image.
-   *
-   * The image metadata will be deleted right away, but search queries
-   * against ProductSets containing the image may still work until all related
-   * caches are refreshed.
-   *
-   * The actual image files are not deleted from Google Cloud Storage.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The resource name of the reference image to delete.
-   *
-   *   Format is:
-   *
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IDeleteReferenceImageRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
   deleteReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.protobuf.IEmpty,
-          | protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IDeleteReferenceImageRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IDeleteReferenceImageRequest,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Permanently deletes a reference image.
+ *
+ * The image metadata will be deleted right away, but search queries
+ * against ProductSets containing the image may still work until all related
+ * caches are refreshed.
+ *
+ * The actual image files are not deleted from Google Cloud Storage.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The resource name of the reference image to delete.
+ *
+ *   Format is:
+ *
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  deleteReferenceImage(
+      request: protos.google.cloud.vision.v1.IDeleteReferenceImageRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IDeleteReferenceImageRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1269,79 +1129,73 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.deleteReferenceImage(request, options, callback);
+    return this.innerApiCalls.deleteReferenceImage(request, options, callback);
   }
   getReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IGetReferenceImageRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage,
+        protos.google.cloud.vision.v1.IGetReferenceImageRequest|undefined, {}|undefined
+      ]>;
   getReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Gets information associated with a ReferenceImage.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the specified image does not exist.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The resource name of the ReferenceImage to get.
-   *
-   *   Format is:
-   *
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IGetReferenceImageRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.IGetReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
   getReferenceImage(
-    request: protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IReferenceImage,
-          | protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage,
-      protosTypes.google.cloud.vision.v1.IGetReferenceImageRequest | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IGetReferenceImageRequest,
+      callback: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.IGetReferenceImageRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Gets information associated with a ReferenceImage.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the specified image does not exist.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The resource name of the ReferenceImage to get.
+ *
+ *   Format is:
+ *
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  getReferenceImage(
+      request: protos.google.cloud.vision.v1.IGetReferenceImageRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.IGetReferenceImageRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.cloud.vision.v1.IReferenceImage,
+          protos.google.cloud.vision.v1.IGetReferenceImageRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage,
+        protos.google.cloud.vision.v1.IGetReferenceImageRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1350,94 +1204,80 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.getReferenceImage(request, options, callback);
+    return this.innerApiCalls.getReferenceImage(request, options, callback);
   }
   addProductToProductSet(
-    request: protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IAddProductToProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IAddProductToProductSetRequest|undefined, {}|undefined
+      ]>;
   addProductToProductSet(
-    request: protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Adds a Product to the specified ProductSet. If the Product is already
-   * present, no change is made.
-   *
-   * One Product can be added to at most 100 ProductSets.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The resource name for the ProductSet to modify.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
-   * @param {string} request.product
-   *   Required. The resource name for the Product to be added to this ProductSet.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IAddProductToProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IAddProductToProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   addProductToProductSet(
-    request: protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.protobuf.IEmpty,
-          | protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IAddProductToProductSetRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IAddProductToProductSetRequest,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IAddProductToProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Adds a Product to the specified ProductSet. If the Product is already
+ * present, no change is made.
+ *
+ * One Product can be added to at most 100 ProductSets.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The resource name for the ProductSet to modify.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {string} request.product
+ *   Required. The resource name for the Product to be added to this ProductSet.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  addProductToProductSet(
+      request: protos.google.cloud.vision.v1.IAddProductToProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IAddProductToProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IAddProductToProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IAddProductToProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1446,91 +1286,73 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.addProductToProductSet(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.addProductToProductSet(request, options, callback);
   }
   removeProductFromProductSet(
-    request: protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|undefined, {}|undefined
+      ]>;
   removeProductFromProductSet(
-    request: protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest
-      | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Removes a Product from the specified ProductSet.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The resource name for the ProductSet to modify.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
-   * @param {string} request.product
-   *   Required. The resource name for the Product to be removed from this ProductSet.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
   removeProductFromProductSet(
-    request: protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.protobuf.IEmpty,
-          | protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest
-          | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      protosTypes.google.protobuf.IEmpty,
-      | protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest
-      | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      protosTypes.google.protobuf.IEmpty,
-      (
-        | protosTypes.google.cloud.vision.v1.IRemoveProductFromProductSetRequest
-        | undefined
-      ),
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
+      callback: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Removes a Product from the specified ProductSet.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The resource name for the ProductSet to modify.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {string} request.product
+ *   Required. The resource name for the Product to be removed from this ProductSet.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Empty]{@link google.protobuf.Empty}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  removeProductFromProductSet(
+      request: protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          protos.google.protobuf.IEmpty,
+          protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        protos.google.protobuf.IEmpty,
+        protos.google.cloud.vision.v1.IRemoveProductFromProductSetRequest|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1539,104 +1361,80 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.removeProductFromProductSet(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.removeProductFromProductSet(request, options, callback);
   }
 
   importProductSets(
-    request: protosTypes.google.cloud.vision.v1.IImportProductSetsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      LROperation<
-        protosTypes.google.cloud.vision.v1.IImportProductSetsResponse,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IImportProductSetsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+        protos.google.longrunning.IOperation|undefined, {}|undefined
+      ]>;
   importProductSets(
-    request: protosTypes.google.cloud.vision.v1.IImportProductSetsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      LROperation<
-        protosTypes.google.cloud.vision.v1.IImportProductSetsResponse,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Asynchronous API that imports a list of reference images to specified
-   * product sets based on a list of image information.
-   *
-   * The {@link google.longrunning.Operation|google.longrunning.Operation} API can be used to keep track of the
-   * progress and results of the request.
-   * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
-   * `Operation.response` contains `ImportProductSetsResponse`. (results)
-   *
-   * The input source of this method is a csv file on Google Cloud Storage.
-   * For the format of the csv file please see
-   * {@link google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri|ImportProductSetsGcsSource.csv_file_uri}.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project in which the ProductSets should be imported.
-   *
-   *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {google.cloud.vision.v1.ImportProductSetsInputConfig} request.inputConfig
-   *   Required. The input content for the list of requests.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.longrunning.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IImportProductSetsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>): void;
   importProductSets(
-    request: protosTypes.google.cloud.vision.v1.IImportProductSetsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          LROperation<
-            protosTypes.google.cloud.vision.v1.IImportProductSetsResponse,
-            protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-          >,
-          protosTypes.google.longrunning.IOperation | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      LROperation<
-        protosTypes.google.cloud.vision.v1.IImportProductSetsResponse,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      LROperation<
-        protosTypes.google.cloud.vision.v1.IImportProductSetsResponse,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IImportProductSetsRequest,
+      callback: Callback<
+          LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Asynchronous API that imports a list of reference images to specified
+ * product sets based on a list of image information.
+ *
+ * The {@link google.longrunning.Operation|google.longrunning.Operation} API can be used to keep track of the
+ * progress and results of the request.
+ * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
+ * `Operation.response` contains `ImportProductSetsResponse`. (results)
+ *
+ * The input source of this method is a csv file on Google Cloud Storage.
+ * For the format of the csv file please see
+ * {@link google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri|ImportProductSetsGcsSource.csv_file_uri}.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project in which the ProductSets should be imported.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {google.cloud.vision.v1.ImportProductSetsInputConfig} request.inputConfig
+ *   Required. The input content for the list of requests.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.longrunning.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  importProductSets(
+      request: protos.google.cloud.vision.v1.IImportProductSetsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        LROperation<protos.google.cloud.vision.v1.IImportProductSetsResponse, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+        protos.google.longrunning.IOperation|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1645,118 +1443,98 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.importProductSets(request, options, callback);
+    return this.innerApiCalls.importProductSets(request, options, callback);
   }
   purgeProducts(
-    request: protosTypes.google.cloud.vision.v1.IPurgeProductsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      LROperation<
-        protosTypes.google.protobuf.IEmpty,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IPurgeProductsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+        protos.google.longrunning.IOperation|undefined, {}|undefined
+      ]>;
   purgeProducts(
-    request: protosTypes.google.cloud.vision.v1.IPurgeProductsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      LROperation<
-        protosTypes.google.protobuf.IEmpty,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    >
-  ): void;
-  /**
-   * Asynchronous API to delete all Products in a ProductSet or all Products
-   * that are in no ProductSet.
-   *
-   * If a Product is a member of the specified ProductSet in addition to other
-   * ProductSets, the Product will still be deleted.
-   *
-   * It is recommended to not delete the specified ProductSet until after this
-   * operation has completed. It is also recommended to not add any of the
-   * Products involved in the batch delete to a new ProductSet while this
-   * operation is running because those Products may still end up deleted.
-   *
-   * It's not possible to undo the PurgeProducts operation. Therefore, it is
-   * recommended to keep the csv files used in ImportProductSets (if that was
-   * how you originally built the Product Set) before starting PurgeProducts, in
-   * case you need to re-import the data after deletion.
-   *
-   * If the plan is to purge all of the Products from a ProductSet and then
-   * re-use the empty ProductSet to re-import new Products into the empty
-   * ProductSet, you must wait until the PurgeProducts operation has finished
-   * for that ProductSet.
-   *
-   * The {@link google.longrunning.Operation|google.longrunning.Operation} API can be used to keep track of the
-   * progress and results of the request.
-   * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {google.cloud.vision.v1.ProductSetPurgeConfig} request.productSetPurgeConfig
-   *   Specify which ProductSet contains the Products to be deleted.
-   * @param {boolean} request.deleteOrphanProducts
-   *   If delete_orphan_products is true, all Products that are not in any
-   *   ProductSet will be deleted.
-   * @param {string} request.parent
-   *   Required. The project and location in which the Products should be deleted.
-   *
-   *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {boolean} request.force
-   *   The default value is false. Override this value to true to actually perform
-   *   the purge.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is an object representing [Operation]{@link google.longrunning.Operation}.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IPurgeProductsRequest,
+      options: gax.CallOptions,
+      callback: Callback<
+          LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>): void;
   purgeProducts(
-    request: protosTypes.google.cloud.vision.v1.IPurgeProductsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          LROperation<
-            protosTypes.google.protobuf.IEmpty,
-            protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-          >,
-          protosTypes.google.longrunning.IOperation | undefined,
-          {} | undefined
-        >,
-    callback?: Callback<
-      LROperation<
-        protosTypes.google.protobuf.IEmpty,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    >
-  ): Promise<
-    [
-      LROperation<
-        protosTypes.google.protobuf.IEmpty,
-        protosTypes.google.cloud.vision.v1.IBatchOperationMetadata
-      >,
-      protosTypes.google.longrunning.IOperation | undefined,
-      {} | undefined
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IPurgeProductsRequest,
+      callback: Callback<
+          LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>): void;
+/**
+ * Asynchronous API to delete all Products in a ProductSet or all Products
+ * that are in no ProductSet.
+ *
+ * If a Product is a member of the specified ProductSet in addition to other
+ * ProductSets, the Product will still be deleted.
+ *
+ * It is recommended to not delete the specified ProductSet until after this
+ * operation has completed. It is also recommended to not add any of the
+ * Products involved in the batch delete to a new ProductSet while this
+ * operation is running because those Products may still end up deleted.
+ *
+ * It's not possible to undo the PurgeProducts operation. Therefore, it is
+ * recommended to keep the csv files used in ImportProductSets (if that was
+ * how you originally built the Product Set) before starting PurgeProducts, in
+ * case you need to re-import the data after deletion.
+ *
+ * If the plan is to purge all of the Products from a ProductSet and then
+ * re-use the empty ProductSet to re-import new Products into the empty
+ * ProductSet, you must wait until the PurgeProducts operation has finished
+ * for that ProductSet.
+ *
+ * The {@link google.longrunning.Operation|google.longrunning.Operation} API can be used to keep track of the
+ * progress and results of the request.
+ * `Operation.metadata` contains `BatchOperationMetadata`. (progress)
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {google.cloud.vision.v1.ProductSetPurgeConfig} request.productSetPurgeConfig
+ *   Specify which ProductSet contains the Products to be deleted.
+ * @param {boolean} request.deleteOrphanProducts
+ *   If delete_orphan_products is true, all Products that are not in any
+ *   ProductSet will be deleted.
+ * @param {string} request.parent
+ *   Required. The project and location in which the Products should be deleted.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {boolean} request.force
+ *   The default value is false. Override this value to true to actually perform
+ *   the purge.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is an object representing [Operation]{@link google.longrunning.Operation}.
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  purgeProducts(
+      request: protos.google.cloud.vision.v1.IPurgeProductsRequest,
+      optionsOrCallback?: gax.CallOptions|Callback<
+          LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>,
+      callback?: Callback<
+          LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+          protos.google.longrunning.IOperation|null|undefined,
+          {}|null|undefined>):
+      Promise<[
+        LROperation<protos.google.protobuf.IEmpty, protos.google.cloud.vision.v1.IBatchOperationMetadata>,
+        protos.google.longrunning.IOperation|undefined, {}|undefined
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1765,93 +1543,90 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.purgeProducts(request, options, callback);
+    return this.innerApiCalls.purgeProducts(request, options, callback);
   }
   listProductSets(
-    request: protosTypes.google.cloud.vision.v1.IListProductSetsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet[],
-      protosTypes.google.cloud.vision.v1.IListProductSetsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductSetsResponse
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet[],
+        protos.google.cloud.vision.v1.IListProductSetsRequest|null,
+        protos.google.cloud.vision.v1.IListProductSetsResponse
+      ]>;
   listProductSets(
-    request: protosTypes.google.cloud.vision.v1.IListProductSetsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet[],
-      protosTypes.google.cloud.vision.v1.IListProductSetsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductSetsResponse
-    >
-  ): void;
-  /**
-   * Lists ProductSets in an unspecified order.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if page_size is greater than 100, or less
-   *   than 1.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project from which ProductSets should be listed.
-   *
-   *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
-   *   The client library support auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *
-   *   When autoPaginate: false is specified through options, the array has three elements.
-   *   The first element is Array of [ProductSet]{@link google.cloud.vision.v1.ProductSet} that corresponds to
-   *   the one page received from the API server.
-   *   If the second element is not null it contains the request object of type [ListProductSetsRequest]{@link google.cloud.vision.v1.ListProductSetsRequest}
-   *   that can be used to obtain the next page of the results.
-   *   If it is null, the next page does not exist.
-   *   The third element contains the raw response received from the API server. Its type is
-   *   [ListProductSetsResponse]{@link google.cloud.vision.v1.ListProductSetsResponse}.
-   *
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      options: gax.CallOptions,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductSetsRequest,
+          protos.google.cloud.vision.v1.IListProductSetsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProductSet>): void;
   listProductSets(
-    request: protosTypes.google.cloud.vision.v1.IListProductSetsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProductSet[],
-          protosTypes.google.cloud.vision.v1.IListProductSetsRequest | null,
-          protosTypes.google.cloud.vision.v1.IListProductSetsResponse
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProductSet[],
-      protosTypes.google.cloud.vision.v1.IListProductSetsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductSetsResponse
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProductSet[],
-      protosTypes.google.cloud.vision.v1.IListProductSetsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductSetsResponse
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductSetsRequest,
+          protos.google.cloud.vision.v1.IListProductSetsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProductSet>): void;
+/**
+ * Lists ProductSets in an unspecified order.
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if page_size is greater than 100, or less
+ *   than 1.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project from which ProductSets should be listed.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is Array of [ProductSet]{@link google.cloud.vision.v1.ProductSet}.
+ *   The client library support auto-pagination by default: it will call the API as many
+ *   times as needed and will merge results from all the pages into this array.
+ *
+ *   When autoPaginate: false is specified through options, the array has three elements.
+ *   The first element is Array of [ProductSet]{@link google.cloud.vision.v1.ProductSet} that corresponds to
+ *   the one page received from the API server.
+ *   If the second element is not null it contains the request object of type [ListProductSetsRequest]{@link google.cloud.vision.v1.ListProductSetsRequest}
+ *   that can be used to obtain the next page of the results.
+ *   If it is null, the next page does not exist.
+ *   The third element contains the raw response received from the API server. Its type is
+ *   [ListProductSetsResponse]{@link google.cloud.vision.v1.ListProductSetsResponse}.
+ *
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listProductSets(
+      request: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      optionsOrCallback?: gax.CallOptions|PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductSetsRequest,
+          protos.google.cloud.vision.v1.IListProductSetsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProductSet>,
+      callback?: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductSetsRequest,
+          protos.google.cloud.vision.v1.IListProductSetsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProductSet>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProductSet[],
+        protos.google.cloud.vision.v1.IListProductSetsRequest|null,
+        protos.google.cloud.vision.v1.IListProductSetsResponse
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -1860,44 +1635,44 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.listProductSets(request, options, callback);
+    return this.innerApiCalls.listProductSets(request, options, callback);
   }
 
-  /**
-   * Equivalent to {@link listProductSets}, but returns a NodeJS Stream object.
-   *
-   * This fetches the paged responses for {@link listProductSets} continuously
-   * and invokes the callback registered for 'data' event for each element in the
-   * responses.
-   *
-   * The returned object has 'end' method when no more elements are required.
-   *
-   * autoPaginate option will be ignored.
-   *
-   * @see {@link https://nodejs.org/api/stream.html}
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project from which ProductSets should be listed.
-   *
-   *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet} on 'data' event.
-   */
+/**
+ * Equivalent to {@link listProductSets}, but returns a NodeJS Stream object.
+ *
+ * This fetches the paged responses for {@link listProductSets} continuously
+ * and invokes the callback registered for 'data' event for each element in the
+ * responses.
+ *
+ * The returned object has 'end' method when no more elements are required.
+ *
+ * autoPaginate option will be ignored.
+ *
+ * @see {@link https://nodejs.org/api/stream.html}
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project from which ProductSets should be listed.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Stream}
+ *   An object stream which emits an object representing [ProductSet]{@link google.cloud.vision.v1.ProductSet} on 'data' event.
+ */
   listProductSetsStream(
-    request?: protosTypes.google.cloud.vision.v1.IListProductSetsRequest,
-    options?: gax.CallOptions
-  ): Transform {
+      request?: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      options?: gax.CallOptions):
+    Transform{
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -1905,98 +1680,138 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     const callSettings = new gax.CallSettings(options);
     this.initialize();
-    return this._descriptors.page.listProductSets.createStream(
-      this._innerApiCalls.listProductSets as gax.GaxCall,
+    return this.descriptors.page.listProductSets.createStream(
+      this.innerApiCalls.listProductSets as gax.GaxCall,
       request,
       callSettings
     );
   }
+
+/**
+ * Equivalent to {@link listProductSets}, but returns an iterable object.
+ *
+ * for-await-of syntax is used with the iterable to recursively get response element on-demand.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project from which ProductSets should be listed.
+ *
+ *   Format is `projects/PROJECT_ID/locations/LOC_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Object}
+ *   An iterable Object that conforms to @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols.
+ */
+  listProductSetsAsync(
+      request?: protos.google.cloud.vision.v1.IListProductSetsRequest,
+      options?: gax.CallOptions):
+    AsyncIterable<protos.google.cloud.vision.v1.IProductSet>{
+    request = request || {};
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers[
+      'x-goog-request-params'
+    ] = gax.routingHeader.fromParams({
+      'parent': request.parent || '',
+    });
+    options = options || {};
+    const callSettings = new gax.CallSettings(options);
+    this.initialize();
+    return this.descriptors.page.listProductSets.asyncIterate(
+      this.innerApiCalls['listProductSets'] as GaxCall,
+      request as unknown as RequestType,
+      callSettings
+    ) as AsyncIterable<protos.google.cloud.vision.v1.IProductSet>;
+  }
   listProducts(
-    request: protosTypes.google.cloud.vision.v1.IListProductsRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsResponse
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IListProductsRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct[],
+        protos.google.cloud.vision.v1.IListProductsRequest|null,
+        protos.google.cloud.vision.v1.IListProductsResponse
+      ]>;
   listProducts(
-    request: protosTypes.google.cloud.vision.v1.IListProductsRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsResponse
-    >
-  ): void;
-  /**
-   * Lists products in an unspecified order.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project OR ProductSet from which Products should be listed.
-   *
-   *   Format:
-   *   `projects/PROJECT_ID/locations/LOC_ID`
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of [Product]{@link google.cloud.vision.v1.Product}.
-   *   The client library support auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *
-   *   When autoPaginate: false is specified through options, the array has three elements.
-   *   The first element is Array of [Product]{@link google.cloud.vision.v1.Product} that corresponds to
-   *   the one page received from the API server.
-   *   If the second element is not null it contains the request object of type [ListProductsRequest]{@link google.cloud.vision.v1.ListProductsRequest}
-   *   that can be used to obtain the next page of the results.
-   *   If it is null, the next page does not exist.
-   *   The third element contains the raw response received from the API server. Its type is
-   *   [ListProductsResponse]{@link google.cloud.vision.v1.ListProductsResponse}.
-   *
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IListProductsRequest,
+      options: gax.CallOptions,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsRequest,
+          protos.google.cloud.vision.v1.IListProductsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>): void;
   listProducts(
-    request: protosTypes.google.cloud.vision.v1.IListProductsRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProduct[],
-          protosTypes.google.cloud.vision.v1.IListProductsRequest | null,
-          protosTypes.google.cloud.vision.v1.IListProductsResponse
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsResponse
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsResponse
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IListProductsRequest,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsRequest,
+          protos.google.cloud.vision.v1.IListProductsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>): void;
+/**
+ * Lists products in an unspecified order.
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project OR ProductSet from which Products should be listed.
+ *
+ *   Format:
+ *   `projects/PROJECT_ID/locations/LOC_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is Array of [Product]{@link google.cloud.vision.v1.Product}.
+ *   The client library support auto-pagination by default: it will call the API as many
+ *   times as needed and will merge results from all the pages into this array.
+ *
+ *   When autoPaginate: false is specified through options, the array has three elements.
+ *   The first element is Array of [Product]{@link google.cloud.vision.v1.Product} that corresponds to
+ *   the one page received from the API server.
+ *   If the second element is not null it contains the request object of type [ListProductsRequest]{@link google.cloud.vision.v1.ListProductsRequest}
+ *   that can be used to obtain the next page of the results.
+ *   If it is null, the next page does not exist.
+ *   The third element contains the raw response received from the API server. Its type is
+ *   [ListProductsResponse]{@link google.cloud.vision.v1.ListProductsResponse}.
+ *
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listProducts(
+      request: protos.google.cloud.vision.v1.IListProductsRequest,
+      optionsOrCallback?: gax.CallOptions|PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsRequest,
+          protos.google.cloud.vision.v1.IListProductsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>,
+      callback?: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsRequest,
+          protos.google.cloud.vision.v1.IListProductsResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct[],
+        protos.google.cloud.vision.v1.IListProductsRequest|null,
+        protos.google.cloud.vision.v1.IListProductsResponse
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2005,45 +1820,45 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.listProducts(request, options, callback);
+    return this.innerApiCalls.listProducts(request, options, callback);
   }
 
-  /**
-   * Equivalent to {@link listProducts}, but returns a NodeJS Stream object.
-   *
-   * This fetches the paged responses for {@link listProducts} continuously
-   * and invokes the callback registered for 'data' event for each element in the
-   * responses.
-   *
-   * The returned object has 'end' method when no more elements are required.
-   *
-   * autoPaginate option will be ignored.
-   *
-   * @see {@link https://nodejs.org/api/stream.html}
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. The project OR ProductSet from which Products should be listed.
-   *
-   *   Format:
-   *   `projects/PROJECT_ID/locations/LOC_ID`
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing [Product]{@link google.cloud.vision.v1.Product} on 'data' event.
-   */
+/**
+ * Equivalent to {@link listProducts}, but returns a NodeJS Stream object.
+ *
+ * This fetches the paged responses for {@link listProducts} continuously
+ * and invokes the callback registered for 'data' event for each element in the
+ * responses.
+ *
+ * The returned object has 'end' method when no more elements are required.
+ *
+ * autoPaginate option will be ignored.
+ *
+ * @see {@link https://nodejs.org/api/stream.html}
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project OR ProductSet from which Products should be listed.
+ *
+ *   Format:
+ *   `projects/PROJECT_ID/locations/LOC_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Stream}
+ *   An object stream which emits an object representing [Product]{@link google.cloud.vision.v1.Product} on 'data' event.
+ */
   listProductsStream(
-    request?: protosTypes.google.cloud.vision.v1.IListProductsRequest,
-    options?: gax.CallOptions
-  ): Transform {
+      request?: protos.google.cloud.vision.v1.IListProductsRequest,
+      options?: gax.CallOptions):
+    Transform{
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2051,103 +1866,144 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     const callSettings = new gax.CallSettings(options);
     this.initialize();
-    return this._descriptors.page.listProducts.createStream(
-      this._innerApiCalls.listProducts as gax.GaxCall,
+    return this.descriptors.page.listProducts.createStream(
+      this.innerApiCalls.listProducts as gax.GaxCall,
       request,
       callSettings
     );
   }
+
+/**
+ * Equivalent to {@link listProducts}, but returns an iterable object.
+ *
+ * for-await-of syntax is used with the iterable to recursively get response element on-demand.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. The project OR ProductSet from which Products should be listed.
+ *
+ *   Format:
+ *   `projects/PROJECT_ID/locations/LOC_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Object}
+ *   An iterable Object that conforms to @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols.
+ */
+  listProductsAsync(
+      request?: protos.google.cloud.vision.v1.IListProductsRequest,
+      options?: gax.CallOptions):
+    AsyncIterable<protos.google.cloud.vision.v1.IProduct>{
+    request = request || {};
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers[
+      'x-goog-request-params'
+    ] = gax.routingHeader.fromParams({
+      'parent': request.parent || '',
+    });
+    options = options || {};
+    const callSettings = new gax.CallSettings(options);
+    this.initialize();
+    return this.descriptors.page.listProducts.asyncIterate(
+      this.innerApiCalls['listProducts'] as GaxCall,
+      request as unknown as RequestType,
+      callSettings
+    ) as AsyncIterable<protos.google.cloud.vision.v1.IProduct>;
+  }
   listReferenceImages(
-    request: protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage[],
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest | null,
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesResponse
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage[],
+        protos.google.cloud.vision.v1.IListReferenceImagesRequest|null,
+        protos.google.cloud.vision.v1.IListReferenceImagesResponse
+      ]>;
   listReferenceImages(
-    request: protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage[],
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest | null,
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesResponse
-    >
-  ): void;
-  /**
-   * Lists reference images.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the parent product does not exist.
-   * * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less
-   *   than 1.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. Resource name of the product containing the reference images.
-   *
-   *   Format is
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   A token identifying a page of results to be returned. This is the value
-   *   of `nextPageToken` returned in a previous reference image list request.
-   *
-   *   Defaults to the first page if not specified.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
-   *   The client library support auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *
-   *   When autoPaginate: false is specified through options, the array has three elements.
-   *   The first element is Array of [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage} that corresponds to
-   *   the one page received from the API server.
-   *   If the second element is not null it contains the request object of type [ListReferenceImagesRequest]{@link google.cloud.vision.v1.ListReferenceImagesRequest}
-   *   that can be used to obtain the next page of the results.
-   *   If it is null, the next page does not exist.
-   *   The third element contains the raw response received from the API server. Its type is
-   *   [ListReferenceImagesResponse]{@link google.cloud.vision.v1.ListReferenceImagesResponse}.
-   *
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      options: gax.CallOptions,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+          protos.google.cloud.vision.v1.IListReferenceImagesResponse|null|undefined,
+          protos.google.cloud.vision.v1.IReferenceImage>): void;
   listReferenceImages(
-    request: protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IReferenceImage[],
-          protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest | null,
-          protosTypes.google.cloud.vision.v1.IListReferenceImagesResponse
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IReferenceImage[],
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest | null,
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesResponse
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IReferenceImage[],
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest | null,
-      protosTypes.google.cloud.vision.v1.IListReferenceImagesResponse
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+          protos.google.cloud.vision.v1.IListReferenceImagesResponse|null|undefined,
+          protos.google.cloud.vision.v1.IReferenceImage>): void;
+/**
+ * Lists reference images.
+ *
+ * Possible errors:
+ *
+ * * Returns NOT_FOUND if the parent product does not exist.
+ * * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less
+ *   than 1.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. Resource name of the product containing the reference images.
+ *
+ *   Format is
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   A token identifying a page of results to be returned. This is the value
+ *   of `nextPageToken` returned in a previous reference image list request.
+ *
+ *   Defaults to the first page if not specified.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is Array of [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage}.
+ *   The client library support auto-pagination by default: it will call the API as many
+ *   times as needed and will merge results from all the pages into this array.
+ *
+ *   When autoPaginate: false is specified through options, the array has three elements.
+ *   The first element is Array of [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage} that corresponds to
+ *   the one page received from the API server.
+ *   If the second element is not null it contains the request object of type [ListReferenceImagesRequest]{@link google.cloud.vision.v1.ListReferenceImagesRequest}
+ *   that can be used to obtain the next page of the results.
+ *   If it is null, the next page does not exist.
+ *   The third element contains the raw response received from the API server. Its type is
+ *   [ListReferenceImagesResponse]{@link google.cloud.vision.v1.ListReferenceImagesResponse}.
+ *
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listReferenceImages(
+      request: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      optionsOrCallback?: gax.CallOptions|PaginationCallback<
+          protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+          protos.google.cloud.vision.v1.IListReferenceImagesResponse|null|undefined,
+          protos.google.cloud.vision.v1.IReferenceImage>,
+      callback?: PaginationCallback<
+          protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+          protos.google.cloud.vision.v1.IListReferenceImagesResponse|null|undefined,
+          protos.google.cloud.vision.v1.IReferenceImage>):
+      Promise<[
+        protos.google.cloud.vision.v1.IReferenceImage[],
+        protos.google.cloud.vision.v1.IListReferenceImagesRequest|null,
+        protos.google.cloud.vision.v1.IListReferenceImagesResponse
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2156,48 +2012,48 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     this.initialize();
-    return this._innerApiCalls.listReferenceImages(request, options, callback);
+    return this.innerApiCalls.listReferenceImages(request, options, callback);
   }
 
-  /**
-   * Equivalent to {@link listReferenceImages}, but returns a NodeJS Stream object.
-   *
-   * This fetches the paged responses for {@link listReferenceImages} continuously
-   * and invokes the callback registered for 'data' event for each element in the
-   * responses.
-   *
-   * The returned object has 'end' method when no more elements are required.
-   *
-   * autoPaginate option will be ignored.
-   *
-   * @see {@link https://nodejs.org/api/stream.html}
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.parent
-   *   Required. Resource name of the product containing the reference images.
-   *
-   *   Format is
-   *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   A token identifying a page of results to be returned. This is the value
-   *   of `nextPageToken` returned in a previous reference image list request.
-   *
-   *   Defaults to the first page if not specified.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage} on 'data' event.
-   */
+/**
+ * Equivalent to {@link listReferenceImages}, but returns a NodeJS Stream object.
+ *
+ * This fetches the paged responses for {@link listReferenceImages} continuously
+ * and invokes the callback registered for 'data' event for each element in the
+ * responses.
+ *
+ * The returned object has 'end' method when no more elements are required.
+ *
+ * autoPaginate option will be ignored.
+ *
+ * @see {@link https://nodejs.org/api/stream.html}
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. Resource name of the product containing the reference images.
+ *
+ *   Format is
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   A token identifying a page of results to be returned. This is the value
+ *   of `nextPageToken` returned in a previous reference image list request.
+ *
+ *   Defaults to the first page if not specified.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Stream}
+ *   An object stream which emits an object representing [ReferenceImage]{@link google.cloud.vision.v1.ReferenceImage} on 'data' event.
+ */
   listReferenceImagesStream(
-    request?: protosTypes.google.cloud.vision.v1.IListReferenceImagesRequest,
-    options?: gax.CallOptions
-  ): Transform {
+      request?: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      options?: gax.CallOptions):
+    Transform{
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2205,100 +2061,144 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      parent: request.parent || '',
+      'parent': request.parent || '',
     });
     const callSettings = new gax.CallSettings(options);
     this.initialize();
-    return this._descriptors.page.listReferenceImages.createStream(
-      this._innerApiCalls.listReferenceImages as gax.GaxCall,
+    return this.descriptors.page.listReferenceImages.createStream(
+      this.innerApiCalls.listReferenceImages as gax.GaxCall,
       request,
       callSettings
     );
   }
+
+/**
+ * Equivalent to {@link listReferenceImages}, but returns an iterable object.
+ *
+ * for-await-of syntax is used with the iterable to recursively get response element on-demand.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.parent
+ *   Required. Resource name of the product containing the reference images.
+ *
+ *   Format is
+ *   `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   A token identifying a page of results to be returned. This is the value
+ *   of `nextPageToken` returned in a previous reference image list request.
+ *
+ *   Defaults to the first page if not specified.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Object}
+ *   An iterable Object that conforms to @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols.
+ */
+  listReferenceImagesAsync(
+      request?: protos.google.cloud.vision.v1.IListReferenceImagesRequest,
+      options?: gax.CallOptions):
+    AsyncIterable<protos.google.cloud.vision.v1.IReferenceImage>{
+    request = request || {};
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers[
+      'x-goog-request-params'
+    ] = gax.routingHeader.fromParams({
+      'parent': request.parent || '',
+    });
+    options = options || {};
+    const callSettings = new gax.CallSettings(options);
+    this.initialize();
+    return this.descriptors.page.listReferenceImages.asyncIterate(
+      this.innerApiCalls['listReferenceImages'] as GaxCall,
+      request as unknown as RequestType,
+      callSettings
+    ) as AsyncIterable<protos.google.cloud.vision.v1.IReferenceImage>;
+  }
   listProductsInProductSet(
-    request: protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest,
-    options?: gax.CallOptions
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetResponse
-    ]
-  >;
+      request: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      options?: gax.CallOptions):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct[],
+        protos.google.cloud.vision.v1.IListProductsInProductSetRequest|null,
+        protos.google.cloud.vision.v1.IListProductsInProductSetResponse
+      ]>;
   listProductsInProductSet(
-    request: protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest,
-    options: gax.CallOptions,
-    callback: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetResponse
-    >
-  ): void;
-  /**
-   * Lists the Products in a ProductSet, in an unspecified order. If the
-   * ProductSet does not exist, the products field of the response will be
-   * empty.
-   *
-   * Possible errors:
-   *
-   * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The ProductSet resource for which to retrieve Products.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Promise} - The promise which resolves to an array.
-   *   The first element of the array is Array of [Product]{@link google.cloud.vision.v1.Product}.
-   *   The client library support auto-pagination by default: it will call the API as many
-   *   times as needed and will merge results from all the pages into this array.
-   *
-   *   When autoPaginate: false is specified through options, the array has three elements.
-   *   The first element is Array of [Product]{@link google.cloud.vision.v1.Product} that corresponds to
-   *   the one page received from the API server.
-   *   If the second element is not null it contains the request object of type [ListProductsInProductSetRequest]{@link google.cloud.vision.v1.ListProductsInProductSetRequest}
-   *   that can be used to obtain the next page of the results.
-   *   If it is null, the next page does not exist.
-   *   The third element contains the raw response received from the API server. Its type is
-   *   [ListProductsInProductSetResponse]{@link google.cloud.vision.v1.ListProductsInProductSetResponse}.
-   *
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   */
+      request: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      options: gax.CallOptions,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+          protos.google.cloud.vision.v1.IListProductsInProductSetResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>): void;
   listProductsInProductSet(
-    request: protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest,
-    optionsOrCallback?:
-      | gax.CallOptions
-      | Callback<
-          protosTypes.google.cloud.vision.v1.IProduct[],
-          protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest | null,
-          protosTypes.google.cloud.vision.v1.IListProductsInProductSetResponse
-        >,
-    callback?: Callback<
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetResponse
-    >
-  ): Promise<
-    [
-      protosTypes.google.cloud.vision.v1.IProduct[],
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest | null,
-      protosTypes.google.cloud.vision.v1.IListProductsInProductSetResponse
-    ]
-  > | void {
+      request: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      callback: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+          protos.google.cloud.vision.v1.IListProductsInProductSetResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>): void;
+/**
+ * Lists the Products in a ProductSet, in an unspecified order. If the
+ * ProductSet does not exist, the products field of the response will be
+ * empty.
+ *
+ * Possible errors:
+ *
+ * * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The ProductSet resource for which to retrieve Products.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Promise} - The promise which resolves to an array.
+ *   The first element of the array is Array of [Product]{@link google.cloud.vision.v1.Product}.
+ *   The client library support auto-pagination by default: it will call the API as many
+ *   times as needed and will merge results from all the pages into this array.
+ *
+ *   When autoPaginate: false is specified through options, the array has three elements.
+ *   The first element is Array of [Product]{@link google.cloud.vision.v1.Product} that corresponds to
+ *   the one page received from the API server.
+ *   If the second element is not null it contains the request object of type [ListProductsInProductSetRequest]{@link google.cloud.vision.v1.ListProductsInProductSetRequest}
+ *   that can be used to obtain the next page of the results.
+ *   If it is null, the next page does not exist.
+ *   The third element contains the raw response received from the API server. Its type is
+ *   [ListProductsInProductSetResponse]{@link google.cloud.vision.v1.ListProductsInProductSetResponse}.
+ *
+ *   The promise has a method named "cancel" which cancels the ongoing API call.
+ */
+  listProductsInProductSet(
+      request: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      optionsOrCallback?: gax.CallOptions|PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+          protos.google.cloud.vision.v1.IListProductsInProductSetResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>,
+      callback?: PaginationCallback<
+          protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+          protos.google.cloud.vision.v1.IListProductsInProductSetResponse|null|undefined,
+          protos.google.cloud.vision.v1.IProduct>):
+      Promise<[
+        protos.google.cloud.vision.v1.IProduct[],
+        protos.google.cloud.vision.v1.IListProductsInProductSetRequest|null,
+        protos.google.cloud.vision.v1.IListProductsInProductSetResponse
+      ]>|void {
     request = request || {};
     let options: gax.CallOptions;
     if (typeof optionsOrCallback === 'function' && callback === undefined) {
       callback = optionsOrCallback;
       options = {};
-    } else {
+    }
+    else {
       options = optionsOrCallback as gax.CallOptions;
     }
     options = options || {};
@@ -2307,49 +2207,45 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     this.initialize();
-    return this._innerApiCalls.listProductsInProductSet(
-      request,
-      options,
-      callback
-    );
+    return this.innerApiCalls.listProductsInProductSet(request, options, callback);
   }
 
-  /**
-   * Equivalent to {@link listProductsInProductSet}, but returns a NodeJS Stream object.
-   *
-   * This fetches the paged responses for {@link listProductsInProductSet} continuously
-   * and invokes the callback registered for 'data' event for each element in the
-   * responses.
-   *
-   * The returned object has 'end' method when no more elements are required.
-   *
-   * autoPaginate option will be ignored.
-   *
-   * @see {@link https://nodejs.org/api/stream.html}
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} request.name
-   *   Required. The ProductSet resource for which to retrieve Products.
-   *
-   *   Format is:
-   *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
-   * @param {number} request.pageSize
-   *   The maximum number of items to return. Default 10, maximum 100.
-   * @param {string} request.pageToken
-   *   The next_page_token returned from a previous List request, if any.
-   * @param {object} [options]
-   *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
-   * @returns {Stream}
-   *   An object stream which emits an object representing [Product]{@link google.cloud.vision.v1.Product} on 'data' event.
-   */
+/**
+ * Equivalent to {@link listProductsInProductSet}, but returns a NodeJS Stream object.
+ *
+ * This fetches the paged responses for {@link listProductsInProductSet} continuously
+ * and invokes the callback registered for 'data' event for each element in the
+ * responses.
+ *
+ * The returned object has 'end' method when no more elements are required.
+ *
+ * autoPaginate option will be ignored.
+ *
+ * @see {@link https://nodejs.org/api/stream.html}
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The ProductSet resource for which to retrieve Products.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Stream}
+ *   An object stream which emits an object representing [Product]{@link google.cloud.vision.v1.Product} on 'data' event.
+ */
   listProductsInProductSetStream(
-    request?: protosTypes.google.cloud.vision.v1.IListProductsInProductSetRequest,
-    options?: gax.CallOptions
-  ): Transform {
+      request?: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      options?: gax.CallOptions):
+    Transform{
     request = request || {};
     options = options || {};
     options.otherArgs = options.otherArgs || {};
@@ -2357,15 +2253,59 @@ export class ProductSearchClient {
     options.otherArgs.headers[
       'x-goog-request-params'
     ] = gax.routingHeader.fromParams({
-      name: request.name || '',
+      'name': request.name || '',
     });
     const callSettings = new gax.CallSettings(options);
     this.initialize();
-    return this._descriptors.page.listProductsInProductSet.createStream(
-      this._innerApiCalls.listProductsInProductSet as gax.GaxCall,
+    return this.descriptors.page.listProductsInProductSet.createStream(
+      this.innerApiCalls.listProductsInProductSet as gax.GaxCall,
       request,
       callSettings
     );
+  }
+
+/**
+ * Equivalent to {@link listProductsInProductSet}, but returns an iterable object.
+ *
+ * for-await-of syntax is used with the iterable to recursively get response element on-demand.
+ *
+ * @param {Object} request
+ *   The request object that will be sent.
+ * @param {string} request.name
+ *   Required. The ProductSet resource for which to retrieve Products.
+ *
+ *   Format is:
+ *   `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+ * @param {number} request.pageSize
+ *   The maximum number of items to return. Default 10, maximum 100.
+ * @param {string} request.pageToken
+ *   The next_page_token returned from a previous List request, if any.
+ * @param {object} [options]
+ *   Call options. See {@link https://googleapis.dev/nodejs/google-gax/latest/interfaces/CallOptions.html|CallOptions} for more details.
+ * @returns {Object}
+ *   An iterable Object that conforms to @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols.
+ */
+  listProductsInProductSetAsync(
+      request?: protos.google.cloud.vision.v1.IListProductsInProductSetRequest,
+      options?: gax.CallOptions):
+    AsyncIterable<protos.google.cloud.vision.v1.IProduct>{
+    request = request || {};
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers[
+      'x-goog-request-params'
+    ] = gax.routingHeader.fromParams({
+      'name': request.name || '',
+    });
+    options = options || {};
+    const callSettings = new gax.CallSettings(options);
+    this.initialize();
+    return this.descriptors.page.listProductsInProductSet.asyncIterate(
+      this.innerApiCalls['listProductsInProductSet'] as GaxCall,
+      request as unknown as RequestType,
+      callSettings
+    ) as AsyncIterable<protos.google.cloud.vision.v1.IProduct>;
   }
   // --------------------
   // -- Path templates --
@@ -2378,10 +2318,10 @@ export class ProductSearchClient {
    * @param {string} location
    * @returns {string} Resource name string.
    */
-  locationPath(project: string, location: string) {
-    return this._pathTemplates.locationPathTemplate.render({
-      project,
-      location,
+  locationPath(project:string,location:string) {
+    return this.pathTemplates.locationPathTemplate.render({
+      project: project,
+      location: location,
     });
   }
 
@@ -2393,7 +2333,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromLocationName(locationName: string) {
-    return this._pathTemplates.locationPathTemplate.match(locationName).project;
+    return this.pathTemplates.locationPathTemplate.match(locationName).project;
   }
 
   /**
@@ -2404,8 +2344,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the location.
    */
   matchLocationFromLocationName(locationName: string) {
-    return this._pathTemplates.locationPathTemplate.match(locationName)
-      .location;
+    return this.pathTemplates.locationPathTemplate.match(locationName).location;
   }
 
   /**
@@ -2416,11 +2355,11 @@ export class ProductSearchClient {
    * @param {string} product
    * @returns {string} Resource name string.
    */
-  productPath(project: string, location: string, product: string) {
-    return this._pathTemplates.productPathTemplate.render({
-      project,
-      location,
-      product,
+  productPath(project:string,location:string,product:string) {
+    return this.pathTemplates.productPathTemplate.render({
+      project: project,
+      location: location,
+      product: product,
     });
   }
 
@@ -2432,7 +2371,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromProductName(productName: string) {
-    return this._pathTemplates.productPathTemplate.match(productName).project;
+    return this.pathTemplates.productPathTemplate.match(productName).project;
   }
 
   /**
@@ -2443,7 +2382,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the location.
    */
   matchLocationFromProductName(productName: string) {
-    return this._pathTemplates.productPathTemplate.match(productName).location;
+    return this.pathTemplates.productPathTemplate.match(productName).location;
   }
 
   /**
@@ -2454,7 +2393,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the product.
    */
   matchProductFromProductName(productName: string) {
-    return this._pathTemplates.productPathTemplate.match(productName).product;
+    return this.pathTemplates.productPathTemplate.match(productName).product;
   }
 
   /**
@@ -2465,10 +2404,10 @@ export class ProductSearchClient {
    * @param {string} product_set
    * @returns {string} Resource name string.
    */
-  productSetPath(project: string, location: string, productSet: string) {
-    return this._pathTemplates.productSetPathTemplate.render({
-      project,
-      location,
+  productSetPath(project:string,location:string,productSet:string) {
+    return this.pathTemplates.productSetPathTemplate.render({
+      project: project,
+      location: location,
       product_set: productSet,
     });
   }
@@ -2481,8 +2420,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromProductSetName(productSetName: string) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
-      .project;
+    return this.pathTemplates.productSetPathTemplate.match(productSetName).project;
   }
 
   /**
@@ -2493,8 +2431,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the location.
    */
   matchLocationFromProductSetName(productSetName: string) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
-      .location;
+    return this.pathTemplates.productSetPathTemplate.match(productSetName).location;
   }
 
   /**
@@ -2505,8 +2442,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the product_set.
    */
   matchProductSetFromProductSetName(productSetName: string) {
-    return this._pathTemplates.productSetPathTemplate.match(productSetName)
-      .product_set;
+    return this.pathTemplates.productSetPathTemplate.match(productSetName).product_set;
   }
 
   /**
@@ -2518,16 +2454,11 @@ export class ProductSearchClient {
    * @param {string} reference_image
    * @returns {string} Resource name string.
    */
-  referenceImagePath(
-    project: string,
-    location: string,
-    product: string,
-    referenceImage: string
-  ) {
-    return this._pathTemplates.referenceImagePathTemplate.render({
-      project,
-      location,
-      product,
+  referenceImagePath(project:string,location:string,product:string,referenceImage:string) {
+    return this.pathTemplates.referenceImagePathTemplate.render({
+      project: project,
+      location: location,
+      product: product,
       reference_image: referenceImage,
     });
   }
@@ -2540,9 +2471,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromReferenceImageName(referenceImageName: string) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).project;
+    return this.pathTemplates.referenceImagePathTemplate.match(referenceImageName).project;
   }
 
   /**
@@ -2553,9 +2482,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the location.
    */
   matchLocationFromReferenceImageName(referenceImageName: string) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).location;
+    return this.pathTemplates.referenceImagePathTemplate.match(referenceImageName).location;
   }
 
   /**
@@ -2566,9 +2493,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the product.
    */
   matchProductFromReferenceImageName(referenceImageName: string) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).product;
+    return this.pathTemplates.referenceImagePathTemplate.match(referenceImageName).product;
   }
 
   /**
@@ -2579,9 +2504,7 @@ export class ProductSearchClient {
    * @returns {string} A string representing the reference_image.
    */
   matchReferenceImageFromReferenceImageName(referenceImageName: string) {
-    return this._pathTemplates.referenceImagePathTemplate.match(
-      referenceImageName
-    ).reference_image;
+    return this.pathTemplates.referenceImagePathTemplate.match(referenceImageName).reference_image;
   }
 
   /**
