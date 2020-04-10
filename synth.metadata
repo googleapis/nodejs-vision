@@ -1,5 +1,28 @@
 {
-  "updateTime": "2020-03-31T20:16:47.942825Z",
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/nodejs-vision.git",
+        "sha": "e2dccd02d20ed82ed679fff629b5a4aab47b39b6"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "801c3fb47b1a533989a1fe5af4aedf02af5f2eae",
+        "internalRef": "305814814"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "6f32150677c9784f3c3a7e1949472bd29c9d72c5"
+      }
+    }
+  ],
   "destinations": [
     {
       "client": {

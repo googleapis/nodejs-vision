@@ -717,5 +717,4 @@ export class ImageAnnotatorClient {
   }
 }
 import {FeaturesMethod} from '../helpers';
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ImageAnnotatorClient extends FeaturesMethod {}
+export type ImageAnnotatorClient = FeaturesMethod;
