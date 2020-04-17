@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/nodejs-vision.git",
-        "sha": "72f22b60e1491963ea1d22a4f96feabe07be0376"
+        "sha": "d870cbeaa9d72d58d1db27d6e55adcba882f5d2e"
       }
     },
     {
