@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/nodejs-vision.git",
-        "sha": "9158ebee06fa4fbcaa7e67b8ff8560d3f81a9d6c"
+        "sha": "7575b0cd8f5e7661def2f4b790e23137f87051f3"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "94421c47802f56a44c320257b2b4c190dc7d6b68"
+        "sha": "bd0deaa1113b588d70449535ab9cbf0f2bd0e72f"
       }
     }
   ],
