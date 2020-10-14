@@ -79,7 +79,7 @@ describe('Vision', () => {
           responses: [prototypes.google.cloud.vision.v1.IAnnotateImageResponse]
         ) => {
           const response = responses[0];
-          assert.strictEqual(
+          assert.ok(
             response.logoAnnotations![0].description!.toLowerCase(),
             'google'
           );
