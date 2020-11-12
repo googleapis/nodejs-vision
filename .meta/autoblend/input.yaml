@@ -1,0 +1,10 @@
+googleapis:
+  bazel-targets:
+    - //google/cloud/vision/v1p4beta1:vision-v1p4beta1-nodejs
+    - //google/cloud/vision/v1p3beta1:vision-v1p3beta1-nodejs
+    - //google/cloud/vision/v1p2beta1:vision-v1p2beta1-nodejs
+    - //google/cloud/vision/v1p1beta1:vision-v1p1beta1-nodejs
+    - //google/cloud/vision/v1:vision-v1-nodejs
+
+docker:
+  image: gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs:latest
