@@ -1,0 +1,7 @@
+googleapis-gen:
+  copy-jobs:
+    - query: filter(".*-nodejs$", "//google/cloud/vision/...")
+      dest: /src
+
+docker:
+  image: gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs:latest

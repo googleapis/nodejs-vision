@@ -1,0 +1,3 @@
+docker:
+  image: gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs:latest
+  digest: sha256:yadayada
