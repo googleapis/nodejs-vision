@@ -1,4 +1,4 @@
-googleapis:
+googleapis-gen:
   automerge: true
   bazel-targets:
     - //google/cloud/vision/v1p4beta1:vision-v1p4beta1-nodejs
@@ -6,10 +6,14 @@ googleapis:
     - //google/cloud/vision/v1p2beta1:vision-v1p2beta1-nodejs
     - //google/cloud/vision/v1p1beta1:vision-v1p1beta1-nodejs
     - //google/cloud/vision/v1:vision-v1-nodejs
+  # Only specified for rollback
+  sha: 78620fff1ca371da47f9fbb7e9fe2af39eb9a19b14281e334679a637bd279919
 
 docker:
   automerge: false
   image: gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs:latest
+  # Only specified for rollback
+  digest: sha256:97c7174d59be2a115521e193a33d13af87255d02cb9ed3dd2751d9e53fe5c2ce  
 
 self:
   automerge: false

@@ -2,7 +2,7 @@ googleapis-gen:
   sha: 78620fff1ca371da47f9fbb7e9fe2af39eb9a19b14281e334679a637bd279919
 
 docker:
-    - gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs:
-      tag: latest
-      name: 97c7174d59be
-      digest: sha256:97c7174d59be2a115521e193a33d13af87255d02cb9ed3dd2751d9e53fe5c2ce
+  - uri: gcr.io/cloud-devrel-kokoro-resources/synthtool-nodejs
+    tag: latest
+    name: 97c7174d59be
+    digest: sha256:97c7174d59be2a115521e193a33d13af87255d02cb9ed3dd2751d9e53fe5c2ce
