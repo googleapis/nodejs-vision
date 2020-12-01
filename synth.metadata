@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/nodejs-vision.git",
-        "sha": "ef95fb1ff7f2495b2929c18b4c814ad93c8b42cc"
+        "sha": "3784521b3675a9b5d05132fc31dde6cc3f0c7a72"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2f019bf70bfe06f1e2af1b04011b0a2405190e43",
-        "internalRef": "343202295"
+        "sha": "80a56e032bcc6a52cc41091c9a9ab527ec233f1f",
+        "internalRef": "344839236"
       }
     },
     {
