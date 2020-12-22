@@ -4,6 +4,14 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/nodejs-vision?activeTab=versions
 
+### [2.1.3](https://www.github.com/googleapis/nodejs-vision/compare/v2.1.2...v2.1.3) (2020-12-22)
+
+
+### Bug Fixes
+
+* **browser:** check for fetch on window ([ef95fb1](https://www.github.com/googleapis/nodejs-vision/commit/ef95fb1ff7f2495b2929c18b4c814ad93c8b42cc))
+* do not modify options object, use defaultScopes ([#845](https://www.github.com/googleapis/nodejs-vision/issues/845)) ([8377b42](https://www.github.com/googleapis/nodejs-vision/commit/8377b4268a4ed4ef07869c75c1ae48f4ec3b01ce))
+
 ### [2.1.2](https://www.github.com/googleapis/nodejs-vision/compare/v2.1.1...v2.1.2) (2020-09-12)
 
 
