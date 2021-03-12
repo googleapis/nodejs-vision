@@ -18,29 +18,25 @@ import synthtool as s
 import synthtool.gcp as gcp
 import synthtool.languages.node as node
 import logging
+import pathlib
 
 logging.basicConfig(level=logging.DEBUG)
 
-AUTOSYNTH_MULTIPLE_COMMITS = True
-
-
-# Run the gapic generator
-gapic = gcp.GAPICBazel()
 versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1', 'v1p4beta1']
-for version in versions:
-    library = gapic.node_library('vision', version)
-    s.copy(library, excludes=['src/index.ts', 'package.json'])
+
 # extends interface for client.ts
 for version in versions:
     client_file = f"src/{version}/image_annotator_client.ts"
-    s.replace(client_file, '\Z',
-    'import {FeaturesMethod} from \'../helpers\';\n' +
-    '// eslint-disable-next-line @typescript-eslint/no-empty-interface\n' +
-    'export interface ImageAnnotatorClient extends FeaturesMethod {}\n'
-    )
+    if 'export interface ImageAnnotatorClient' not in pathlib.Path(client_file).read_text():
+        s.replace(client_file, '\Z',
+            'import {FeaturesMethod} from \'../helpers\';\n' +
+            '// eslint-disable-next-line @typescript-eslint/no-empty-interface\n' +
+            'export interface ImageAnnotatorClient extends FeaturesMethod {}\n'
+        )
+
 # Copy common templates
 common_templates = gcp.CommonTemplates()
 templates = common_templates.node_library(source_location='build/src')
 s.copy(templates)
 
-node.postprocess_gapic_library()
+node.postprocess_gapic_library_hermetic()
