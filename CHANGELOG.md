@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/@google-cloud/nodejs-vision?activeTab=versions
 
+### [2.3.2](https://www.github.com/googleapis/nodejs-vision/compare/v2.3.1...v2.3.2) (2021-04-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency natural to v5 ([#880](https://www.github.com/googleapis/nodejs-vision/issues/880)) ([6a82d95](https://www.github.com/googleapis/nodejs-vision/commit/6a82d95f532f054cd120920339c198d57ce2cf28))
+
 ### [2.3.1](https://www.github.com/googleapis/nodejs-vision/compare/v2.3.0...v2.3.1) (2021-02-18)
 
 
