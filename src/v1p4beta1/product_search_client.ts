@@ -479,6 +479,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.createProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.create_product_set.js</caption>
+   * region_tag:vision_create_product_set_sample
+   *
    */
   createProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.ICreateProductSetRequest,
@@ -577,6 +581,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.getProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.get_product_set.js</caption>
+   * region_tag:vision_get_product_set_sample
+   *
    */
   getProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IGetProductSetRequest,
@@ -680,6 +688,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.updateProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.update_product_set.js</caption>
+   * region_tag:vision_update_product_set_sample
+   *
    */
   updateProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IUpdateProductSetRequest,
@@ -777,6 +789,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.deleteProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.delete_product_set.js</caption>
+   * region_tag:vision_delete_product_set_sample
+   *
    */
   deleteProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IDeleteProductSetRequest,
@@ -885,6 +901,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.createProduct(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.create_product.js</caption>
+   * region_tag:vision_create_product_sample
+   *
    */
   createProduct(
     request?: protos.google.cloud.vision.v1p4beta1.ICreateProductRequest,
@@ -983,6 +1003,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.getProduct(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.get_product.js</caption>
+   * region_tag:vision_get_product_sample
+   *
    */
   getProduct(
     request?: protos.google.cloud.vision.v1p4beta1.IGetProductRequest,
@@ -1095,6 +1119,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.updateProduct(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.update_product.js</caption>
+   * region_tag:vision_update_product_sample
+   *
    */
   updateProduct(
     request?: protos.google.cloud.vision.v1p4beta1.IUpdateProductRequest,
@@ -1193,6 +1221,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.deleteProduct(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.delete_product.js</caption>
+   * region_tag:vision_delete_product_sample
+   *
    */
   deleteProduct(
     request?: protos.google.cloud.vision.v1p4beta1.IDeleteProductRequest,
@@ -1317,6 +1349,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.createReferenceImage(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.create_reference_image.js</caption>
+   * region_tag:vision_create_reference_image_sample
+   *
    */
   createReferenceImage(
     request?: protos.google.cloud.vision.v1p4beta1.ICreateReferenceImageRequest,
@@ -1424,6 +1460,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.deleteReferenceImage(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.delete_reference_image.js</caption>
+   * region_tag:vision_delete_reference_image_sample
+   *
    */
   deleteReferenceImage(
     request?: protos.google.cloud.vision.v1p4beta1.IDeleteReferenceImageRequest,
@@ -1529,6 +1569,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.getReferenceImage(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.get_reference_image.js</caption>
+   * region_tag:vision_get_reference_image_sample
+   *
    */
   getReferenceImage(
     request?: protos.google.cloud.vision.v1p4beta1.IGetReferenceImageRequest,
@@ -1641,6 +1685,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.addProductToProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.add_product_to_product_set.js</caption>
+   * region_tag:vision_add_product_to_product_set_sample
+   *
    */
   addProductToProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IAddProductToProductSetRequest,
@@ -1751,6 +1799,10 @@ export class ProductSearchClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.removeProductFromProductSet(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.remove_product_from_product_set.js</caption>
+   * region_tag:vision_remove_product_from_product_set_sample
+   *
    */
   removeProductFromProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IRemoveProductFromProductSetRequest,
@@ -1872,6 +1924,10 @@ export class ProductSearchClient {
    * @example
    * const [operation] = await client.importProductSets(request);
    * const [response] = await operation.promise();
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.import_product_sets.js</caption>
+   * region_tag:vision_import_product_sets_sample
+   *
    */
   importProductSets(
     request?: protos.google.cloud.vision.v1p4beta1.IImportProductSetsRequest,
@@ -1935,6 +1991,10 @@ export class ProductSearchClient {
    * console.log(decodedOperation.result);
    * console.log(decodedOperation.done);
    * console.log(decodedOperation.metadata);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.import_product_sets.js</caption>
+   * region_tag:vision_import_product_sets_sample
+   *
    */
   async checkImportProductSetsProgress(
     name: string
@@ -2046,6 +2106,10 @@ export class ProductSearchClient {
    * @example
    * const [operation] = await client.purgeProducts(request);
    * const [response] = await operation.promise();
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.purge_products.js</caption>
+   * region_tag:vision_purge_products_sample
+   *
    */
   purgeProducts(
     request?: protos.google.cloud.vision.v1p4beta1.IPurgeProductsRequest,
@@ -2109,6 +2173,10 @@ export class ProductSearchClient {
    * console.log(decodedOperation.result);
    * console.log(decodedOperation.done);
    * console.log(decodedOperation.metadata);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.purge_products.js</caption>
+   * region_tag:vision_purge_products_sample
+   *
    */
   async checkPurgeProductsProgress(
     name: string
@@ -2193,6 +2261,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_product_sets.js</caption>
+   * region_tag:vision_list_product_sets_sample
+   *
    */
   listProductSets(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductSetsRequest,
@@ -2261,6 +2333,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_product_sets.js</caption>
+   * region_tag:vision_list_product_sets_sample
+   *
    */
   listProductSetsStream(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductSetsRequest,
@@ -2274,7 +2350,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductSets'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductSets.createStream(
       this.innerApiCalls.listProductSets as gax.GaxCall,
@@ -2312,6 +2389,10 @@ export class ProductSearchClient {
    * for await (const response of iterable) {
    *   // process response
    * }
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_product_sets.js</caption>
+   * region_tag:vision_list_product_sets_sample
+   *
    */
   listProductSetsAsync(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductSetsRequest,
@@ -2326,7 +2407,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductSets'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductSets.asyncIterate(
       this.innerApiCalls['listProductSets'] as GaxCall,
@@ -2395,6 +2477,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products.js</caption>
+   * region_tag:vision_list_products_sample
+   *
    */
   listProducts(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsRequest,
@@ -2464,6 +2550,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products.js</caption>
+   * region_tag:vision_list_products_sample
+   *
    */
   listProductsStream(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsRequest,
@@ -2477,7 +2567,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProducts'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProducts.createStream(
       this.innerApiCalls.listProducts as gax.GaxCall,
@@ -2516,6 +2607,10 @@ export class ProductSearchClient {
    * for await (const response of iterable) {
    *   // process response
    * }
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products.js</caption>
+   * region_tag:vision_list_products_sample
+   *
    */
   listProductsAsync(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsRequest,
@@ -2530,7 +2625,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProducts'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProducts.asyncIterate(
       this.innerApiCalls['listProducts'] as GaxCall,
@@ -2604,6 +2700,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_reference_images.js</caption>
+   * region_tag:vision_list_reference_images_sample
+   *
    */
   listReferenceImages(
     request?: protos.google.cloud.vision.v1p4beta1.IListReferenceImagesRequest,
@@ -2676,6 +2776,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_reference_images.js</caption>
+   * region_tag:vision_list_reference_images_sample
+   *
    */
   listReferenceImagesStream(
     request?: protos.google.cloud.vision.v1p4beta1.IListReferenceImagesRequest,
@@ -2689,7 +2793,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listReferenceImages'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listReferenceImages.createStream(
       this.innerApiCalls.listReferenceImages as gax.GaxCall,
@@ -2731,6 +2836,10 @@ export class ProductSearchClient {
    * for await (const response of iterable) {
    *   // process response
    * }
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_reference_images.js</caption>
+   * region_tag:vision_list_reference_images_sample
+   *
    */
   listReferenceImagesAsync(
     request?: protos.google.cloud.vision.v1p4beta1.IListReferenceImagesRequest,
@@ -2745,7 +2854,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listReferenceImages'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listReferenceImages.asyncIterate(
       this.innerApiCalls['listReferenceImages'] as GaxCall,
@@ -2816,6 +2926,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products_in_product_set.js</caption>
+   * region_tag:vision_list_products_in_product_set_sample
+   *
    */
   listProductsInProductSet(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsInProductSetRequest,
@@ -2889,6 +3003,10 @@ export class ProductSearchClient {
    *   Please see the
    *   [documentation](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#auto-pagination)
    *   for more details and examples.
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products_in_product_set.js</caption>
+   * region_tag:vision_list_products_in_product_set_sample
+   *
    */
   listProductsInProductSetStream(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsInProductSetRequest,
@@ -2902,7 +3020,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         name: request.name || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductsInProductSet'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductsInProductSet.createStream(
       this.innerApiCalls.listProductsInProductSet as gax.GaxCall,
@@ -2941,6 +3060,10 @@ export class ProductSearchClient {
    * for await (const response of iterable) {
    *   // process response
    * }
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/product_search.list_products_in_product_set.js</caption>
+   * region_tag:vision_list_products_in_product_set_sample
+   *
    */
   listProductsInProductSetAsync(
     request?: protos.google.cloud.vision.v1p4beta1.IListProductsInProductSetRequest,
@@ -2955,7 +3078,8 @@ export class ProductSearchClient {
         name: request.name || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductsInProductSet'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductsInProductSet.asyncIterate(
       this.innerApiCalls['listProductsInProductSet'] as GaxCall,

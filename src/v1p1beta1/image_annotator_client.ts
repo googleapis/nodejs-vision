@@ -336,6 +336,10 @@ export class ImageAnnotatorClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.batchAnnotateImages(request);
+   *
+   * @example <caption>include:samples/generated/v1p1beta1/image_annotator.batch_annotate_images.js</caption>
+   * region_tag:vision_batch_annotate_images_sample
+   *
    */
   batchAnnotateImages(
     request?: protos.google.cloud.vision.v1p1beta1.IBatchAnnotateImagesRequest,

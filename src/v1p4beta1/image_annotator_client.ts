@@ -410,6 +410,10 @@ export class ImageAnnotatorClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.batchAnnotateImages(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.batch_annotate_images.js</caption>
+   * region_tag:vision_batch_annotate_images_sample
+   *
    */
   batchAnnotateImages(
     request?: protos.google.cloud.vision.v1p4beta1.IBatchAnnotateImagesRequest,
@@ -508,6 +512,10 @@ export class ImageAnnotatorClient {
    *   for more details and examples.
    * @example
    * const [response] = await client.batchAnnotateFiles(request);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.batch_annotate_files.js</caption>
+   * region_tag:vision_batch_annotate_files_sample
+   *
    */
   batchAnnotateFiles(
     request?: protos.google.cloud.vision.v1p4beta1.IBatchAnnotateFilesRequest,
@@ -615,6 +623,10 @@ export class ImageAnnotatorClient {
    * @example
    * const [operation] = await client.asyncBatchAnnotateImages(request);
    * const [response] = await operation.promise();
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.async_batch_annotate_images.js</caption>
+   * region_tag:vision_async_batch_annotate_images_sample
+   *
    */
   asyncBatchAnnotateImages(
     request?: protos.google.cloud.vision.v1p4beta1.IAsyncBatchAnnotateImagesRequest,
@@ -676,6 +688,10 @@ export class ImageAnnotatorClient {
    * console.log(decodedOperation.result);
    * console.log(decodedOperation.done);
    * console.log(decodedOperation.metadata);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.async_batch_annotate_images.js</caption>
+   * region_tag:vision_async_batch_annotate_images_sample
+   *
    */
   async checkAsyncBatchAnnotateImagesProgress(
     name: string
@@ -759,6 +775,10 @@ export class ImageAnnotatorClient {
    * @example
    * const [operation] = await client.asyncBatchAnnotateFiles(request);
    * const [response] = await operation.promise();
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.async_batch_annotate_files.js</caption>
+   * region_tag:vision_async_batch_annotate_files_sample
+   *
    */
   asyncBatchAnnotateFiles(
     request?: protos.google.cloud.vision.v1p4beta1.IAsyncBatchAnnotateFilesRequest,
@@ -820,6 +840,10 @@ export class ImageAnnotatorClient {
    * console.log(decodedOperation.result);
    * console.log(decodedOperation.done);
    * console.log(decodedOperation.metadata);
+   *
+   * @example <caption>include:samples/generated/v1p4beta1/image_annotator.async_batch_annotate_files.js</caption>
+   * region_tag:vision_async_batch_annotate_files_sample
+   *
    */
   async checkAsyncBatchAnnotateFilesProgress(
     name: string
