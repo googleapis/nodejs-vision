@@ -2097,7 +2097,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductSets'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductSets.createStream(
       this.innerApiCalls.listProductSets as gax.GaxCall,
@@ -2149,7 +2150,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductSets'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductSets.asyncIterate(
       this.innerApiCalls['listProductSets'] as GaxCall,
@@ -2300,7 +2302,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProducts'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProducts.createStream(
       this.innerApiCalls.listProducts as gax.GaxCall,
@@ -2353,7 +2356,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProducts'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProducts.asyncIterate(
       this.innerApiCalls['listProducts'] as GaxCall,
@@ -2512,7 +2516,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         parent: request.parent || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listReferenceImages'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listReferenceImages.createStream(
       this.innerApiCalls.listReferenceImages as gax.GaxCall,
@@ -2568,7 +2573,8 @@ export class ProductSearchClient {
         parent: request.parent || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listReferenceImages'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listReferenceImages.asyncIterate(
       this.innerApiCalls['listReferenceImages'] as GaxCall,
@@ -2725,7 +2731,8 @@ export class ProductSearchClient {
       gax.routingHeader.fromParams({
         name: request.name || '',
       });
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductsInProductSet'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductsInProductSet.createStream(
       this.innerApiCalls.listProductsInProductSet as gax.GaxCall,
@@ -2778,7 +2785,8 @@ export class ProductSearchClient {
         name: request.name || '',
       });
     options = options || {};
-    const callSettings = new gax.CallSettings(options);
+    const defaultCallSettings = this._defaults['listProductsInProductSet'];
+    const callSettings = defaultCallSettings.merge(options);
     this.initialize();
     return this.descriptors.page.listProductsInProductSet.asyncIterate(
       this.innerApiCalls['listProductsInProductSet'] as GaxCall,
