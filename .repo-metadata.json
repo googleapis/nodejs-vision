@@ -13,5 +13,5 @@
   "default_version": "v1p4beta1",
   "language": "nodejs",
   "api_shortname": "vision",
-  "library_type": ""
+  "library_type": "GAPIC_COMBO"
 }
