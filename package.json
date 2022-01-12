@@ -1,7 +1,7 @@
 {
   "name": "@google-cloud/vision",
   "description": "Google Cloud Vision API client for Node.js",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "license": "Apache-2.0",
   "author": "Google Inc",
   "engines": {
@@ -9,6 +9,7 @@
   },
   "repository": "googleapis/nodejs-vision",
   "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
   "files": [
     "build/protos",
     "build/src"
