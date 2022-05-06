@@ -524,6 +524,16 @@ export namespace google {
                     type AsyncBatchAnnotateFilesCallback = (error: (Error|null), response?: google.longrunning.Operation) => void;
                 }
 
+                /** Likelihood enum. */
+                enum Likelihood {
+                    UNKNOWN = 0,
+                    VERY_UNLIKELY = 1,
+                    UNLIKELY = 2,
+                    POSSIBLE = 3,
+                    LIKELY = 4,
+                    VERY_LIKELY = 5
+                }
+
                 /** Properties of a Feature. */
                 interface IFeature {
 
@@ -836,16 +846,6 @@ export namespace google {
                      * @returns JSON object
                      */
                     public toJSON(): { [k: string]: any };
-                }
-
-                /** Likelihood enum. */
-                enum Likelihood {
-                    UNKNOWN = 0,
-                    VERY_UNLIKELY = 1,
-                    UNLIKELY = 2,
-                    POSSIBLE = 3,
-                    LIKELY = 4,
-                    VERY_LIKELY = 5
                 }
 
                 /** Properties of a FaceAnnotation. */
@@ -1626,24 +1626,6 @@ export namespace google {
 
                     /** SafeSearchAnnotation racy */
                     racy?: (google.cloud.vision.v1.Likelihood|keyof typeof google.cloud.vision.v1.Likelihood|null);
-
-                    /** SafeSearchAnnotation adultConfidence */
-                    adultConfidence?: (number|null);
-
-                    /** SafeSearchAnnotation spoofConfidence */
-                    spoofConfidence?: (number|null);
-
-                    /** SafeSearchAnnotation medicalConfidence */
-                    medicalConfidence?: (number|null);
-
-                    /** SafeSearchAnnotation violenceConfidence */
-                    violenceConfidence?: (number|null);
-
-                    /** SafeSearchAnnotation racyConfidence */
-                    racyConfidence?: (number|null);
-
-                    /** SafeSearchAnnotation nsfwConfidence */
-                    nsfwConfidence?: (number|null);
                 }
 
                 /** Represents a SafeSearchAnnotation. */
@@ -1669,24 +1651,6 @@ export namespace google {
 
                     /** SafeSearchAnnotation racy. */
                     public racy: (google.cloud.vision.v1.Likelihood|keyof typeof google.cloud.vision.v1.Likelihood);
-
-                    /** SafeSearchAnnotation adultConfidence. */
-                    public adultConfidence: number;
-
-                    /** SafeSearchAnnotation spoofConfidence. */
-                    public spoofConfidence: number;
-
-                    /** SafeSearchAnnotation medicalConfidence. */
-                    public medicalConfidence: number;
-
-                    /** SafeSearchAnnotation violenceConfidence. */
-                    public violenceConfidence: number;
-
-                    /** SafeSearchAnnotation racyConfidence. */
-                    public racyConfidence: number;
-
-                    /** SafeSearchAnnotation nsfwConfidence. */
-                    public nsfwConfidence: number;
 
                     /**
                      * Creates a new SafeSearchAnnotation instance using the specified properties.

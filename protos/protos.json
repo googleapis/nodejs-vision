@@ -222,6 +222,16 @@
                         }
                       }
                     },
+                    "Likelihood": {
+                      "values": {
+                        "UNKNOWN": 0,
+                        "VERY_UNLIKELY": 1,
+                        "UNLIKELY": 2,
+                        "POSSIBLE": 3,
+                        "LIKELY": 4,
+                        "VERY_LIKELY": 5
+                      }
+                    },
                     "Feature": {
                       "fields": {
                         "type": {
@@ -279,16 +289,6 @@
                           "type": "ImageSource",
                           "id": 2
                         }
-                      }
-                    },
-                    "Likelihood": {
-                      "values": {
-                        "UNKNOWN": 0,
-                        "VERY_UNLIKELY": 1,
-                        "UNLIKELY": 2,
-                        "POSSIBLE": 3,
-                        "LIKELY": 4,
-                        "VERY_LIKELY": 5
                       }
                     },
                     "FaceAnnotation": {
@@ -527,48 +527,6 @@
                         "racy": {
                           "type": "Likelihood",
                           "id": 9
-                        },
-                        "adultConfidence": {
-                          "type": "float",
-                          "id": 16,
-                          "options": {
-                            "deprecated": true
-                          }
-                        },
-                        "spoofConfidence": {
-                          "type": "float",
-                          "id": 18,
-                          "options": {
-                            "deprecated": true
-                          }
-                        },
-                        "medicalConfidence": {
-                          "type": "float",
-                          "id": 20,
-                          "options": {
-                            "deprecated": true
-                          }
-                        },
-                        "violenceConfidence": {
-                          "type": "float",
-                          "id": 22,
-                          "options": {
-                            "deprecated": true
-                          }
-                        },
-                        "racyConfidence": {
-                          "type": "float",
-                          "id": 24,
-                          "options": {
-                            "deprecated": true
-                          }
-                        },
-                        "nsfwConfidence": {
-                          "type": "float",
-                          "id": 26,
-                          "options": {
-                            "deprecated": true
-                          }
                         }
                       }
                     },
