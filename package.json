@@ -45,7 +45,7 @@
     "precompile": "gts clean"
   },
   "dependencies": {
-    "@google-cloud/promisify": "^2.0.0",
+    "@google-cloud/promisify": "^3.0.0",
     "google-gax": "^2.24.1",
     "is": "^3.3.0"
   },
