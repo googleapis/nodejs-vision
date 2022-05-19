@@ -53,7 +53,7 @@ async function getProductSetOrFalse(productSetPath) {
   }
 }
 
-describe.only('product sets', () => {
+describe('product sets', () => {
   before(async () => {
     // Create a test product set for each test
     await productSearch.createProductSet({
