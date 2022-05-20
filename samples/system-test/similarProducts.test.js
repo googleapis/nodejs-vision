@@ -83,7 +83,7 @@ describe('similar products', () => {
     assert.match(output, /Product id: indexed_product_id_for_testing_2/);
   });
 
-  it('should check if similar product exists to one provided in GCS file with filter', async () => {
+  it('', async () => {
     const output = execSync(
       `${cmd}/getSimilarProductsGcs "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[1]}"`
     );
