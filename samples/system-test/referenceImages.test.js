@@ -15,7 +15,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision').v1;
 const {assert} = require('chai');
 const {describe, it, before, after} = require('mocha');
 const cp = require('child_process');
@@ -25,27 +25,31 @@ const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 const productSearchClient = new vision.ProductSearchClient();
 const cmd = 'node productSearch';
 
-// Shared fixture data for product tests
-const testProduct = {
-  projectId: process.env.GCLOUD_PROJECT,
-  location: 'us-west1',
-  productId: 'test_product_ref_image_id_1',
-  productDisplayName: 'test_product_display_name_1',
-  productCategory: 'homegoods',
-  productReferenceImageId: `ReferenceImage${uuid.v4()}`,
-  productImageUri: 'gs://cloud-samples-data/vision/product_search/shoes_1.jpg',
-};
-testProduct.productPath = productSearchClient.productPath(
-  testProduct.projectId,
-  testProduct.location,
-  testProduct.productId
-);
-testProduct.createdProductPaths = [];
+let testProduct;
 
 describe('reference images', () => {
+  let projectId;
   before(async () => {
-    // Create a test product for each test
+    // Shared fixture data for product tests
+    testProduct = {
+      projectId,
+      location: 'us-west1',
+      productId: 'test_product_ref_image_id_1',
+      productDisplayName: 'test_product_display_name_1',
+      productCategory: 'homegoods',
+      productReferenceImageId: `ReferenceImage${uuid.v4()}`,
+      productImageUri:
+        'gs://cloud-samples-data/vision/product_search/shoes_1.jpg',
+    };
+    testProduct.productPath = productSearchClient.productPath(
+      testProduct.projectId,
+      testProduct.location,
+      testProduct.productId
+    );
+    testProduct.createdProductPaths = [];
+    projectId = await productSearchClient.getProjectId();
 
+    // Create a test product for each test
     await productSearchClient.createProduct({
       parent: productSearchClient.locationPath(
         testProduct.projectId,

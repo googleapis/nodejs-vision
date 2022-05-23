@@ -19,7 +19,7 @@
 // specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable and use
 // the project specified by the GCLOUD_PROJECT environment variable. See
 // https://googlecloudplatform.github.io/gcloud-node/#/docs/google-cloud/latest/guides/authentication
-const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision').v1;
 // [END vision_face_detection_tutorial_imports]
 // [START vision_face_detection_tutorial_client]
 // Creates a client

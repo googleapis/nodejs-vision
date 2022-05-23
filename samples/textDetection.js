@@ -17,7 +17,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const {promisify} = require('util');
-const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision').v1;
 const natural = require('natural');
 const redis = require('redis');
 

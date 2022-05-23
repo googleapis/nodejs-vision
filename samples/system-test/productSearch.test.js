@@ -15,7 +15,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision').v1;
 const {assert} = require('chai');
 const {describe, it, before, after} = require('mocha');
 const cp = require('child_process');
@@ -25,28 +25,32 @@ const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 const productSearchClient = new vision.ProductSearchClient();
 const cmd = 'node productSearch';
 
-// Shared fixture data for product tests
-const testProductSet = {
-  projectId: process.env.GCLOUD_PROJECT,
-  location: 'us-west1',
-  productCategory: 'homegoods',
-  productId: `test_product_id${uuid.v4()}`,
-  productDisplayName: 'test_product_display_name_1',
-  productSetId: `test_product_set_id${uuid.v4()}`,
-  productSetDisplayName: 'test_product_set_display_name_1',
-};
-
-testProductSet.productSetPath = productSearchClient.productSetPath(
-  testProductSet.projectId,
-  testProductSet.location,
-  testProductSet.productSetId
-);
-
-testProductSet.createdProductPaths = [];
-testProductSet.createdProductSetPaths = [];
-
 describe('product search', () => {
+  let projectId;
+  let testProductSet;
+  testProductSet.createdProductPaths = [];
+  testProductSet.createdProductSetPaths = [];
+
   before(async () => {
+    projectId = await productSearchClient.getProjectId();
+
+    // Shared fixture data for product tests
+    const testProductSet = {
+      projectId,
+      location: 'us-west1',
+      productCategory: 'homegoods',
+      productId: `test_product_id${uuid.v4()}`,
+      productDisplayName: 'test_product_display_name_1',
+      productSetId: `test_product_set_id${uuid.v4()}`,
+      productSetDisplayName: 'test_product_set_display_name_1',
+    };
+
+    testProductSet.productSetPath = productSearchClient.productSetPath(
+      testProductSet.projectId,
+      testProductSet.location,
+      testProductSet.productSetId
+    );
+
     // Create a test product set for each test
     await productSearchClient.createProduct({
       parent: productSearchClient.locationPath(

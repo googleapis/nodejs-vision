@@ -24,20 +24,7 @@ const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
 const productSearch = new vision.ProductSearchClient();
 const cmd = 'node productSearch';
-
-// Shared fixture data for product tests
-const testProductSet = {
-  projectId: process.env.GCLOUD_PROJECT,
-  location: 'us-west1',
-  productSetId: `test_product_set_id${uuid.v4()}`,
-  productSetDisplayName: 'test_product_set_display_name_1',
-};
-testProductSet.productSetPath = productSearch.productSetPath(
-  testProductSet.projectId,
-  testProductSet.location,
-  testProductSet.productSetId
-);
-testProductSet.createdProductSetPaths = [];
+let testProductSet;
 
 // Helper function: returns product set if exists else false
 async function getProductSetOrFalse(productSetPath) {
@@ -54,7 +41,10 @@ async function getProductSetOrFalse(productSetPath) {
 }
 
 describe('product sets', () => {
+  let projectId;
+
   before(async () => {
+    projectId = await productSearch.getProjectId();
     // Create a test product set for each test
     await productSearch.createProductSet({
       parent: productSearch.locationPath(
@@ -69,6 +59,20 @@ describe('product sets', () => {
     testProductSet.createdProductSetPaths.push(
       testProductSet.createdProductSetPaths
     );
+
+    // Shared fixture data for product tests
+    testProductSet = {
+      projectId,
+      location: 'us-west1',
+      productSetId: `test_product_set_id${uuid.v4()}`,
+      productSetDisplayName: 'test_product_set_display_name_1',
+    };
+    testProductSet.productSetPath = productSearch.productSetPath(
+      testProductSet.projectId,
+      testProductSet.location,
+      testProductSet.productSetId
+    );
+    testProductSet.createdProductSetPaths = [];
   });
 
   after(async () => {
