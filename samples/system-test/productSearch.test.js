@@ -28,8 +28,6 @@ const cmd = 'node productSearch';
 describe('product search', () => {
   let projectId;
   let testProductSet;
-  testProductSet.createdProductPaths = [];
-  testProductSet.createdProductSetPaths = [];
 
   before(async () => {
     projectId = await productSearchClient.getProjectId();
