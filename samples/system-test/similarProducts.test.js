@@ -16,7 +16,7 @@
 
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {describe, it, before} = require('mocha');
+const {describe, it, beforeEach} = require('mocha');
 const cp = require('child_process');
 const path = require('path');
 
@@ -33,7 +33,7 @@ let testSimilarProducts;
 
 describe('similar products', () => {
   let projectId;
-  before(async () => {
+  beforeEach(async () => {
     projectId = await productSearch.getProjectId();
 
     // Shared fixture data for product tests
