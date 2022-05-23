@@ -15,7 +15,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const vision = require('@google-cloud/vision').v1;
+const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
 const {describe, it, before, after} = require('mocha');
 const cp = require('child_process');

@@ -17,7 +17,7 @@
 const {assert} = require('chai');
 const {describe, it, before} = require('mocha');
 const cp = require('child_process');
-const vision = require('@google-cloud/vision').v1;
+const vision = require('@google-cloud/vision');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
