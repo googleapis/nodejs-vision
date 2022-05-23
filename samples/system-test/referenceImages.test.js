@@ -17,7 +17,7 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {describe, it, before, after} = require('mocha');
+const {describe, it, beforeEach, afterEach} = require('mocha');
 const cp = require('child_process');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
@@ -29,7 +29,7 @@ let testProduct;
 
 describe('reference images', () => {
   let projectId;
-  before(async () => {
+  beforeEach(async () => {
     // Shared fixture data for product tests
     testProduct = {
       projectId,
@@ -64,7 +64,7 @@ describe('reference images', () => {
     testProduct.createdProductPaths.push(testProduct.productPath);
   });
 
-  after(async () => {
+  afterEach(async () => {
     // Delete products after each test
     testProduct.createdProductPaths.forEach(async path => {
       try {

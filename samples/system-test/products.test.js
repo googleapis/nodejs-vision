@@ -17,7 +17,7 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {describe, it, before, after} = require('mocha');
+const {describe, it, beforeEach, afterEach} = require('mocha');
 const cp = require('child_process');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
@@ -43,7 +43,7 @@ async function getProductOrFalse(productPath) {
 describe('products', () => {
   let projectId;
 
-  before(async () => {
+  beforeEach(async () => {
     projectId = await productSearch.getProjectId();
 
     // Create a test product set for each test
@@ -78,7 +78,7 @@ describe('products', () => {
     testProduct.createdProductPaths = [];
   });
 
-  after(async () => {
+  afterEach(async () => {
     // Delete products sets after each test
     testProduct.createdProductPaths.forEach(async path => {
       try {
