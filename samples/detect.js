@@ -17,7 +17,7 @@
 async function detectFaces(fileName) {
   // [START vision_face_detection]
   // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision');
+  const vision = require('@google-cloud/vision').v1;
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();

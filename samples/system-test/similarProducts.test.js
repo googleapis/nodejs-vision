@@ -14,9 +14,9 @@
 
 'use strict';
 
-const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision').v1;
 const {assert} = require('chai');
-const {describe, it} = require('mocha');
+const {describe, it, before} = require('mocha');
 const cp = require('child_process');
 const path = require('path');
 
@@ -29,22 +29,28 @@ const gcsUri = 'gs://cloud-samples-data/vision/product_search/shoes_1.jpg';
 
 const productSearch = new vision.ProductSearchClient();
 
-// Shared fixture data for product tests
-//Need to have a product set already imported and indexed
-// (gs://nodejs-docs-samples/product-search/indexed_product_sets.csv)
-const testSimilarProducts = {
-  projectId: process.env.GCLOUD_PROJECT,
-  location: 'us-west1',
-  productSetId: 'indexed_product_set_id_for_testing',
-  productCategory: 'apparel',
-};
-testSimilarProducts.productPath = productSearch.productSetPath(
-  testSimilarProducts.projectId,
-  testSimilarProducts.location,
-  testSimilarProducts.productSetId
-);
+let testSimilarProducts;
 
 describe('similar products', () => {
+  let projectId;
+  before(async () => {
+    projectId = await productSearch.getProjectId();
+
+    // Shared fixture data for product tests
+    //Need to have a product set already imported and indexed
+    // (gs://nodejs-docs-samples/product-search/indexed_product_sets.csv)
+    testSimilarProducts = {
+      projectId,
+      location: 'us-west1',
+      productSetId: 'indexed_product_set_id_for_testing',
+      productCategory: 'apparel',
+    };
+    testSimilarProducts.productPath = productSearch.productSetPath(
+      testSimilarProducts.projectId,
+      testSimilarProducts.location,
+      testSimilarProducts.productSetId
+    );
+  });
   it('should check if similar product exists to one provided in local file with no filter', async () => {
     const output = execSync(
       `${cmd}/getSimilarProducts "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${localPath}" "${filter[0]}"`
@@ -83,7 +89,7 @@ describe('similar products', () => {
     assert.match(output, /Product id: indexed_product_id_for_testing_2/);
   });
 
-  it('', async () => {
+  it('should check if similar product exists to one provided in GCS file with filter', async () => {
     const output = execSync(
       `${cmd}/getSimilarProductsGcs "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[1]}"`
     );
