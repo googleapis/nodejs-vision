@@ -22,7 +22,7 @@
 function main(fileName) {
   // [START vision_face_detection]
   // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision').v1;
+  const vision = require('@google-cloud/vision');
 
   // Creates a client
   const client = new vision.ImageAnnotatorClient();

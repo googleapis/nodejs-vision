@@ -22,7 +22,7 @@
 function main() {
   // [START vision_set_endpoint]
   // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision').v1;
+  const vision = require('@google-cloud/vision');
 
   async function setEndpoint() {
     // Specifies the location of the api endpoint

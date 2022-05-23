@@ -24,7 +24,7 @@ function main(
   // const gcsSourceUri = 'gs://cloud-samples-data/vision/document_understanding/kafka.pdf';
 
   // Imports the Google Cloud client libraries
-  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1;
+  const {ImageAnnotatorClient} = require('@google-cloud/vision');
 
   // Instantiates a client
   const client = new ImageAnnotatorClient();

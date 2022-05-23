@@ -26,7 +26,7 @@ function main(
   // const outputUri = 'gs://YOUR_BUCKET_ID/path/to/save/results/';
 
   // Imports the Google Cloud client libraries
-  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1;
+  const {ImageAnnotatorClient} = require('@google-cloud/vision');
 
   // Instantiates a client
   const client = new ImageAnnotatorClient();
