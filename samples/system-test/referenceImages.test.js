@@ -29,7 +29,7 @@ let testProduct;
 
 describe('reference images', () => {
   let projectId;
-  beforeEach(async () => {
+  before(async () => {
     // Shared fixture data for product tests
     testProduct = {
       projectId,
@@ -64,7 +64,7 @@ describe('reference images', () => {
     testProduct.createdProductPaths.push(testProduct.productPath);
   });
 
-  afterEach(async () => {
+  after(async () => {
     // Delete products after each test
     testProduct.createdProductPaths.forEach(async path => {
       try {

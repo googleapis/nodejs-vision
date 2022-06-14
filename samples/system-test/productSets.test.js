@@ -43,7 +43,7 @@ async function getProductSetOrFalse(productSetPath) {
 describe('product sets', () => {
   let projectId;
 
-  beforeEach(async () => {
+  before(async () => {
     projectId = await productSearch.getProjectId();
     // Create a test product set for each test
     await productSearch.createProductSet({
@@ -75,7 +75,7 @@ describe('product sets', () => {
     testProductSet.createdProductSetPaths = [];
   });
 
-  afterEach(async () => {
+  after(async () => {
     // Delete products sets after each test
     testProductSet.createdProductSetPaths.forEach(async path => {
       try {
