@@ -29,7 +29,7 @@ describe('product search', () => {
   let projectId;
   let testProductSet;
 
-  beforeEach(async () => {
+  before(async () => {
     projectId = await productSearchClient.getProjectId();
 
     // Shared fixture data for product tests
@@ -78,7 +78,7 @@ describe('product search', () => {
     );
   });
 
-  afterEach(async () => {
+  after(async () => {
     // Delete products sets after each test
     testProductSet.createdProductSetPaths.forEach(async path => {
       try {

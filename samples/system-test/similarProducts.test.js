@@ -33,7 +33,7 @@ let testSimilarProducts;
 
 describe('similar products', () => {
   let projectId;
-  beforeEach(async () => {
+  before(async () => {
     projectId = await productSearch.getProjectId();
 
     // Shared fixture data for product tests
