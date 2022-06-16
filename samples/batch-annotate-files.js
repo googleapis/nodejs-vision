@@ -22,7 +22,7 @@ function main(fileName = 'path/to/your/file.pdf') {
   // const fileName = 'path/to/your/file.pdf';
 
   // Imports the Google Cloud client libraries
-  const {ImageAnnotatorClient} = require('@google-cloud/vision');
+  const {ImageAnnotatorClient} = require('@google-cloud/vision').v1;
   const fs = require('fs').promises;
 
   // Instantiates a client
