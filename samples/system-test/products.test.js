@@ -45,21 +45,6 @@ describe('products', () => {
 
   before(async () => {
     projectId = await productSearch.getProjectId();
-
-    // Create a test product set for each test
-    await productSearch.createProduct({
-      parent: productSearch.locationPath(
-        testProduct.projectId,
-        testProduct.location
-      ),
-      productId: testProduct.productId,
-      product: {
-        displayName: testProduct.productDisplayName,
-        productCategory: testProduct.productCategory,
-      },
-    });
-    testProduct.createdProductPaths.push(testProduct.productPath);
-
     // Shared fixture data for product tests
     testProduct = {
       projectId,
@@ -76,6 +61,20 @@ describe('products', () => {
       testProduct.productId
     );
     testProduct.createdProductPaths = [];
+
+    // Create a test product set for each test
+    await productSearch.createProduct({
+      parent: productSearch.locationPath(
+        testProduct.projectId,
+        testProduct.location
+      ),
+      productId: testProduct.productId,
+      product: {
+        displayName: testProduct.productDisplayName,
+        productCategory: testProduct.productCategory,
+      },
+    });
+    testProduct.createdProductPaths.push(testProduct.productPath);
   });
 
   after(async () => {

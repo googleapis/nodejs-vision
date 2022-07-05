@@ -31,7 +31,8 @@ const productSearch = new vision.ProductSearchClient();
 
 let testSimilarProducts;
 
-describe('similar products', () => {
+// Refs: https://github.com/googleapis/nodejs-vision/issues/1025
+describe.skip('similar products', () => {
   let projectId;
   before(async () => {
     projectId = await productSearch.getProjectId();

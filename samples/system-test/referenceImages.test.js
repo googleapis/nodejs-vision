@@ -30,6 +30,7 @@ let testProduct;
 describe('reference images', () => {
   let projectId;
   before(async () => {
+    projectId = await productSearchClient.getProjectId();
     // Shared fixture data for product tests
     testProduct = {
       projectId,
@@ -47,7 +48,6 @@ describe('reference images', () => {
       testProduct.productId
     );
     testProduct.createdProductPaths = [];
-    projectId = await productSearchClient.getProjectId();
 
     // Create a test product for each test
     await productSearchClient.createProduct({

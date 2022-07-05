@@ -45,6 +45,19 @@ describe('product sets', () => {
 
   before(async () => {
     projectId = await productSearch.getProjectId();
+    // Shared fixture data for product tests
+    testProductSet = {
+      projectId,
+      location: 'us-west1',
+      productSetId: `test_product_set_id${uuid.v4()}`,
+      productSetDisplayName: 'test_product_set_display_name_1',
+    };
+    testProductSet.productSetPath = productSearch.productSetPath(
+      testProductSet.projectId,
+      testProductSet.location,
+      testProductSet.productSetId
+    );
+    testProductSet.createdProductSetPaths = [];
     // Create a test product set for each test
     await productSearch.createProductSet({
       parent: productSearch.locationPath(
@@ -59,20 +72,6 @@ describe('product sets', () => {
     testProductSet.createdProductSetPaths.push(
       testProductSet.createdProductSetPaths
     );
-
-    // Shared fixture data for product tests
-    testProductSet = {
-      projectId,
-      location: 'us-west1',
-      productSetId: `test_product_set_id${uuid.v4()}`,
-      productSetDisplayName: 'test_product_set_display_name_1',
-    };
-    testProductSet.productSetPath = productSearch.productSetPath(
-      testProductSet.projectId,
-      testProductSet.location,
-      testProductSet.productSetId
-    );
-    testProductSet.createdProductSetPaths = [];
   });
 
   after(async () => {

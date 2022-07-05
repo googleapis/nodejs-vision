@@ -25,7 +25,8 @@ const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 const productSearchClient = new vision.ProductSearchClient();
 const cmd = 'node productSearch';
 
-describe('product search', () => {
+// Refs: https://github.com/googleapis/nodejs-vision/issues/1025
+describe.skip('product search', () => {
   let projectId;
   let testProductSet;
 
