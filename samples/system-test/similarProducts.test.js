@@ -48,7 +48,6 @@ describe('similar products', () => {
       testSimilarProducts.location,
       testSimilarProducts.productSetId
     );
-    testSimilarProducts.projectId = projectId;
   });
   it('should check if similar product exists to one provided in local file with no filter', async () => {
     const output = execSync(
