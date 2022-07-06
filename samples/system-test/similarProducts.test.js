@@ -48,11 +48,10 @@ describe('similar products', () => {
       testSimilarProducts.location,
       testSimilarProducts.productSetId
     );
-    testSimilarProducts.projectId = projectId;
   });
   it('should check if similar product exists to one provided in local file with no filter', async () => {
     const output = execSync(
-      `${cmd}/getSimilarProducts "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${localPath}" "${filter[0]}"`
+      `${cmd}/getSimilarProducts "${projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${localPath}" "${filter[0]}"`
     );
     assert.match(output, /Similar product information:/);
     assert.match(
@@ -65,7 +64,7 @@ describe('similar products', () => {
 
   it('should check if similar product exists to one provided in local file with filter', async () => {
     const output = execSync(
-      `${cmd}/getSimilarProducts "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${localPath}" "${filter[1]}"`
+      `${cmd}/getSimilarProducts "${projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${localPath}" "${filter[1]}"`
     );
     assert.match(output, /Similar product information:/);
     assert.match(
@@ -77,7 +76,7 @@ describe('similar products', () => {
 
   it('should check if similar product exists to one provided in GCS file with no filter', async () => {
     const output = execSync(
-      `${cmd}/getSimilarProductsGcs "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[0]}"`
+      `${cmd}/getSimilarProductsGcs "${projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[0]}"`
     );
     assert.match(output, /Similar product information:/);
     assert.match(
@@ -90,7 +89,7 @@ describe('similar products', () => {
 
   it('should check if similar product exists to one provided in GCS file with filter', async () => {
     const output = execSync(
-      `${cmd}/getSimilarProductsGcs "${testSimilarProducts.projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[1]}"`
+      `${cmd}/getSimilarProductsGcs "${projectId}" "${testSimilarProducts.location}" "${testSimilarProducts.productSetId}" "${testSimilarProducts.productCategory}" "${gcsUri}" "${filter[1]}"`
     );
     assert.match(output, /Similar product information:/);
     assert.match(
