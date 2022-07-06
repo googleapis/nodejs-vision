@@ -46,7 +46,7 @@ describe('detect v1 p4 beta1', () => {
     await bucket.delete();
   });
 
-  it('', async () => {
+  it('should annotate the remote landmark.jpg sample', async () => {
     const output = execSync(
       `${cmd} gs://${bucketName}/${files[1].name} gs://${bucketName}/out/`
     );

@@ -22,7 +22,7 @@ const cp = require('child_process');
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
 describe('Text Detection', () => {
-  it.only('should detect texts', async () => {
+  it('should detect texts', async () => {
     const inputDir = path.join(__dirname, '../resources');
     let output;
     try {
