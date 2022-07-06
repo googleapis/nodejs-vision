@@ -44,10 +44,11 @@ describe('similar products', () => {
       productCategory: 'apparel',
     };
     testSimilarProducts.productPath = productSearch.productSetPath(
-      testSimilarProducts.projectId,
+      projectId,
       testSimilarProducts.location,
       testSimilarProducts.productSetId
     );
+    testSimilarProducts.projectId = projectId;
   });
   it('should check if similar product exists to one provided in local file with no filter', async () => {
     const output = execSync(
