@@ -30,6 +30,7 @@ let testProduct;
 describe('reference images', () => {
   let projectId;
   before(async () => {
+    projectId = await productSearchClient.getProjectId();
     // Shared fixture data for product tests
     testProduct = {
       projectId,

@@ -22,10 +22,11 @@ const cp = require('child_process');
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
 describe('Text Detection', () => {
-  it('should detect texts', async () => {
+  it.only('should detect texts', async () => {
     const inputDir = path.join(__dirname, '../resources');
+    let output;
     try {
-      execSync(`node textDetection analyze ${inputDir}`);
+      output = execSync(`node textDetection analyze ${inputDir}`);
     } catch (err) {
       if (err.stderr.match(/connect ECONNREFUSED/)) {
         console.error(
@@ -36,7 +37,8 @@ describe('Text Detection', () => {
       throw new Error(err.stderr);
     }
 
-    const stdout = execSync('node textDetection lookup sunbeams');
+    console.log(output);
+    const stdout = execSync('node ./textDetection.js lookup sunbeams');
     assert.match(stdout, /sunbeamkitties/);
   });
 });

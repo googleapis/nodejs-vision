@@ -26,8 +26,6 @@ const cmd = 'node productSearch';
 
 const productSearch = new vision.ProductSearchClient();
 
-let testProduct;
-
 // Helper function: returns product if exists else false
 async function getProductOrFalse(productPath) {
   try {
@@ -42,24 +40,10 @@ async function getProductOrFalse(productPath) {
 
 describe('products', () => {
   let projectId;
+  let testProduct;
 
   before(async () => {
     projectId = await productSearch.getProjectId();
-
-    // Create a test product set for each test
-    await productSearch.createProduct({
-      parent: productSearch.locationPath(
-        testProduct.projectId,
-        testProduct.location
-      ),
-      productId: testProduct.productId,
-      product: {
-        displayName: testProduct.productDisplayName,
-        productCategory: testProduct.productCategory,
-      },
-    });
-    testProduct.createdProductPaths.push(testProduct.productPath);
-
     // Shared fixture data for product tests
     testProduct = {
       projectId,
@@ -71,11 +55,24 @@ describe('products', () => {
       productValue: 'myValue',
     };
     testProduct.productPath = productSearch.productPath(
-      testProduct.projectId,
+      projectId,
       testProduct.location,
       testProduct.productId
     );
+
     testProduct.createdProductPaths = [];
+    // Create a test product set for each test
+    await productSearch.createProduct({
+      parent: productSearch.locationPath(projectId, testProduct.location),
+      productId: testProduct.productId,
+      product: {
+        displayName: testProduct.productDisplayName,
+        productCategory: testProduct.productCategory,
+      },
+    });
+
+    testProduct.createdProductPaths.push(testProduct.productPath);
+    testProduct.projectId = projectId;
   });
 
   after(async () => {

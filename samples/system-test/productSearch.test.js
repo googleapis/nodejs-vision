@@ -17,7 +17,7 @@
 const uuid = require('uuid');
 const vision = require('@google-cloud/vision');
 const {assert} = require('chai');
-const {describe, it, before, after} = require('mocha');
+const {describe, it, beforeEach, afterEach} = require('mocha');
 const cp = require('child_process');
 
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
@@ -27,13 +27,14 @@ const cmd = 'node productSearch';
 
 describe('product search', () => {
   let projectId;
-  let testProductSet;
+  let testProductSet = {};
+  testProductSet.createdProductSetPaths = [];
 
-  before(async () => {
+  beforeEach(async () => {
     projectId = await productSearchClient.getProjectId();
 
     // Shared fixture data for product tests
-    const testProductSet = {
+    testProductSet = {
       projectId,
       location: 'us-west1',
       productCategory: 'homegoods',
@@ -49,6 +50,9 @@ describe('product search', () => {
       testProductSet.productSetId
     );
 
+    testProductSet.createdProductPaths = [];
+    testProductSet.createdProductSetPaths = [];
+
     // Create a test product set for each test
     await productSearchClient.createProduct({
       parent: productSearchClient.locationPath(
@@ -61,7 +65,9 @@ describe('product search', () => {
         productCategory: testProductSet.productCategory,
       },
     });
-    testProductSet.createdProductPaths.push(testProductSet.productPath);
+    testProductSet.createdProductSetPaths.push(
+      testProductSet.createdProductSetPaths
+    );
 
     await productSearchClient.createProductSet({
       parent: productSearchClient.locationPath(
@@ -76,9 +82,10 @@ describe('product search', () => {
     testProductSet.createdProductSetPaths.push(
       testProductSet.createdProductSetPaths
     );
+    testProductSet.projectId = projectId;
   });
 
-  after(async () => {
+  afterEach(async () => {
     // Delete products sets after each test
     testProductSet.createdProductSetPaths.forEach(async path => {
       try {

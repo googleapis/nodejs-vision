@@ -38,17 +38,6 @@ describe('detect v1 p1 beta1', () => {
     assert.match(output, /Word confidence:/);
   });
 
-  it('should detect safe search properties from image file', async () => {
-    const output = execSync(`${cmd} safe-search ${files[1].localPath}`);
-    assert.match(output, /VERY_LIKELY/);
-    assert.match(output, /Racy:/);
-  });
-
-  it('should detect web entities including best guess labels', async () => {
-    const output = execSync(`${cmd} web ${files[2].localPath}`);
-    assert.match(output, /Best guess label: palace of fine arts/);
-  });
-
   it('should detect web entities using geographical metadata', async () => {
     const output = execSync(`${cmd} web-entities-geo ${files[3].localPath}`);
     assert.match(output, /Score:/);

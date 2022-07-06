@@ -45,6 +45,7 @@ class Index {
 
     this.tokenClient = redis
       .createClient(PORT, HOST, {
+        legacyMode: 'on',
         db: TOKEN_DB,
       })
       .on('error', err => {
@@ -53,6 +54,7 @@ class Index {
       });
     this.docsClient = redis
       .createClient(PORT, HOST, {
+        legacyMode: 'on',
         db: DOCS_DB,
       })
       .on('error', err => {
@@ -116,8 +118,16 @@ class Index {
    * @returns {Promise<boolean>}
    */
   async documentIsProcessed(filename) {
-    const get = promisify(this.docsClient.get).bind(this.docsClient);
-    const value = await get(filename);
+    // console.log('is doc processed a ');
+    // console.log(this.docsClient.get);
+    // console.log('is doc proessed b');
+    // console.log(this.docsClient);
+    // const docsClient = this.docsClient;
+    // await this.docsClient.connect();
+    // const get = promisify(this.docsClient.get).bind(this.docsClient);
+    // console.log('get');
+    // console.log(get.toString());
+    const value = await this.docsClient.get(filename);
     if (value) {
       console.log(`${filename} already added to index.`);
       return true;
@@ -244,11 +254,18 @@ async function main(inputDir) {
         })
       )
     ).filter(f => !!f);
+    console.log('banana');
+    console.log(allImageFiles);
 
+    await index.docsClient.connect();
+    await index.tokenClient.connect();
+    await index.tokenClient.ping();
+    await index.docsClient.ping();
     // Figure out which files have already been processed
     let imageFilesToProcess = (
       await Promise.all(
         allImageFiles.map(async filename => {
+          console.log(`filename: ${filename}`);
           const processed = await index.documentIsProcessed(filename);
           if (!processed) {
             // Forward this filename on for further processing
@@ -275,7 +292,7 @@ async function main(inputDir) {
   } catch (e) {
     console.error(e);
   }
-  index.quit();
+  // index.quit();
 }
 
 const usage =
