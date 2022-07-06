@@ -53,7 +53,6 @@ describe('product search', () => {
     testProductSet.createdProductPaths = [];
     testProductSet.createdProductSetPaths = [];
 
-
     // Create a test product set for each test
     await productSearchClient.createProduct({
       parent: productSearchClient.locationPath(
