@@ -269,9 +269,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductSetRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductSetRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -299,9 +300,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductSetRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductSetRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -345,9 +347,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductSetRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductSetRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -375,9 +378,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductSetRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductSetRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -395,9 +399,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -425,9 +430,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -471,9 +477,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -501,9 +508,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -522,10 +530,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductSetRequest()
       );
       request.productSet ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductSetRequest', [
-        'productSet',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductSetRequest',
+        ['productSet', 'name']
+      );
       request.productSet.name = defaultValue1;
       const expectedHeaderRequestParams = `product_set.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -554,10 +562,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductSetRequest()
       );
       request.productSet ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductSetRequest', [
-        'productSet',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductSetRequest',
+        ['productSet', 'name']
+      );
       request.productSet.name = defaultValue1;
       const expectedHeaderRequestParams = `product_set.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -602,10 +610,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductSetRequest()
       );
       request.productSet ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductSetRequest', [
-        'productSet',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductSetRequest',
+        ['productSet', 'name']
+      );
       request.productSet.name = defaultValue1;
       const expectedHeaderRequestParams = `product_set.name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -634,10 +642,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductSetRequest()
       );
       request.productSet ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductSetRequest', [
-        'productSet',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductSetRequest',
+        ['productSet', 'name']
+      );
       request.productSet.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -655,9 +663,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -685,9 +694,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -731,9 +741,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -761,9 +772,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductSetRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductSetRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductSetRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -781,9 +793,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -811,9 +824,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -857,9 +871,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -887,9 +902,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateProductRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateProductRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -907,7 +923,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductRequest', ['name']);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -935,7 +954,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductRequest', ['name']);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -979,7 +1001,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductRequest', ['name']);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1007,7 +1032,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetProductRequest', ['name']);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1026,10 +1054,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductRequest()
       );
       request.product ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductRequest', [
-        'product',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductRequest',
+        ['product', 'name']
+      );
       request.product.name = defaultValue1;
       const expectedHeaderRequestParams = `product.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1058,10 +1086,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductRequest()
       );
       request.product ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductRequest', [
-        'product',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductRequest',
+        ['product', 'name']
+      );
       request.product.name = defaultValue1;
       const expectedHeaderRequestParams = `product.name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1106,10 +1134,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductRequest()
       );
       request.product ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductRequest', [
-        'product',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductRequest',
+        ['product', 'name']
+      );
       request.product.name = defaultValue1;
       const expectedHeaderRequestParams = `product.name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1138,10 +1166,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.UpdateProductRequest()
       );
       request.product ??= {};
-      const defaultValue1 = getTypeDefaultValue('UpdateProductRequest', [
-        'product',
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.UpdateProductRequest',
+        ['product', 'name']
+      );
       request.product.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1159,9 +1187,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1189,9 +1218,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1235,9 +1265,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1265,9 +1296,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteProductRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteProductRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteProductRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1285,9 +1317,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateReferenceImageRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1316,9 +1349,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateReferenceImageRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1362,9 +1396,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateReferenceImageRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1392,9 +1427,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('CreateReferenceImageRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.CreateReferenceImageRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1412,9 +1448,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1443,9 +1480,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1489,9 +1527,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1519,9 +1558,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('DeleteReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.DeleteReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1539,9 +1579,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1569,9 +1610,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1615,9 +1657,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -1645,9 +1688,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.GetReferenceImageRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('GetReferenceImageRequest', [
-        'name',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.GetReferenceImageRequest',
+        ['name']
+      );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -1666,7 +1710,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AddProductToProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1698,7 +1742,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AddProductToProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1745,7 +1789,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AddProductToProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1779,7 +1823,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AddProductToProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.AddProductToProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1803,7 +1847,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'RemoveProductFromProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1835,7 +1879,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'RemoveProductFromProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1882,7 +1926,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'RemoveProductFromProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1916,7 +1960,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'RemoveProductFromProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.RemoveProductFromProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -1939,9 +1983,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ImportProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ImportProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ImportProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -1971,9 +2016,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ImportProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ImportProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ImportProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -2024,9 +2070,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ImportProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ImportProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ImportProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2054,9 +2101,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ImportProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ImportProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ImportProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2129,9 +2177,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.PurgeProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('PurgeProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.PurgeProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -2161,9 +2210,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.PurgeProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('PurgeProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.PurgeProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -2214,9 +2264,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.PurgeProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('PurgeProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.PurgeProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2244,9 +2295,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.PurgeProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('PurgeProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.PurgeProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2319,9 +2371,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2357,9 +2410,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2411,9 +2465,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2441,9 +2496,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2500,9 +2556,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2548,9 +2605,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2596,9 +2654,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductSetsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductSetsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductSetsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2638,9 +2697,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2676,9 +2736,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2730,9 +2791,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2760,9 +2822,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2819,9 +2882,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2869,9 +2933,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2917,9 +2982,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListProductsRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListProductsRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListProductsRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -2958,9 +3024,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -2997,9 +3064,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -3053,9 +3121,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -3083,9 +3152,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -3143,9 +3213,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -3192,9 +3263,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = [
@@ -3241,9 +3313,10 @@ describe('v1p4beta1.ProductSearchClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('ListReferenceImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1p4beta1.ListReferenceImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -3284,7 +3357,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3324,7 +3397,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3379,7 +3452,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3413,7 +3486,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3479,7 +3552,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3534,7 +3607,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;
@@ -3587,7 +3660,7 @@ describe('v1p4beta1.ProductSearchClient', () => {
         new protos.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'ListProductsInProductSetRequest',
+        '.google.cloud.vision.v1p4beta1.ListProductsInProductSetRequest',
         ['name']
       );
       request.name = defaultValue1;

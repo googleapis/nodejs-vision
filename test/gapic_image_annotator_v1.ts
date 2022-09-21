@@ -206,9 +206,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -237,9 +238,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -283,9 +285,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -313,9 +316,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateImagesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateImagesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateImagesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -333,9 +337,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateFilesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateFilesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateFilesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -364,9 +369,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateFilesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateFilesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateFilesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedResponse = generateSampleMessage(
@@ -410,9 +416,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateFilesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateFilesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateFilesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1}`;
       const expectedError = new Error('expected');
@@ -440,9 +447,10 @@ describe('v1.ImageAnnotatorClient', () => {
       const request = generateSampleMessage(
         new protos.google.cloud.vision.v1.BatchAnnotateFilesRequest()
       );
-      const defaultValue1 = getTypeDefaultValue('BatchAnnotateFilesRequest', [
-        'parent',
-      ]);
+      const defaultValue1 = getTypeDefaultValue(
+        '.google.cloud.vision.v1.BatchAnnotateFilesRequest',
+        ['parent']
+      );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
       client.close();
@@ -461,7 +469,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateImagesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -494,7 +502,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateImagesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -548,7 +556,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateImagesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -582,7 +590,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateImagesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -659,7 +667,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateFilesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -692,7 +700,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateFilesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -746,7 +754,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateFilesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
@@ -780,7 +788,7 @@ describe('v1.ImageAnnotatorClient', () => {
         new protos.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest()
       );
       const defaultValue1 = getTypeDefaultValue(
-        'AsyncBatchAnnotateFilesRequest',
+        '.google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest',
         ['parent']
       );
       request.parent = defaultValue1;
