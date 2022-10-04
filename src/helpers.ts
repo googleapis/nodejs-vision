@@ -51,7 +51,8 @@ interface ImprovedRequest {
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   features?: any;
-  imageContext?: any;w
+  imageContext?: any;
+  w;
 }
 
 interface VisionClient {
